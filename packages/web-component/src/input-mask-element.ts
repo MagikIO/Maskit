@@ -1,6 +1,6 @@
 import type { CreateMaskOptions } from "@maskit/core";
 import type { MaskController } from "@maskit/dom";
-import { mask, unmask } from "@maskit/dom";
+import { mask } from "@maskit/dom";
 
 /** Attributes that can be set declaratively on <input-mask> */
 export interface InputMaskElementAttributes {

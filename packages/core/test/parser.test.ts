@@ -117,7 +117,7 @@ describe("analyseMask — parser", () => {
   it("parses regex mask", () => {
     // regex masks need to go through generateMaskSet which resolves regex → mask
     const opts = makeOpts({ mask: null, regex: "[0-9]{3}" });
-    const ms = generateMaskSet(opts, defaultDefinitions, {});
+    const ms = generateMaskSet(opts, defaultDefinitions);
     expect(ms.maskToken).toBeDefined();
     expect(ms.maskToken.length).toBeGreaterThan(0);
   });
@@ -126,7 +126,7 @@ describe("analyseMask — parser", () => {
 describe("generateMaskSet", () => {
   it("generates mask set from string mask", () => {
     const opts = makeOpts({ mask: "99/99/9999" });
-    const ms = generateMaskSet(opts, defaultDefinitions, {});
+    const ms = generateMaskSet(opts, defaultDefinitions);
     expect(ms.mask).toBe("99/99/9999");
     expect(ms.maskToken).toBeDefined();
     expect(ms.maskToken.length).toBeGreaterThan(0);
@@ -137,7 +137,7 @@ describe("generateMaskSet", () => {
     const opts = makeOpts({
       mask: ["999-999", "999-999-999"],
     });
-    const ms = generateMaskSet(opts, defaultDefinitions, {});
+    const ms = generateMaskSet(opts, defaultDefinitions);
     // Array masks get combined into alternation
     expect(ms.maskToken).toBeDefined();
   });
@@ -145,11 +145,10 @@ describe("generateMaskSet", () => {
   it("uses cache for repeated masks", () => {
     const cache = new Map();
     const opts = makeOpts({ mask: "99-99" });
-    const ms1 = generateMaskSet(opts, defaultDefinitions, {}, cache);
+    const ms1 = generateMaskSet(opts, defaultDefinitions, cache);
     const ms2 = generateMaskSet(
       makeOpts({ mask: "99-99" }),
       defaultDefinitions,
-      {},
       cache,
     );
     // Should be separate instances (structuredClone'd)
@@ -159,7 +158,7 @@ describe("generateMaskSet", () => {
 
   it("handles repeat option", () => {
     const opts = makeOpts({ mask: "9", repeat: 4 });
-    const ms = generateMaskSet(opts, defaultDefinitions, {});
+    const ms = generateMaskSet(opts, defaultDefinitions);
     expect(ms.mask).toBe("9999");
   });
 });

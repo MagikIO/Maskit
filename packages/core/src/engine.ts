@@ -82,7 +82,7 @@ export function createMask(options: CreateMaskOptions): MaskEngine {
     resolveAlias(opts.alias, options, opts, allAliases);
   }
 
-  const maskset = generateMaskSet(opts, allDefinitions, allAliases, cache);
+  const maskset = generateMaskSet(opts, allDefinitions, cache);
   const isRTL = opts.isRTL || opts.numericInput || false;
 
   const ctx = {

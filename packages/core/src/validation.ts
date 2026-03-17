@@ -1,9 +1,7 @@
 import { deepClone } from "./deep-clone.js";
-import { keys } from "./keycode.js";
 import {
   determineTestTemplate,
   getBuffer,
-  getBufferTemplate,
   getDecisionTaker,
   getLastValidPosition,
   getMaskTemplate,
@@ -116,11 +114,11 @@ export function isComplete(
           maskset.validPositions[i] === undefined &&
           (test.optionality === false ||
             test.optionality === undefined ||
-            (test.optionality && test.newBlockMarker == false)) &&
+            (test.optionality && test.newBlockMarker === false)) &&
           (test.optionalQuantifier === false ||
             test.optionalQuantifier === undefined)) ||
         (test.static === true &&
-          test.def != "" &&
+          test.def !== "" &&
           buffer[i] !== getPlaceholder(i, opts, maskset, definitions, test))
       ) {
         complete = false;
@@ -322,7 +320,7 @@ export function revalidateMask(
     }
 
     if (
-      positionsClone[normalizedEnd] == undefined &&
+      positionsClone[normalizedEnd] === undefined &&
       maskset.jitOffset[normalizedEnd]
     ) {
       end = normalizedEnd + maskset.jitOffset[normalizedEnd] + 1;
@@ -372,7 +370,7 @@ export function revalidateMask(
           }
           posMatch++;
         }
-        if (getTest(posMatch, opts, maskset, definitions).match.def == "") {
+        if (getTest(posMatch, opts, maskset, definitions).match.def === "") {
           valid = false;
         }
         posMatch = j;
@@ -744,7 +742,7 @@ export function isValid(
         if (
           opts.keepStatic === true ||
           (typeof opts.keepStatic === "number" &&
-            isFinite(opts.keepStatic) &&
+            Number.isFinite(opts.keepStatic) &&
             maskPos >= opts.keepStatic)
         ) {
           result = alternate(
@@ -839,7 +837,7 @@ function trackbackPositions(
       !isMask(ps, opts, maskset, definitions, false)
     ) {
       const vp =
-        ps == 0
+        ps === 0
           ? getTest(ps, opts, maskset, definitions)
           : maskset.validPositions[ps - 1];
       if (vp) {
@@ -945,11 +943,11 @@ export function alternate(
   }
 
   if (alternation !== undefined) {
-    decisionPos = parseInt(String(lastAlt));
+    decisionPos = parseInt(String(lastAlt), 10);
     maskset.excludes[decisionPos] = maskset.excludes[decisionPos] || [];
     if (maskPos !== true) {
       maskset.excludes[decisionPos].push(
-        getDecisionTaker(prevAltPos!) + ":" + prevAltPos!.alternation,
+        `${getDecisionTaker(prevAltPos!)}:${prevAltPos!.alternation}`,
       );
     }
 
@@ -1025,11 +1023,11 @@ export function alternate(
         maskset.tests = deepClone(tstClone);
         returnRslt = false;
         if (maskset.excludes[decisionPos]) {
-          if (prevAltPos.alternation != undefined) {
+          if (prevAltPos.alternation !== undefined) {
             const decisionTaker = getDecisionTaker(prevAltPos);
             if (
               maskset.excludes[decisionPos].indexOf(
-                decisionTaker + ":" + prevAltPos.alternation,
+                `${decisionTaker}:${prevAltPos.alternation}`,
               ) !== -1
             ) {
               returnRslt = alternate(
@@ -1044,7 +1042,7 @@ export function alternate(
               break;
             }
             maskset.excludes[decisionPos].push(
-              decisionTaker + ":" + prevAltPos.alternation,
+              `${decisionTaker}:${prevAltPos.alternation}`,
             );
             for (
               let i = decisionPos;
@@ -1161,7 +1159,7 @@ function refreshFromBuffer(
   end: number | undefined,
   buffer: string[],
 ): void {
-  const { opts, maskset, definitions } = ctx;
+  const { opts, maskset } = ctx;
   const skipOptionalPartCharacter = opts.skipOptionalPartCharacter;
   opts.skipOptionalPartCharacter = "";
   const bffr = ctx.isRTL ? buffer.slice().reverse() : buffer;
@@ -1195,7 +1193,7 @@ export function checkVal(
   inputValue: string[],
   strict?: boolean,
 ): { caretPos: number } {
-  const { opts, maskset, definitions } = ctx;
+  const { opts, maskset } = ctx;
   const skipOptionalPartCharacter = opts.skipOptionalPartCharacter;
   opts.skipOptionalPartCharacter = "";
 
@@ -1264,8 +1262,7 @@ export function unmaskedvalue(ctx: EngineContext): string {
 
   for (let pndx = 0, vpl = vps.length; pndx < vpl; pndx++) {
     if (
-      vps[pndx] &&
-      vps[pndx].match &&
+      vps[pndx]?.match &&
       (vps[pndx].match.static != true ||
         (opts.keepStatic !== true &&
           Array.isArray(maskset.metadata) &&

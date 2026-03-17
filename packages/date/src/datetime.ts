@@ -394,7 +394,7 @@ function getTokenMatchForDate(
   while ((match = tokenizer.exec(opts.inputFormat ?? ""))) {
     const dynMatches = /\d+$/.exec(match[0]);
     if (dynMatches) {
-      matchLength = parseInt(dynMatches[0]);
+      matchLength = parseInt(dynMatches[0], 10);
     } else {
       const targetSymbol = match[0][0];
       let ndx = calcPos;
@@ -418,7 +418,7 @@ function getTokenMatchForDate(
 
     if (calcPos >= pos + 1) {
       let masksetHint = "";
-      if (maskset && maskset.tests[pos]) {
+      if (maskset?.tests[pos]) {
         const ph =
           typeof opts.placeholder === "object"
             ? (opts.placeholder as Record<string, string>)
@@ -502,7 +502,7 @@ function createDateParts(
     while ((m = tokenizer.exec(format))) {
       if (m.index >= lastNdx) {
         const dynMatches = /\d+$/.exec(m[0]);
-        const fcode = dynMatches ? m[0][0] + "x" : m[0];
+        const fcode = dynMatches ? `${m[0][0]}x` : m[0];
         let value: string | undefined;
 
         if (maskStr !== undefined) {
@@ -539,7 +539,7 @@ function createDateParts(
             lastNdx = ndx;
             const len = ndx - m.index;
             const fc = resolveFormatCode(fcode, formatCodes);
-            value = maskStr.slice(0, len || (fc && fc[4]) || fcode.length);
+            value = maskStr.slice(0, len || (fc?.[4]) || fcode.length);
           }
           maskStr = maskStr.slice(value.length);
         }
@@ -565,7 +565,7 @@ function createDateParts(
       switch (targetProp) {
         case "ampm":
           dp[targetProp] = value;
-          dp["raw" + targetProp] = value.replace(/\s/g, "_");
+          dp[`raw${targetProp}`] = value.replace(/\s/g, "_");
           break;
         case "month":
           if (fcode === "MMM" || fcode === "MMMM") {
@@ -581,24 +581,24 @@ function createDateParts(
             );
             dp[targetProp] =
               dp[targetProp] === "00" ? "" : String(dp[targetProp]);
-            dp["raw" + targetProp] = dp[targetProp] as string;
+            dp[`raw${targetProp}`] = dp[targetProp] as string;
             break;
           }
         // falls through
         default:
           dp[targetProp] = value.replace(/[^0-9]/g, "0");
-          dp["raw" + targetProp] = value.replace(/\s/g, "_");
+          dp[`raw${targetProp}`] = value.replace(/\s/g, "_");
       }
     }
     if (dateOperation !== undefined) {
       let datavalue = String(dp[targetProp]);
       if (
-        (targetProp === "day" && parseInt(datavalue) === 29) ||
-        (targetProp === "month" && parseInt(datavalue) === 2)
+        (targetProp === "day" && parseInt(datavalue, 10) === 29) ||
+        (targetProp === "month" && parseInt(datavalue, 10) === 2)
       ) {
         if (
-          parseInt(dp.day) === 29 &&
-          parseInt(dp.month) === 2 &&
+          parseInt(dp.day, 10) === 29 &&
+          parseInt(dp.month, 10) === 2 &&
           (!dp.year || dp.year === "")
         ) {
           dp._date.setFullYear(2012, 1, 29);
@@ -606,7 +606,7 @@ function createDateParts(
       }
       if (targetProp === "day") {
         useDateObj = true;
-        if (parseInt(datavalue) === 0) datavalue = "1";
+        if (parseInt(datavalue, 10) === 0) datavalue = "1";
       }
       if (targetProp === "month") useDateObj = true;
       if (targetProp === "year") {
@@ -652,7 +652,7 @@ export function parseDateFormat(
         if (!escaped) {
           const fcode = resolveFormatCode(match[0], formatCodes);
           if (fcode) {
-            mask += "(" + fcode[0] + ")";
+            mask += `(${fcode[0]})`;
             if (
               typeof opts.placeholder === "string" &&
               opts.placeholder !== ""
@@ -691,9 +691,9 @@ export function parseDateFormat(
               mask += getFn.call(dateObjValue.date);
             } else if (
               fcode[2] &&
-              dateObjValue["raw" + fcode[2]] !== undefined
+              dateObjValue[`raw${fcode[2]}`] !== undefined
             ) {
-              mask += dateObjValue["raw" + fcode[2]];
+              mask += dateObjValue[`raw${fcode[2]}`];
             } else {
               mask += match[0];
             }
@@ -754,11 +754,11 @@ function prefillYearFn(
     if (entered.length === 2 && entered === cyp) {
       const entryDate = new Date(
         currentYear,
-        parseInt(dateParts.month) - 1,
-        parseInt(dateParts.day),
+        parseInt(dateParts.month, 10) - 1,
+        parseInt(dateParts.day, 10),
       );
       if (
-        parseInt(dateParts.day) === entryDate.getDate() &&
+        parseInt(dateParts.day, 10) === entryDate.getDate() &&
         (!opts.max ||
           (opts.max as DateParts).date.getTime() >= entryDate.getTime())
       ) {
@@ -786,25 +786,25 @@ export function isValidDate(
 
   if (
     dateParts.rawday === undefined ||
-    (!isFinite(Number(dateParts.rawday)) &&
+    (!Number.isFinite(Number(dateParts.rawday)) &&
       new Date(
         dateParts.date.getFullYear(),
-        isFinite(Number(dateParts.rawmonth))
-          ? parseInt(dateParts.month)
+        Number.isFinite(Number(dateParts.rawmonth))
+          ? parseInt(dateParts.month, 10)
           : dateParts.date.getMonth() + 1,
         0,
-      ).getDate() >= parseInt(dateParts.day)) ||
+      ).getDate() >= parseInt(dateParts.day, 10)) ||
     (dateParts.day === "29" &&
-      (!isFinite(Number(dateParts.rawyear)) ||
+      (!Number.isFinite(Number(dateParts.rawyear)) ||
         dateParts.rawyear === undefined ||
         dateParts.rawyear === "")) ||
     new Date(
       dateParts.date.getFullYear(),
-      isFinite(Number(dateParts.rawmonth))
-        ? parseInt(dateParts.month)
+      Number.isFinite(Number(dateParts.rawmonth))
+        ? parseInt(dateParts.month, 10)
         : dateParts.date.getMonth() + 1,
       0,
-    ).getDate() >= parseInt(dateParts.day)
+    ).getDate() >= parseInt(dateParts.day, 10)
   ) {
     return result;
   }
@@ -853,7 +853,7 @@ export function isDateInRange(
   if (opts.min) {
     const minParts = opts.min as DateParts;
     if (
-      !isNaN(minParts.date.getTime()) &&
+      !Number.isNaN(minParts.date.getTime()) &&
       minParts.date.getTime() > dateParts.date.getTime()
     )
       return false;
@@ -861,7 +861,7 @@ export function isDateInRange(
   if (opts.max) {
     const maxParts = opts.max as DateParts;
     if (
-      !isNaN(maxParts.date.getTime()) &&
+      !Number.isNaN(maxParts.date.getTime()) &&
       maxParts.date.getTime() < dateParts.date.getTime()
     )
       return false;
@@ -949,7 +949,7 @@ export function createDatetimeAlias(
     ): boolean | CommandObject {
       if (strict) return true;
       const dateOpts = opts as unknown as DateOptions;
-      if (isNaN(Number(c)) && buffer[pos] !== c) {
+      if (Number.isNaN(Number(c)) && buffer[pos] !== c) {
         const tm = getTokenMatchForDate(pos, dateOpts, maskset, formatCodes);
         if (
           tm.nextMatch &&
@@ -961,7 +961,7 @@ export function createDatetimeAlias(
             tm.targetMatch[0],
             formatCodes,
           )?.[0];
-          if (validator && new RegExp(validator).test("0" + buffer[pos - 1])) {
+          if (validator && new RegExp(validator).test(`0${buffer[pos - 1]}`)) {
             buffer[pos] = buffer[pos - 1];
             buffer[pos - 1] = "0";
             return {
@@ -1031,12 +1031,12 @@ export function createDatetimeAlias(
           pos = tokenMatch.targetMatchIndex;
           if (
             maskset.validPositions[pos + 1] !== undefined &&
-            new RegExp(validator).test(c + "0")
+            new RegExp(validator).test(`${c}0`)
           ) {
             buffer[pos] = c;
             buffer[pos + 1] = "0";
             currentResult = { pos: pos + 2, caret: pos + 1 };
-          } else if (new RegExp(validator).test("0" + c)) {
+          } else if (new RegExp(validator).test(`0${c}`)) {
             buffer[pos] = "0";
             buffer[pos + 1] = c;
             currentResult = { pos: pos + 2 };
@@ -1048,8 +1048,7 @@ export function createDatetimeAlias(
       // Full validate target
       tokenMatch = getTokenMatchForDate(pos, dateOpts, maskset, formatCodes);
       if (
-        tokenMatch.targetMatch &&
-        tokenMatch.targetMatch[0] &&
+        tokenMatch.targetMatch?.[0] &&
         resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !== undefined
       ) {
         const fcode = resolveFormatCode(
@@ -1081,7 +1080,7 @@ export function createDatetimeAlias(
         maskset,
       );
 
-      if (result && dateParts && !isNaN(dateParts.date.getTime())) {
+      if (result && dateParts && !Number.isNaN(dateParts.date.getTime())) {
         if (dateOpts.prefillYear)
           result = prefillYearFn(dateParts, result as CommandObject, dateOpts);
         result = isValidDate(dateParts, result, dateOpts, maskset, formatCodes);

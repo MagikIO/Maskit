@@ -24,16 +24,16 @@ function ipValidator(
     if (pos - 2 > -1 && maskset.buffer![pos - 2] !== ".") {
       chrs = maskset.buffer![pos - 2] + chrs;
     } else {
-      chrs = "0" + chrs;
+      chrs = `0${chrs}`;
     }
   } else {
-    chrs = "00" + chrs;
+    chrs = `00${chrs}`;
   }
 
   if (
     opts?.greedy &&
-    parseInt(chrs) > 255 &&
-    ipValidatorRegex.test("00" + chrs.charAt(2))
+    parseInt(chrs, 10) > 255 &&
+    ipValidatorRegex.test(`00${chrs.charAt(2)}`)
   ) {
     const buffer = [
       ...(maskset.buffer?.slice(0, pos) ?? []),

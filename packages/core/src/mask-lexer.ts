@@ -13,7 +13,6 @@ import type {
 export function generateMaskSet(
   opts: MaskOptions,
   definitions: Record<string, MaskDefinition>,
-  aliases: Record<string, Partial<MaskOptions>>,
   cache?: Map<string, MaskSet>,
   nocache?: boolean,
 ): MaskSet {
@@ -94,15 +93,15 @@ export function generateMaskSet(
 
     let maskdefKey: string;
     maskdefKey = regexMask
-      ? "regex_" + opts.regex
+      ? `regex_${opts.regex}`
       : opts.numericInput
         ? mask.split("").reverse().join("")
         : mask;
     if (opts.keepStatic !== null) {
-      maskdefKey = "ks_" + opts.keepStatic + maskdefKey;
+      maskdefKey = `ks_${opts.keepStatic}${maskdefKey}`;
     }
     if (typeof opts.placeholder === "object") {
-      maskdefKey = "ph_" + JSON.stringify(opts.placeholder) + maskdefKey;
+      maskdefKey = `ph_${JSON.stringify(opts.placeholder)}${maskdefKey}`;
     }
 
     const cached = cache?.get(maskdefKey);
@@ -250,7 +249,7 @@ export function analyseMask(
           mtoken.matches.splice(position!, 0, {
             fn: /[a-z]/i.test(opts.staticDefinitionSymbol || lmnt)
               ? new RegExp(
-                  "[" + (opts.staticDefinitionSymbol || lmnt) + "]",
+                  `[${opts.staticDefinitionSymbol || lmnt}]`,
                   flag,
                 )
               : null,
@@ -309,7 +308,7 @@ export function analyseMask(
         mtoken.matches.splice(position, 0, {
           fn: /[a-z]/i.test(opts.staticDefinitionSymbol || element)
             ? new RegExp(
-                "[" + (opts.staticDefinitionSymbol || element) + "]",
+                `[${opts.staticDefinitionSymbol || element}]`,
                 flag,
               )
             : null,
@@ -331,7 +330,7 @@ export function analyseMask(
   }
 
   function verifyGroupMarker(maskToken: MaskToken): void {
-    if (maskToken && maskToken.matches) {
+    if (maskToken?.matches) {
       maskToken.matches.forEach((token, ndx) => {
         const nextToken = maskToken.matches[ndx + 1] as MaskToken | undefined;
         if (
@@ -482,7 +481,7 @@ export function analyseMask(
           break;
         case "+":
         case "*":
-          m = "{" + m + "}";
+          m = `{${m}}`;
           break;
         case "|":
           if (openenings.length === 0) {
@@ -542,19 +541,19 @@ export function analyseMask(
         m = m.replace(/[{}?]/g, "");
         const mqj = m.split("|");
         const mq = mqj[0].split(",");
-        let mq0: number | string = isNaN(Number(mq[0]))
+        let mq0: number | string = Number.isNaN(Number(mq[0]))
           ? mq[0]
-          : parseInt(mq[0]);
+          : parseInt(mq[0], 10);
         const mq1: number | string =
           mq.length === 1
             ? mq0
-            : isNaN(Number(mq[1]))
+            : Number.isNaN(Number(mq[1]))
               ? mq[1]
-              : parseInt(mq[1]);
+              : parseInt(mq[1], 10);
         const mqJit: number | string | undefined = mqj[1]
-          ? isNaN(Number(mqj[1]))
+          ? Number.isNaN(Number(mqj[1]))
             ? mqj[1]
-            : parseInt(mqj[1])
+            : parseInt(mqj[1], 10)
           : undefined;
         if (mq0 === "*" || mq0 === "+") {
           mq0 = mq1 === "*" ? 0 : 1;
