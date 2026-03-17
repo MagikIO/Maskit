@@ -137,6 +137,7 @@ describe("Alternations", () => {
       definitions: {
         f: { validator: "[0-3]" },
       },
+      cache: false,
     });
     "23".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue().replace(/_/g, "")).toContain("23");
