@@ -1,5 +1,5 @@
-import type { MaskState } from "./types.js";
 import { valueGet, valueSet } from "./caret.js";
+import type { MaskState } from "./types.js";
 
 /**
  * Patch the element's `value` property to intercept get/set.

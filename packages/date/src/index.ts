@@ -1,18 +1,18 @@
 // i18n
-export type { DateI18n } from "./i18n.js";
-export { defaultI18n } from "./i18n.js";
 
 // datetime alias & helpers
 export type { DateOptions, DateParts } from "./datetime.js";
 export {
+  createDatetimeAlias,
   dateAliases,
   datetimeAlias,
-  createDatetimeAlias,
-  parseDateFormat,
-  isValidDate,
   isDateInRange,
+  isValidDate,
   pad,
+  parseDateFormat,
 } from "./datetime.js";
+export type { DateI18n } from "./i18n.js";
+export { defaultI18n } from "./i18n.js";
 
 // Registration helper
 import { defineAlias } from "@maskit/core";

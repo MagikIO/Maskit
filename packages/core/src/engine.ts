@@ -1,3 +1,12 @@
+import { defaults } from "./defaults.js";
+import { defaultDefinitions } from "./definitions.js";
+import { generateMaskSet } from "./mask-lexer.js";
+import {
+  getBuffer,
+  getBufferTemplate,
+  resetMaskSet,
+  seekNext,
+} from "./test-resolver.js";
 import type {
   AliasDefinition,
   CaretPosition,
@@ -8,15 +17,6 @@ import type {
   MaskToken,
   ValidationResult,
 } from "./types.js";
-import { defaults } from "./defaults.js";
-import { defaultDefinitions } from "./definitions.js";
-import { generateMaskSet } from "./mask-lexer.js";
-import {
-  getBuffer,
-  getBufferTemplate,
-  resetMaskSet,
-  seekNext,
-} from "./test-resolver.js";
 import {
   checkVal,
   clearOptionalTail,

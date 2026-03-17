@@ -1,27 +1,27 @@
 // Definitions
-export {
-  extensionDefinitions,
-  upperAlphaDefinition,
-  upperAlphanumericDefinition,
-  hexDefinition,
-} from "./definitions.js";
 
 // Aliases
 export {
+  cssunitAlias,
+  emailAlias,
   extensionAliases,
   ipAlias,
-  cssunitAlias,
-  urlAlias,
-  emailAlias,
   macAlias,
-  vinAlias,
   ssnAlias,
+  urlAlias,
+  vinAlias,
 } from "./aliases.js";
+export {
+  extensionDefinitions,
+  hexDefinition,
+  upperAlphaDefinition,
+  upperAlphanumericDefinition,
+} from "./definitions.js";
 
 // Registration helper
 import { defineAlias, defineDefinition } from "@maskit/core";
-import { extensionDefinitions } from "./definitions.js";
 import { extensionAliases } from "./aliases.js";
+import { extensionDefinitions } from "./definitions.js";
 
 /**
  * Register all extension definitions and aliases into the global

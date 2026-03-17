@@ -1,6 +1,6 @@
-import { mask, unmask } from "@maskit/dom";
 import type { MaskController } from "@maskit/dom";
-import { onCleanup, createEffect, splitProps } from "solid-js";
+import { mask, unmask } from "@maskit/dom";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 import type { MaskedInputProps } from "./types.js";
 
 /**

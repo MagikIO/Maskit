@@ -1,16 +1,41 @@
 // Public API
+
+// Defaults (for extension authors)
+export { defaults } from "./defaults.js";
+export { defaultDefinitions } from "./definitions.js";
+export type { CreateMaskOptions } from "./engine.js";
 export {
   createMask,
-  format,
-  unformat,
-  isValidStatic as isValid,
   defineAlias,
   defineDefinition,
+  format,
   getAliases,
   getDefinitions,
+  isValidStatic as isValid,
+  unformat,
 } from "./engine.js";
-export type { CreateMaskOptions } from "./engine.js";
-
+// Low-level utilities (for extension authors)
+export { escapeRegex } from "./escape-regex.js";
+export { keyCode, keys } from "./keycode.js";
+export { analyseMask, generateMaskSet } from "./mask-lexer.js";
+export { createMaskToken } from "./mask-token.js";
+export {
+  determineTestTemplate,
+  getBuffer,
+  getBufferTemplate,
+  getDecisionTaker,
+  getLastValidPosition,
+  getMaskTemplate,
+  getPlaceholder,
+  getTest,
+  getTests,
+  getTestTemplate,
+  isMask,
+  isSubsetOf,
+  resetMaskSet,
+  seekNext,
+  seekPrevious,
+} from "./test-resolver.js";
 // Types
 export type {
   AliasDefinition,
@@ -24,45 +49,18 @@ export type {
   MaskToken,
   TestMatch,
   TestResult,
-  ValidPosition,
   ValidationResult,
+  ValidPosition,
   WriteResult,
 } from "./types.js";
-
-// Defaults (for extension authors)
-export { defaults } from "./defaults.js";
-export { defaultDefinitions } from "./definitions.js";
-
-// Low-level utilities (for extension authors)
-export { escapeRegex } from "./escape-regex.js";
-export { keyCode, keys } from "./keycode.js";
-export { generateMaskSet, analyseMask } from "./mask-lexer.js";
-export { createMaskToken } from "./mask-token.js";
 export {
-  getTests,
-  getTest,
-  getTestTemplate,
-  getMaskTemplate,
-  getPlaceholder,
-  determineTestTemplate,
-  getDecisionTaker,
-  isSubsetOf,
-  getLastValidPosition,
-  seekNext,
-  seekPrevious,
-  isMask,
-  resetMaskSet,
-  getBuffer,
-  getBufferTemplate,
-} from "./test-resolver.js";
-export {
-  isValid as isValidCore,
-  isComplete as isCompleteCore,
-  revalidateMask,
   alternate,
-  handleRemove,
   checkAlternationMatch,
   checkVal,
-  unmaskedvalue,
   clearOptionalTail,
+  handleRemove,
+  isComplete as isCompleteCore,
+  isValid as isValidCore,
+  revalidateMask,
+  unmaskedvalue,
 } from "./validation.js";

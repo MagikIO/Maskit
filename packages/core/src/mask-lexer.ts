@@ -1,3 +1,6 @@
+import { deepClone } from "./deep-clone.js";
+import { escapeRegex } from "./escape-regex.js";
+import { createMaskToken } from "./mask-token.js";
 import type {
   MaskDefinition,
   MaskInput,
@@ -6,9 +9,6 @@ import type {
   MaskToken,
   TestMatch,
 } from "./types.js";
-import { deepClone } from "./deep-clone.js";
-import { escapeRegex } from "./escape-regex.js";
-import { createMaskToken } from "./mask-token.js";
 
 export function generateMaskSet(
   opts: MaskOptions,
@@ -390,7 +390,7 @@ export function analyseMask(
 
     maskToken.matches = maskToken.matches.reverse();
     for (const key in maskToken.matches) {
-      if (Object.prototype.hasOwnProperty.call(maskToken.matches, key)) {
+      if (Object.hasOwn(maskToken.matches, key)) {
         const intMatch = parseInt(key);
         const item = maskToken.matches[intMatch];
         if (

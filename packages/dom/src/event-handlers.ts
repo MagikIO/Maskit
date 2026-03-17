@@ -1,21 +1,21 @@
+import type { CaretPosition, MaskOptions } from "@maskit/core";
 import {
+  clearOptionalTail,
   getBuffer,
   getBufferTemplate,
   getLastValidPosition,
   getPlaceholder,
+  getTest,
+  isCompleteCore,
   isMask,
+  resetMaskSet,
   seekNext,
   seekPrevious,
-  isCompleteCore,
-  clearOptionalTail,
-  resetMaskSet,
-  getTest,
 } from "@maskit/core";
-import type { CaretPosition, MaskOptions } from "@maskit/core";
-import type { MaskState } from "./types.js";
 import { getCaret, setCaret, valueGet, valueSet } from "./caret.js";
-import { writeBuffer, handleNativePlaceholder } from "./write-buffer.js";
+import type { MaskState } from "./types.js";
 import { applyInputValue } from "./value.js";
+import { handleNativePlaceholder, writeBuffer } from "./write-buffer.js";
 
 /**
  * Determine new caret position on click/tab.

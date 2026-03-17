@@ -1,14 +1,3 @@
-import type {
-  CaretPosition,
-  CommandObject,
-  MaskDefinition,
-  MaskOptions,
-  MaskSet,
-  TestMatch,
-  TestResult,
-  ValidPosition,
-  ValidationResult,
-} from "./types.js";
 import { deepClone } from "./deep-clone.js";
 import { keys } from "./keycode.js";
 import {
@@ -20,13 +9,24 @@ import {
   getMaskTemplate,
   getPlaceholder,
   getTest,
-  getTestTemplate,
   getTests,
+  getTestTemplate,
   isMask,
   resetMaskSet,
   seekNext,
   seekPrevious,
 } from "./test-resolver.js";
+import type {
+  CaretPosition,
+  CommandObject,
+  MaskDefinition,
+  MaskOptions,
+  MaskSet,
+  TestMatch,
+  TestResult,
+  ValidationResult,
+  ValidPosition,
+} from "./types.js";
 
 interface EngineContext {
   opts: MaskOptions;

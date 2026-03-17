@@ -1,3 +1,4 @@
+import { deepClone } from "./deep-clone.js";
 import type {
   MaskDefinition,
   MaskOptions,
@@ -7,7 +8,6 @@ import type {
   TestResult,
   ValidPosition,
 } from "./types.js";
-import { deepClone } from "./deep-clone.js";
 
 export function getDecisionTaker(tst: TestResult): string {
   let decisionTaker = tst.locator[tst.alternation!];

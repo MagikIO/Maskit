@@ -1,4 +1,6 @@
+import type { CreateMaskOptions } from "@maskit/core";
 import {
+  clearOptionalTail,
   createMask,
   getBuffer,
   getBufferTemplate,
@@ -6,19 +8,17 @@ import {
   isCompleteCore,
   resetMaskSet,
   seekNext,
-  clearOptionalTail,
 } from "@maskit/core";
-import type { CreateMaskOptions } from "@maskit/core";
+import { setCaret, valueGet } from "./caret.js";
+import { bindEvents, unbindEvents } from "./event-binding.js";
+import { getState, hasState, removeState, setState } from "./state.js";
 import type { MaskController, MaskState } from "./types.js";
-import { getState, setState, removeState, hasState } from "./state.js";
 import {
+  applyInputValue,
   patchValueProperty,
   unpatchValueProperty,
-  applyInputValue,
 } from "./value.js";
-import { bindEvents, unbindEvents } from "./event-binding.js";
-import { writeBuffer, handleNativePlaceholder } from "./write-buffer.js";
-import { setCaret, valueGet } from "./caret.js";
+import { handleNativePlaceholder, writeBuffer } from "./write-buffer.js";
 
 /**
  * Apply an input mask to a DOM element.

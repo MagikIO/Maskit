@@ -1,5 +1,5 @@
-import type { MaskState } from "./types.js";
 import { setCaret, valueSet } from "./caret.js";
+import type { MaskState } from "./types.js";
 
 /**
  * Write the buffer to the DOM and optionally set caret position.

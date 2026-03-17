@@ -1,5 +1,5 @@
-import { mask } from "./mask.js";
 import type { CreateMaskOptions } from "@maskit/core";
+import { mask } from "./mask.js";
 
 /**
  * Auto-initialize input masks on elements with `data-maskit` attributes.

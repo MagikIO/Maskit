@@ -1,6 +1,6 @@
-import { mask, unmask } from "@maskit/dom";
 import type { MaskController } from "@maskit/dom";
-import { createEffect, onCleanup, type Accessor } from "solid-js";
+import { mask, unmask } from "@maskit/dom";
+import { type Accessor, createEffect, onCleanup } from "solid-js";
 import type { MaskitDirectiveOptions } from "./types.js";
 
 /**

@@ -545,7 +545,7 @@ function createDateParts(
         }
 
         const rfc = resolveFormatCode(fcode, formatCodes);
-        if (rfc && Object.prototype.hasOwnProperty.call(formatCodes, fcode)) {
+        if (rfc && Object.hasOwn(formatCodes, fcode)) {
           setValue(dp, value, fcode, rfc[2], rfc[1], rfc);
         }
       }

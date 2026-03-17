@@ -1,19 +1,19 @@
-import type { MaskState } from "./types.js";
 import { getBuffer } from "@maskit/core";
 import {
-  onKeyDown,
-  onKeyPress,
-  onInput,
-  onPaste,
-  onCut,
-  onFocus,
   onBlur,
   onClick,
+  onCut,
+  onFocus,
+  onInput,
+  onKeyDown,
+  onKeyPress,
   onMouseEnter,
   onMouseLeave,
-  onSubmit,
+  onPaste,
   onReset,
+  onSubmit,
 } from "./event-handlers.js";
+import type { MaskState } from "./types.js";
 import { writeBuffer } from "./write-buffer.js";
 
 /**

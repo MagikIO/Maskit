@@ -465,7 +465,7 @@ export const numericAlias: AliasDefinition = {
       }) as unknown as string,
     },
   },
-  preValidation: function (
+  preValidation: (
     buffer: string[],
     pos: number,
     c: string,
@@ -474,7 +474,7 @@ export const numericAlias: AliasDefinition = {
     maskset: MaskSet,
     caretPos: CaretPosition | number,
     strict: boolean,
-  ): boolean | CommandObject {
+  ): boolean | CommandObject => {
     const numOpts = opts as unknown as NumericOptions;
     if (numOpts.__financeInput !== false && c === opts.radixPoint) return false;
 
@@ -560,7 +560,7 @@ export const numericAlias: AliasDefinition = {
 
     return { rewritePosition: pos };
   },
-  postValidation: function (
+  postValidation: (
     buffer: string[],
     pos: number,
     c: string,
@@ -570,7 +570,7 @@ export const numericAlias: AliasDefinition = {
     strict: boolean,
     _fromCheckval: boolean,
     fromAlternate: boolean,
-  ): boolean | ValidationResult {
+  ): boolean | ValidationResult => {
     if (currentResult === false) return currentResult;
     if (strict) return true;
 
@@ -628,11 +628,11 @@ export const numericAlias: AliasDefinition = {
 
     return currentResult;
   },
-  onUnMask: function (
+  onUnMask: (
     maskedValue: string,
     unmaskedValue: string,
     opts: MaskOptions,
-  ): string {
+  ): string => {
     const numOpts = opts as unknown as NumericOptions;
     if (unmaskedValue === "" && numOpts.nullable === true) {
       return unmaskedValue;
@@ -671,7 +671,7 @@ export const numericAlias: AliasDefinition = {
     }
     return processValue;
   },
-  isComplete: function (buffer: string[], opts: MaskOptions): boolean {
+  isComplete: (buffer: string[], opts: MaskOptions): boolean => {
     const numOpts = opts as unknown as NumericOptions;
     let maskedValue = (
       opts.numericInput ? buffer.slice().reverse() : buffer
@@ -695,7 +695,7 @@ export const numericAlias: AliasDefinition = {
     }
     return isFinite(Number(maskedValue));
   },
-  onBeforeMask: function (initialValue: string, opts: MaskOptions): string {
+  onBeforeMask: (initialValue: string, opts: MaskOptions): string => {
     const numOpts = opts as unknown as NumericOptions;
     initialValue = initialValue ?? "";
     const radixPoint = opts.radixPoint || ",";
@@ -730,7 +730,7 @@ export const numericAlias: AliasDefinition = {
           ? (opts.digits as number)
           : decimalPart.length;
       if (decimalPart !== "" || !numOpts.digitsOptional) {
-        const digitsFactor = Math.pow(10, digits || 1);
+        const digitsFactor = 10 ** (digits || 1);
         initialValue = initialValue.replace(escapeRegex(radixPoint), ".");
         if (!isNaN(parseFloat(initialValue))) {
           initialValue = (

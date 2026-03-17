@@ -1,16 +1,16 @@
 export type { NumericOptions } from "./numeric.js";
 
 export {
-  numericAliases,
-  numericAlias,
+  alignDigits,
   currencyAlias,
   decimalAlias,
-  integerAlias,
-  percentageAlias,
-  indiannsAlias,
-  genMask,
   decimalValidator,
-  alignDigits,
+  genMask,
+  indiannsAlias,
+  integerAlias,
+  numericAlias,
+  numericAliases,
+  percentageAlias,
 } from "./numeric.js";
 
 // Registration helper

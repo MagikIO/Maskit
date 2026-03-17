@@ -5,9 +5,9 @@ import type {
   ValidationResult,
 } from "@maskit/core";
 import {
-  getMaskTemplate,
-  getLastValidPosition,
   defaultDefinitions,
+  getLastValidPosition,
+  getMaskTemplate,
 } from "@maskit/core";
 
 const ipValidatorRegex = /25[0-5]|2[0-4][0-9]|[01][0-9][0-9]/;
