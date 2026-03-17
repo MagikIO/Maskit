@@ -207,16 +207,14 @@ export interface CommandObject {
     | { start: number; end: number };
   buffer?: string[];
   rewritePosition?: number;
+  forwardPosition?: number;
 }
 
 /** Result from validation */
 export type ValidationResult =
   | false
   | true
-  | (CommandObject & {
-      pos?: number;
-      forwardPosition?: number;
-    });
+  | CommandObject;
 
 /** Result from write operations */
 export interface WriteResult {
