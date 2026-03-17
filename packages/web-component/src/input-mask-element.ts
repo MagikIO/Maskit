@@ -226,23 +226,29 @@ export class InputMaskElement extends HTMLElement {
 
   #syncFormValue(): void {
     const val = this.unmaskedValue;
-    this.#internals.setFormValue(val);
 
-    // Validate completeness
-    if (this.hasAttribute("required") && !val) {
-      this.#internals.setValidity(
-        { valueMissing: true },
-        "Please fill out this field.",
-        this.#input,
-      );
-    } else if (this.#controller && !this.isComplete) {
-      this.#internals.setValidity(
-        { patternMismatch: true },
-        "Please complete the masked input.",
-        this.#input,
-      );
-    } else {
-      this.#internals.setValidity({});
+    // ElementInternals form APIs may not be available in all environments (e.g. jsdom)
+    if (typeof this.#internals.setFormValue === "function") {
+      this.#internals.setFormValue(val);
+    }
+
+    if (typeof this.#internals.setValidity === "function") {
+      // Validate completeness
+      if (this.hasAttribute("required") && !val) {
+        this.#internals.setValidity(
+          { valueMissing: true },
+          "Please fill out this field.",
+          this.#input,
+        );
+      } else if (this.#controller && !this.isComplete) {
+        this.#internals.setValidity(
+          { patternMismatch: true },
+          "Please complete the masked input.",
+          this.#input,
+        );
+      } else {
+        this.#internals.setValidity({});
+      }
     }
   }
 
