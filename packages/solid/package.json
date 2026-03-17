@@ -18,7 +18,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly",
     "test": "vitest run",
@@ -31,5 +33,8 @@
   "peerDependencies": {
     "solid-js": ">=1.8.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "vite-plugin-solid": "^2.11.11"
+  }
 }

@@ -1,1 +1,3 @@
-export {};
+export { maskit } from "./directive.js";
+export { MaskedInput } from "./MaskedInput.js";
+export type { MaskitDirectiveOptions, MaskedInputProps } from "./types.js";
