@@ -158,27 +158,35 @@ export function generateMaskSet(
       altMask += opts.groupmarker[1];
       return generateMask(altMask, maskOpt, opts);
     } else {
-      maskOpt = maskOpt[0];
+      const singleMask = maskOpt[0];
+      return processSingleMask(singleMask, opts);
     }
   }
 
-  let ms: MaskSet;
-  if (
-    maskOpt &&
-    typeof maskOpt === "object" &&
-    "mask" in maskOpt &&
-    typeof maskOpt.mask !== "function"
-  ) {
-    ms = generateMask(maskOpt.mask as string, maskOpt, opts);
-  } else {
-    ms = generateMask(maskOpt as string, maskOpt, opts);
-  }
+  return processSingleMask(maskOpt, opts);
 
-  if (opts.keepStatic === null) {
-    opts.keepStatic = false;
-  }
+  function processSingleMask(
+    maskOpt: string | MaskInput | null,
+    opts: MaskOptions,
+  ): MaskSet {
+    let ms: MaskSet;
+    if (
+      maskOpt &&
+      typeof maskOpt === "object" &&
+      "mask" in maskOpt &&
+      typeof maskOpt.mask !== "function"
+    ) {
+      ms = generateMask(maskOpt.mask as string, maskOpt, opts);
+    } else {
+      ms = generateMask(maskOpt as string, maskOpt, opts);
+    }
 
-  return ms;
+    if (opts.keepStatic === null) {
+      opts.keepStatic = false;
+    }
+
+    return ms;
+  }
 }
 
 export function analyseMask(
