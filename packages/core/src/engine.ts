@@ -5,6 +5,7 @@ import type {
   MaskEngine,
   MaskOptions,
   MaskSet,
+  MaskToken,
   ValidationResult,
 } from "./types.js";
 import { defaults } from "./defaults.js";
@@ -31,6 +32,16 @@ const globalDefinitions: Record<string, MaskDefinition> = {
   ...defaultDefinitions,
 };
 const masksCache = new Map<string, MaskSet>();
+
+function maskHasAlternator(tokens: MaskToken[]): boolean {
+  for (const token of tokens) {
+    if (token.isAlternator) return true;
+    for (const m of token.matches) {
+      if ("matches" in m && maskHasAlternator([m as MaskToken])) return true;
+    }
+  }
+  return false;
+}
 
 function resolveAlias(
   aliasStr: string | null,
@@ -84,7 +95,7 @@ export function createMask(options: CreateMaskOptions): MaskEngine {
     opts,
     maskset,
     definitions: allDefinitions,
-    hasAlternator: false,
+    hasAlternator: maskHasAlternator(maskset.maskToken),
     isRTL,
   };
 
@@ -197,7 +208,7 @@ export function isValidStatic(
     opts: engine.getOptions(),
     maskset: engine.getMaskSet(),
     definitions: { ...globalDefinitions, ...options.definitions },
-    hasAlternator: false,
+    hasAlternator: maskHasAlternator(engine.getMaskSet().maskToken),
     isRTL: engine.getOptions().isRTL || engine.getOptions().numericInput || false,
   });
   const isRTL = engine.getOptions().isRTL || engine.getOptions().numericInput;
