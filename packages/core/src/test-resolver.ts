@@ -5,6 +5,7 @@ import type {
   MaskToken,
   TestMatch,
   TestResult,
+  ValidPosition,
 } from "./types.js";
 
 export function getDecisionTaker(tst: TestResult): string {
@@ -68,7 +69,7 @@ export function getPlaceholder(
         for (let i = 0; i < tests.length; i++) {
           if (
             tests[i].match.def !== "" &&
-            tests[i].match.optionality !== true &&
+            !tests[i].match.optionality &&
             !(tests[i].match as TestMatch & { optionalQuantifier?: boolean })
               .optionalQuantifier &&
             (tests[i].match.static === true ||
@@ -121,7 +122,7 @@ export function getMaskTemplate(
   let ndxIntlzr: (string | number)[] | undefined;
   let pos = 0;
   let test: TestMatch;
-  let testPos: TestResult;
+  let testPos: TestResult | ValidPosition;
   let jitRenderStatic: boolean | undefined;
 
   do {
@@ -144,7 +145,7 @@ export function getMaskTemplate(
       ndxIntlzr = testPos.locator.slice();
       maskTemplate.push(
         includeMode === true
-          ? testPos.input!
+          ? (testPos as ValidPosition).input!
           : includeMode === false
             ? test.nativeDef
             : getPlaceholder(pos, opts, maskset, definitions, test),
@@ -1043,6 +1044,7 @@ export function getTests(
         fn: null,
         static: true,
         optionality: false,
+        newBlockMarker: false,
         casing: null,
         def: "",
         placeholder: "",
