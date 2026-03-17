@@ -6,7 +6,6 @@ import {
   createDatetimeAlias,
   defaultI18n,
   parseDateFormat,
-  isValidDate,
   isDateInRange,
   pad,
 } from "../src/index.js";

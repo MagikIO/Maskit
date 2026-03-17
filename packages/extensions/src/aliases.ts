@@ -22,7 +22,7 @@ function ipValidator(
   }
 
   if (
-    opts.greedy &&
+    opts?.greedy &&
     parseInt(chrs) > 255 &&
     ipValidatorRegex.test("00" + chrs.charAt(2))
   ) {

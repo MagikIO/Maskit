@@ -6,6 +6,7 @@ import type {
   MaskToken,
   TestMatch,
 } from "./types.js";
+import { deepClone } from "./deep-clone.js";
 import { escapeRegex } from "./escape-regex.js";
 import { createMaskToken } from "./mask-token.js";
 
@@ -106,7 +107,7 @@ export function generateMaskSet(
 
     const cached = cache?.get(maskdefKey);
     if (cached && nocache !== true) {
-      return structuredClone(cached);
+      return deepClone(cached);
     }
 
     const masksetDefinition: MaskSet = {
@@ -124,7 +125,7 @@ export function generateMaskSet(
 
     if (nocache !== true && cache) {
       cache.set(maskdefKey, masksetDefinition);
-      return structuredClone(masksetDefinition);
+      return deepClone(masksetDefinition);
     }
 
     return masksetDefinition;

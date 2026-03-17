@@ -9,6 +9,7 @@ import type {
   ValidPosition,
   ValidationResult,
 } from "./types.js";
+import { deepClone } from "./deep-clone.js";
 import { keys } from "./keycode.js";
 import {
   determineTestTemplate,
@@ -167,7 +168,7 @@ function determineLastRequiredPosition(
   for (let pos = lvp + 1; pos < buffer.length; pos++) {
     testPos = getTestTemplate(pos, opts, maskset, definitions, ndxIntlzr, pos - 1);
     ndxIntlzr = testPos.locator.slice();
-    positions[pos] = structuredClone(testPos);
+    positions[pos] = deepClone(testPos);
   }
 
   const lvTestAlt =
@@ -299,7 +300,7 @@ export function revalidateMask(
       validTest.match.optionalQuantifier ||
       validTest.match.optionality)
   ) {
-    const positionsClone = structuredClone(maskset.validPositions);
+    const positionsClone = deepClone(maskset.validPositions);
     const lvp = getLastValidPosition(maskset, undefined, true);
     maskset.p = normalizedBegin;
 
@@ -319,7 +320,7 @@ export function revalidateMask(
     let valid = true;
 
     if (validTest) {
-      maskset.validPositions[validatedPos] = structuredClone(
+      maskset.validPositions[validatedPos] = deepClone(
         validTest,
       ) as ValidPosition;
       posMatch++;
@@ -395,7 +396,7 @@ export function revalidateMask(
       if (!valid) break;
     }
     if (!valid) {
-      maskset.validPositions = structuredClone(positionsClone);
+      maskset.validPositions = deepClone(positionsClone);
       resetMaskSet(maskset, true);
       return false;
     }
@@ -404,7 +405,7 @@ export function revalidateMask(
     getTest(validatedPos, opts, maskset, definitions).cd ===
       validTest.cd
   ) {
-    maskset.validPositions[validatedPos] = structuredClone(
+    maskset.validPositions[validatedPos] = deepClone(
       validTest,
     ) as ValidPosition;
   }
@@ -617,7 +618,7 @@ export function isValid(
   }
 
   let result: ValidationResult = true;
-  const positionsClone = structuredClone(maskset.validPositions);
+  const positionsClone = deepClone(maskset.validPositions);
 
   if (
     opts.keepStatic === false &&
@@ -814,7 +815,7 @@ export function isValid(
 
   if (result === false || validateOnly === true) {
     resetMaskSet(maskset, true);
-    maskset.validPositions = structuredClone(positionsClone);
+    maskset.validPositions = deepClone(positionsClone);
   } else {
     trackbackPositions(undefined, maskPos, ctx, true);
   }
@@ -856,7 +857,7 @@ function trackbackPositions(
                 true))
         ) {
           const extMatch = {
-            ...structuredClone(bestMatch),
+            ...deepClone(bestMatch),
             input:
               getPlaceholder(
                 ps,
@@ -897,8 +898,8 @@ export function alternate(
 
   if (!ctx.hasAlternator) return false;
 
-  const validPsClone = structuredClone(maskset.validPositions);
-  const tstClone = structuredClone(maskset.tests);
+  const validPsClone = deepClone(maskset.validPositions);
+  const tstClone = deepClone(maskset.tests);
   let lastAlt: number | undefined;
   let alternation: number | undefined;
   let isValidRslt: boolean | ValidationResult = false;
@@ -1023,8 +1024,8 @@ export function alternate(
       if (!isValidRslt) {
         resetMaskSet(maskset);
         prevAltPos = getTest(decisionPos, opts, maskset, definitions);
-        maskset.validPositions = structuredClone(validPsClone);
-        maskset.tests = structuredClone(tstClone);
+        maskset.validPositions = deepClone(validPsClone);
+        maskset.tests = deepClone(tstClone);
         returnRslt = false;
         if (maskset.excludes[decisionPos]) {
           if (prevAltPos.alternation != undefined) {
@@ -1078,8 +1079,8 @@ export function alternate(
     delete maskset.excludes[decisionPos!];
   }
   if (!returnRslt) {
-    maskset.validPositions = structuredClone(validPsClone);
-    maskset.tests = structuredClone(tstClone);
+    maskset.validPositions = deepClone(validPsClone);
+    maskset.tests = deepClone(tstClone);
   }
   return returnRslt;
 }

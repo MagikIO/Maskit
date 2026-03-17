@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createMask, format, isValid, defineAlias, defineDefinition } from "@maskit/core";
+import { createMask, defineAlias, defineDefinition } from "@maskit/core";
 import {
   extensionAliases,
   extensionDefinitions,

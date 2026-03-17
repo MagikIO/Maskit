@@ -7,6 +7,7 @@ import type {
   TestResult,
   ValidPosition,
 } from "./types.js";
+import { deepClone } from "./deep-clone.js";
 
 export function getDecisionTaker(tst: TestResult): string {
   let decisionTaker = tst.locator[tst.alternation!];
@@ -1063,9 +1064,9 @@ export function getTests(
 
   let result: TestResult[];
   if (ndxIntlzr !== undefined && maskset.tests[pos]) {
-    result = structuredClone(matches);
+    result = deepClone(matches);
   } else {
-    maskset.tests[pos] = structuredClone(matches);
+    maskset.tests[pos] = deepClone(matches);
     result = maskset.tests[pos];
   }
 
