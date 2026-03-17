@@ -14,7 +14,6 @@ import { generateMaskSet } from "./mask-lexer.js";
 import {
   getBuffer,
   getBufferTemplate,
-  getLastValidPosition,
   resetMaskSet,
   seekNext,
 } from "./test-resolver.js";

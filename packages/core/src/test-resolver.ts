@@ -571,7 +571,7 @@ export function getTests(
           return true;
         }
 
-        let alternationNdx = targetMatch.alternation!;
+        const alternationNdx = targetMatch.alternation!;
         const shouldMerge =
           altMatch === undefined ||
           (alternationNdx <= altMatch.alternation! &&

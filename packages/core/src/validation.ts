@@ -1201,7 +1201,7 @@ export function checkVal(
   opts.skipOptionalPartCharacter = "";
 
   resetMaskSet(maskset, false);
-  let initialNdx = 0;
+  const initialNdx = 0;
   maskset.p = initialNdx;
   let caretPos = initialNdx;
   let result: ValidationResult;
