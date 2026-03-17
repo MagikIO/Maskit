@@ -115,16 +115,20 @@ export function type(input: HTMLInputElement, str: string): void {
 
 /**
  * Simulate a paste event.
+ * jsdom doesn't support DataTransfer, so we construct a minimal ClipboardEvent.
  */
 export function paste(input: HTMLInputElement, text: string): void {
   input.focus();
-  const dt = new DataTransfer();
-  dt.setData("text/plain", text);
-  const pasteEvent = new ClipboardEvent("paste", {
+  const clipboardData = {
+    getData: (type: string) => (type === "text/plain" ? text : ""),
+    setData: () => {},
+    types: ["text/plain"],
+  };
+  const pasteEvent = new Event("paste", {
     bubbles: true,
     cancelable: true,
-    clipboardData: dt,
-  });
+  }) as Event & { clipboardData: typeof clipboardData };
+  Object.defineProperty(pasteEvent, "clipboardData", { value: clipboardData });
   input.dispatchEvent(pasteEvent);
 }
 

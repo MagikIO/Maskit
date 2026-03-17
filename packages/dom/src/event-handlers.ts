@@ -7,13 +7,11 @@ import {
   seekNext,
   seekPrevious,
   isCompleteCore,
-  handleRemove,
   clearOptionalTail,
   resetMaskSet,
   getTest,
-  keys,
 } from "@maskit/core";
-import type { CaretPosition, MaskSet, MaskOptions } from "@maskit/core";
+import type { CaretPosition, MaskOptions } from "@maskit/core";
 import type { MaskState } from "./types.js";
 import { getCaret, setCaret, valueGet, valueSet, translatePosition } from "./caret.js";
 import { writeBuffer, handleNativePlaceholder } from "./write-buffer.js";
