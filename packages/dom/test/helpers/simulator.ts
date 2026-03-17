@@ -140,3 +140,47 @@ export function setValue(input: HTMLInputElement, value: string): void {
     new CustomEvent("setvalue", { detail: value, bubbles: true }),
   );
 }
+
+/**
+ * Directly inject a raw value and fire an input event.
+ * Corresponds to the QUnit simulator's `$.fn.input()` — used for
+ * testing the `inputEventOnly` code path where the framework
+ * manipulates `value` then dispatches `input`.
+ */
+export function inputEvent(
+  input: HTMLInputElement,
+  value: string,
+  caretBegin?: number,
+  caretEnd?: number,
+): void {
+  const desc = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(input),
+    "value",
+  );
+  if (desc?.set) {
+    desc.set.call(input, value);
+  } else {
+    input.value = value;
+  }
+  if (caretBegin !== undefined) {
+    setCaret(input, caretBegin, caretEnd);
+  }
+  input.dispatchEvent(
+    new InputEvent("input", { bubbles: true, cancelable: true }),
+  );
+}
+
+/**
+ * Simulate a blur event.
+ */
+export function blur(input: HTMLInputElement): void {
+  input.dispatchEvent(new FocusEvent("blur", { bubbles: true }));
+}
+
+/**
+ * Simulate a focus event.
+ */
+export function focus(input: HTMLInputElement): void {
+  input.focus();
+  input.dispatchEvent(new FocusEvent("focus", { bubbles: true }));
+}
