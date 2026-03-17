@@ -51,6 +51,9 @@ describe("Multi masks", () => {
   it('["9 AAA-AAA","A 999-999"] — type 1abc', () => {
     const engine = createMask({
       mask: ["9 AAA-AAA", "A 999-999"],
+      definitions: {
+        A: { validator: "[A-Za-z]", casing: "upper" },
+      },
     });
     "1abc".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toContain("1 ABC");
@@ -59,6 +62,9 @@ describe("Multi masks", () => {
   it('["9 AAA-AAA","A 999-999"] — type a123', () => {
     const engine = createMask({
       mask: ["9 AAA-AAA", "A 999-999"],
+      definitions: {
+        A: { validator: "[A-Za-z]", casing: "upper" },
+      },
     });
     "a123".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toContain("A 123");
@@ -68,11 +74,11 @@ describe("Multi masks", () => {
     const engine = createMask({
       mask: ["99.9", "X", "abc"],
       definitions: {
-        X: { validator: "[xX]" },
+        X: { validator: "[xX]", casing: "upper" },
       },
     });
     engine.processInput("x");
-    expect(engine.getValue().replace(/_/g, "")).toContain("x");
+    expect(engine.getValue().replace(/_/g, "")).toContain("X");
   });
 
   it('[{"mask":"###-##-####"}] with # as digit — type 123121234', () => {

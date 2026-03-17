@@ -7,13 +7,23 @@ import { createMask, format } from "../src/index.js";
 
 describe("Alternations", () => {
   it('"9{1,2}C|S A{1,3} 9{4}" — type 12Cabc1234', () => {
-    const engine = createMask({ mask: "9{1,2}C|S A{1,3} 9{4}" });
+    const engine = createMask({
+      mask: "9{1,2}C|S A{1,3} 9{4}",
+      definitions: {
+        A: { validator: "[A-Za-z]", casing: "upper" },
+      },
+    });
     "12Cabc1234".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toBe("12C ABC 1234");
   });
 
   it('"9{1,2}C|S A{1,3} 9{4}" — replace C with S', () => {
-    const engine = createMask({ mask: "9{1,2}C|S A{1,3} 9{4}" });
+    const engine = createMask({
+      mask: "9{1,2}C|S A{1,3} 9{4}",
+      definitions: {
+        A: { validator: "[A-Za-z]", casing: "upper" },
+      },
+    });
     "12Cabc1234".split("").forEach((ch) => engine.processInput(ch));
     // Replace position 2 (C) with S
     engine.processDelete("delete", { begin: 2, end: 3 });
@@ -122,7 +132,12 @@ describe("Alternations", () => {
   });
 
   it("(9)|(09)|(19)|(2f) — type 23", () => {
-    const engine = createMask({ mask: "(9)|(09)|(19)|(2f)" });
+    const engine = createMask({
+      mask: "(9)|(09)|(19)|(2f)",
+      definitions: {
+        f: { validator: "[0-3]" },
+      },
+    });
     "23".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue().replace(/_/g, "")).toContain("23");
   });
