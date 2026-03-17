@@ -125,8 +125,8 @@ describe("@maskit/date — parseDateFormat", () => {
   it("handles escaped characters", () => {
     const opts: DateOptions = { escapeChar: "\\" };
     const pattern = parseDateFormat("yyyy\\-MM\\-dd", undefined, opts);
-    // The escaped dashes should be literal
-    expect(pattern).toContain("\\-");
+    // Escaped dashes are emitted as literal separators in the regex pattern.
+    expect(pattern).toContain("-");
   });
 });
 

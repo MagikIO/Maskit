@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { createRoot, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { render, cleanup } from "@solidjs/testing-library";
 import { MaskedInput } from "../src/MaskedInput.jsx";
 import type { MaskController } from "@maskit/dom";

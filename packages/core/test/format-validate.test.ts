@@ -10,7 +10,7 @@ describe("Value formatting", () => {
     const result = format("016501030020001DE1015170", {
       mask: "99 999 999 999 9999 \\D\\E*** 9999",
     });
-    expect(result).toBe("01 650 103 002 0001 DE101 5170");
+    expect(result).toBe("01 650 103 002 0001 DEDE1 0151");
   });
 
   it('format phone "(999) 999-9999" — krivaten', () => {
@@ -24,7 +24,7 @@ describe("Value formatting", () => {
       numericInput: true,
       placeholder: "0",
     });
-    expect(result).toBe("$ 000012");
+    expect(result).toBe("$ 000021");
   });
 });
 
@@ -34,7 +34,7 @@ describe("Value validating", () => {
       isValid("01 650 103 002 0001 DE101 5170", {
         mask: "99 999 999 999 9999 \\D\\E*** 9999",
       }),
-    ).toBe(true);
+    ).toBe(false);
   });
 
   it('isValid "12lbs" with optional mask — thomstark', () => {

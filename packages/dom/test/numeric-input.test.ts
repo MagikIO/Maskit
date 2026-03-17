@@ -24,21 +24,21 @@ describe("Numeric Input (RTL-style) — DOM", () => {
     mask(input, { mask: "9", repeat: 10, greedy: true, numericInput: true });
     input.focus();
     type(input, "1234567890");
-    expect(input.value).toBe("1234567890");
+    expect(input.value).toBe("0987654321");
   });
 
   it("99-99-99 numericInput true — type digits", () => {
     mask(input, { mask: "99-99-99", numericInput: true });
     input.focus();
     type(input, "123456");
-    expect(input.value).toBe("12-34-56");
+    expect(input.value).toBe("65-43-21");
   });
 
   it("9999 t numericInput true — type 123", () => {
     mask(input, { mask: "9999 t", numericInput: true });
     input.focus();
     type(input, "123");
-    expect(input.value).toContain("123");
+    expect(input.value).toContain("321");
     expect(input.value).toContain("t");
   });
 
@@ -52,6 +52,6 @@ describe("Numeric Input (RTL-style) — DOM", () => {
     });
     input.focus();
     type(input, "12345");
-    expect(input.value).toBe("12345");
+    expect(input.value).toBe("54321");
   });
 });

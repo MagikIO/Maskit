@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createMask, defineAlias } from "@maskit/core";
+import { defineAlias } from "@maskit/core";
 import {
   numericAlias,
   currencyAlias,

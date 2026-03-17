@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { createRoot, createSignal } from "solid-js";
 import { maskit } from "../src/directive.js";
 

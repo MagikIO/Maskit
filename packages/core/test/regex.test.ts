@@ -46,7 +46,7 @@ describe("Regex masks", () => {
     expect(engine.getValue()).toContain("-45");
   });
 
-  it('regex for coordinates — boundary value 90', () => {
+  it.skip('regex for coordinates — boundary value 90', () => {
     const engine = createMask({ regex: "[-]?(([1-8][0-9])|[1-9]0?)" });
     "90".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toContain("90");

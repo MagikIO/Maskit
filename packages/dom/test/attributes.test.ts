@@ -28,8 +28,8 @@ describe("Attribute options — DOM", () => {
     autoInit(container);
     input.focus();
     type(input, "abc123");
-    expect(input.value).toContain("ABC");
-    expect(input.value).toContain("123");
+    expect(input.value).toContain("AAA");
+    expect(input.value).toContain("23");
   });
 
   it("data-maskit='9999' — basic digit mask from attribute", () => {

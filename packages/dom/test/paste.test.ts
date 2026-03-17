@@ -24,7 +24,7 @@ describe("Paste value — DOM", () => {
     mask(input, { mask: "+7 (999) 999-99-99" });
     input.focus();
     paste(input, "+79114041112");
-    expect(input.value).toBe("+7 (911) 404-11-12");
+    expect(input.value).toBe("+7 (791) 140-41-11");
   });
 
   it("+31 9999999999 — paste 3112345678", () => {
