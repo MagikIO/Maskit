@@ -5,7 +5,8 @@
     "rootDir": "./src",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "types": []
   },
   "include": ["src"]
 }
