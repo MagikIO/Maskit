@@ -195,7 +195,7 @@ function determineLastRequiredPosition(
                 lvTestAlt.toString().split(","),
                 opts,
               ) &&
-              getTests(pos, opts, maskset, definitions)[0].def !== "")))) &&
+              getTests(pos, opts, maskset, definitions)[0].match.def !== "")))) &&
       buffer[pos] ===
         getPlaceholder(pos, opts, maskset, definitions, testPos.match)
     ) {
@@ -401,8 +401,8 @@ export function revalidateMask(
     }
   } else if (
     validTest &&
-    getTest(validatedPos, opts, maskset, definitions).match.cd ===
-      validTest.match.cd
+    getTest(validatedPos, opts, maskset, definitions).cd ===
+      validTest.cd
   ) {
     maskset.validPositions[validatedPos] = structuredClone(
       validTest,
@@ -422,7 +422,7 @@ function isEnclosedStatic(
   if (
     posMatch !== undefined &&
     posMatch.match.static === true &&
-    posMatch.match.optionality !== true &&
+    !posMatch.match.optionality &&
     (valids[0] === undefined || valids[0].alternation === undefined)
   ) {
     const prevMatch =
