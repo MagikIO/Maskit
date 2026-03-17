@@ -13,7 +13,7 @@ import {
 } from "@maskit/core";
 import type { CaretPosition, MaskOptions } from "@maskit/core";
 import type { MaskState } from "./types.js";
-import { getCaret, setCaret, valueGet, valueSet, translatePosition } from "./caret.js";
+import { getCaret, setCaret, valueGet, valueSet } from "./caret.js";
 import { writeBuffer, handleNativePlaceholder } from "./write-buffer.js";
 import { applyInputValue } from "./value.js";
 
@@ -104,14 +104,6 @@ function determineNewCaretPosition(
     return selectedCaret;
   }
   return undefined;
-}
-
-/** Core context for engine calls */
-function ctx(state: MaskState) {
-  const opts = state.engine.getOptions();
-  const maskset = state.engine.getMaskSet();
-  const defs = opts.definitions ?? {};
-  return { opts, maskset, definitions: defs, hasAlternator: false, isRTL: state.isRTL };
 }
 
 export function onKeyDown(

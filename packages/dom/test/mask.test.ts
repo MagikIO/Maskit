@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mask, unmask } from "../src/index.js";
-import { type, sendKey, paste, setCaret, getCaret } from "./helpers/simulator.js";
+import { type, sendKey, paste, setCaret } from "./helpers/simulator.js";
 
 let input: HTMLInputElement;
 
