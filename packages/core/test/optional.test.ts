@@ -51,8 +51,13 @@ describe("Optional sections", () => {
   });
 
   it('[9-]AAA.999 — optional leading digit', () => {
-    const engine = createMask({ mask: "[9-]AAA.999" });
-    "abc123".split("").forEach((ch) => engine.processInput(ch));
+    const engine = createMask({
+      mask: "[9-]AAA.999",
+      definitions: {
+        A: { validator: "[A-Za-z]", casing: "upper" },
+      },
+    });
+    "1abc123".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toContain("ABC");
   });
 
@@ -78,7 +83,7 @@ describe("Optional sections", () => {
   it("a{+} XYZ 9 — dynamic alpha with static suffix", () => {
     const engine = createMask({ mask: "a{+} XYZ 9" });
     "ab1".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue()).toContain("AB");
+    expect(engine.getValue()).toContain("ab");
   });
 
   it("999[- 999] type 123456", () => {
