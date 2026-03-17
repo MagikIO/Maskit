@@ -15,7 +15,8 @@ import type { CreateMaskOptions } from "@maskit/core";
  */
 export function autoInit(root?: ParentNode): void {
   const container = root ?? document;
-  const elements = container.querySelectorAll<HTMLInputElement>("[data-maskit]");
+  const elements =
+    container.querySelectorAll<HTMLInputElement>("[data-maskit]");
   elements.forEach((el) => {
     const maskValue = el.getAttribute("data-maskit");
     if (!maskValue) return;

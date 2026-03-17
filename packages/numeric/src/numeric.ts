@@ -100,19 +100,30 @@ function findValidator(
 ): number {
   let posNdx = 0;
   if (symbol === "+") {
-    posNdx = seekNext(maskset.validPositions.length - 1, opts, maskset, definitions);
+    posNdx = seekNext(
+      maskset.validPositions.length - 1,
+      opts,
+      maskset,
+      definitions,
+    );
   }
   for (const tstNdxStr in maskset.tests) {
     const tstNdx = parseInt(tstNdxStr);
     if (tstNdx >= posNdx) {
-      for (let ndx = 0, ndxl = maskset.tests[tstNdx].length; ndx < ndxl; ndx++) {
+      for (
+        let ndx = 0, ndxl = maskset.tests[tstNdx].length;
+        ndx < ndxl;
+        ndx++
+      ) {
         if (
           (maskset.validPositions[tstNdx] === undefined || symbol === "-") &&
           maskset.tests[tstNdx][ndx].match.def === symbol
         ) {
           return (
             tstNdx +
-            (maskset.validPositions[tstNdx] !== undefined && symbol !== "-" ? 1 : 0)
+            (maskset.validPositions[tstNdx] !== undefined && symbol !== "-"
+              ? 1
+              : 0)
           );
         }
       }
@@ -144,7 +155,9 @@ function parseMinMaxOptions(opts: NumericOptions): void {
       minStr = minStr.replace(opts.radixPoint, ".");
     }
     const parsed = parseFloat(minStr);
-    (opts as Record<string, unknown>).min = isNaN(parsed) ? Number.MIN_VALUE : parsed;
+    (opts as Record<string, unknown>).min = isNaN(parsed)
+      ? Number.MIN_VALUE
+      : parsed;
   }
   if (opts.max != null) {
     let maxStr = opts.max
@@ -154,7 +167,9 @@ function parseMinMaxOptions(opts: NumericOptions): void {
       maxStr = maxStr.replace(opts.radixPoint, ".");
     }
     const parsed = parseFloat(maxStr);
-    (opts as Record<string, unknown>).max = isNaN(parsed) ? Number.MAX_VALUE : parsed;
+    (opts as Record<string, unknown>).max = isNaN(parsed)
+      ? Number.MAX_VALUE
+      : parsed;
   }
   opts.parseMinMaxOptions = "done";
 }
@@ -181,7 +196,9 @@ function checkForLeadingZeroes(
   let leadingzeroes: RegExpExecArray | null = null;
   if (number) {
     const intPart = number.split((opts.radixPoint ?? ".").charAt(0))[0];
-    leadingzeroes = new RegExp("^[0" + (opts.groupSeparator ?? "") + "]*").exec(intPart);
+    leadingzeroes = new RegExp("^[0" + (opts.groupSeparator ?? "") + "]*").exec(
+      intPart,
+    );
   }
   return leadingzeroes &&
     (leadingzeroes[0].length > 1 ||
@@ -197,7 +214,11 @@ function handleRadixDance(
   maskset: MaskSet,
   opts: NumericOptions,
 ): number {
-  if (opts._radixDance && opts.numericInput && c !== opts.negationSymbol?.back) {
+  if (
+    opts._radixDance &&
+    opts.numericInput &&
+    c !== opts.negationSymbol?.back
+  ) {
     if (
       pos <= radixPos &&
       (radixPos > 0 || c === opts.radixPoint) &&
@@ -223,7 +244,9 @@ export function decimalValidator(
     : -1;
   const result =
     (radixPos !== -1 || (strict && opts.jitMasking)) &&
-    new RegExp(opts.definitions?.["9"]?.validator as string ?? "[0-9]").test(chrs);
+    new RegExp((opts.definitions?.["9"]?.validator as string) ?? "[0-9]").test(
+      chrs,
+    );
 
   if (
     !strict &&
@@ -284,10 +307,13 @@ export function genMask(opts: NumericOptions): string | string[] {
   if (opts.numericInput === true && opts.__financeInput === undefined) {
     decimalDef = "1";
     opts.positionCaretOnClick =
-      opts.positionCaretOnClick === "radixFocus" ? "lvp" : opts.positionCaretOnClick;
+      opts.positionCaretOnClick === "radixFocus"
+        ? "lvp"
+        : opts.positionCaretOnClick;
     opts.digitsOptional = false;
     if (typeof opts.digits === "string" && isNaN(parseInt(opts.digits))) {
-      opts.digits = opts.digits.indexOf(",") !== -1 ? opts.digits.split(",")[0] : "2";
+      opts.digits =
+        opts.digits.indexOf(",") !== -1 ? opts.digits.split(",")[0] : "2";
     }
     opts._radixDance = false;
     radixPointDef = opts.radixPoint === "," ? "?" : "!";
@@ -317,7 +343,9 @@ export function genMask(opts: NumericOptions): string | string[] {
         generated: true,
       };
     }
-    mask += opts._mask ? opts._mask(opts) : "(" + opts.groupSeparator + "999){+|1}";
+    mask += opts._mask
+      ? opts._mask(opts)
+      : "(" + opts.groupSeparator + "999){+|1}";
   } else {
     mask += opts._mask ? opts._mask(opts) : "9{+}";
   }
@@ -326,7 +354,10 @@ export function genMask(opts: NumericOptions): string | string[] {
     const dq = opts.digits.toString().split(",");
     if (isFinite(parseInt(dq[0])) && dq[1] && isFinite(parseInt(dq[1]))) {
       mask += radixPointDef + decimalDef + "{" + opts.digits + "}";
-    } else if (isNaN(parseInt(opts.digits as string)) || parseInt(opts.digits as string) > 0) {
+    } else if (
+      isNaN(parseInt(opts.digits as string)) ||
+      parseInt(opts.digits as string) > 0
+    ) {
       if (opts.digitsOptional || opts.jitMasking) {
         altMask = mask + radixPointDef + decimalDef + "{0," + opts.digits + "}";
         opts.keepStatic = true;
@@ -342,7 +373,12 @@ export function genMask(opts: NumericOptions): string | string[] {
   mask += "[-]";
 
   if (altMask) {
-    return [altMask + autoEscape(opts.suffix ?? "", opts as MaskOptions, defs) + "[-]", mask];
+    return [
+      altMask +
+        autoEscape(opts.suffix ?? "", opts as MaskOptions, defs) +
+        "[-]",
+      mask,
+    ];
   }
 
   opts.greedy = false;
@@ -395,20 +431,36 @@ export const numericAlias: AliasDefinition = {
   substituteRadixPoint: true,
   definitions: {
     0: { validator: decimalValidator as unknown as string },
-    1: { validator: decimalValidator as unknown as string, definitionSymbol: "9" },
+    1: {
+      validator: decimalValidator as unknown as string,
+      definitionSymbol: "9",
+    },
     9: {
       validator: "[0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9]",
       definitionSymbol: "*",
     },
     "+": {
-      validator: ((chrs: string, _maskset: MaskSet, _pos: number, _strict: boolean, opts: NumericOptions) => {
+      validator: ((
+        chrs: string,
+        _maskset: MaskSet,
+        _pos: number,
+        _strict: boolean,
+        opts: NumericOptions,
+      ) => {
         return (
-          opts.allowMinus && (chrs === "-" || chrs === opts.negationSymbol?.front)
+          opts.allowMinus &&
+          (chrs === "-" || chrs === opts.negationSymbol?.front)
         );
       }) as unknown as string,
     },
     "-": {
-      validator: ((chrs: string, _maskset: MaskSet, _pos: number, _strict: boolean, opts: NumericOptions) => {
+      validator: ((
+        chrs: string,
+        _maskset: MaskSet,
+        _pos: number,
+        _strict: boolean,
+        opts: NumericOptions,
+      ) => {
         return opts.allowMinus && chrs === opts.negationSymbol?.back;
       }) as unknown as string,
     },
@@ -473,7 +525,8 @@ export const numericAlias: AliasDefinition = {
       isSelection === false &&
       c === opts.radixPoint &&
       opts.digits !== undefined &&
-      (isNaN(parseInt(opts.digits as string)) || parseInt(opts.digits as string) > 0) &&
+      (isNaN(parseInt(opts.digits as string)) ||
+        parseInt(opts.digits as string) > 0) &&
       radixPos !== pos
     ) {
       return {
@@ -487,7 +540,10 @@ export const numericAlias: AliasDefinition = {
         if (numOpts.digitsOptional) {
           return { rewritePosition: (caretPos as CaretPosition).end };
         } else {
-          if ((caretPos as CaretPosition).begin > radixPos && (caretPos as CaretPosition).end <= radixPos) {
+          if (
+            (caretPos as CaretPosition).begin > radixPos &&
+            (caretPos as CaretPosition).end <= radixPos
+          ) {
             if (c === opts.radixPoint) {
               return {
                 insert: [{ pos: radixPos + 1, c: "0", fromIsValid: true }],
@@ -522,7 +578,11 @@ export const numericAlias: AliasDefinition = {
 
     if (numOpts.min != null || numOpts.max != null) {
       const onUnMaskFn = numOpts.onUnMask as
-        | ((masked: string, unmasked: string | undefined, opts: MaskOptions) => string)
+        | ((
+            masked: string,
+            unmasked: string | undefined,
+            opts: MaskOptions,
+          ) => string)
         | undefined;
       if (onUnMaskFn) {
         const unmasked = onUnMaskFn(
@@ -536,14 +596,19 @@ export const numericAlias: AliasDefinition = {
           numOpts.min != null &&
           unmaskedNum < (numOpts.min as number) &&
           fromAlternate !== true &&
-          (unmasked.toString().length > (numOpts.min as number).toString().length ||
+          (unmasked.toString().length >
+            (numOpts.min as number).toString().length ||
             buffer[0] === opts.radixPoint ||
             unmaskedNum < 0)
         ) {
           return false;
         }
 
-        if (numOpts.max != null && (numOpts.max as number) >= 0 && unmaskedNum > (numOpts.max as number)) {
+        if (
+          numOpts.max != null &&
+          (numOpts.max as number) >= 0 &&
+          unmaskedNum > (numOpts.max as number)
+        ) {
           return numOpts.SetMaxOnOverflow
             ? {
                 refreshFromBuffer: true,
@@ -578,18 +643,21 @@ export const numericAlias: AliasDefinition = {
       new RegExp(escapeRegex(opts.groupSeparator), "g"),
       "",
     );
-    if (typeof opts.placeholder === "string" && opts.placeholder.charAt(0) !== "") {
+    if (
+      typeof opts.placeholder === "string" &&
+      opts.placeholder.charAt(0) !== ""
+    ) {
       processValue = processValue.replace(
         new RegExp(opts.placeholder.charAt(0), "g"),
         "0",
       );
     }
     if (numOpts.unmaskAsNumber) {
-      if (opts.radixPoint !== "" && processValue.indexOf(opts.radixPoint) !== -1) {
-        processValue = processValue.replace(
-          escapeRegex(opts.radixPoint),
-          ".",
-        );
+      if (
+        opts.radixPoint !== "" &&
+        processValue.indexOf(opts.radixPoint) !== -1
+      ) {
+        processValue = processValue.replace(escapeRegex(opts.radixPoint), ".");
       }
       processValue = processValue.replace(
         new RegExp("^" + escapeRegex(numOpts.negationSymbol?.front ?? "-")),
@@ -605,7 +673,9 @@ export const numericAlias: AliasDefinition = {
   },
   isComplete: function (buffer: string[], opts: MaskOptions): boolean {
     const numOpts = opts as unknown as NumericOptions;
-    let maskedValue = (opts.numericInput ? buffer.slice().reverse() : buffer).join("");
+    let maskedValue = (
+      opts.numericInput ? buffer.slice().reverse() : buffer
+    ).join("");
     maskedValue = maskedValue.replace(
       new RegExp("^" + escapeRegex(numOpts.negationSymbol?.front ?? "-")),
       "-",
@@ -644,10 +714,13 @@ export const numericAlias: AliasDefinition = {
       initialValue.charAt(0) === (numOpts.negationSymbol?.front ?? "-");
     const valueParts = initialValue.split(radixPoint);
     const integerPart = valueParts[0].replace(/[^\-0-9]/g, "");
-    const decimalPart = valueParts.length > 1 ? valueParts[1].replace(/[^0-9]/g, "") : "";
+    const decimalPart =
+      valueParts.length > 1 ? valueParts[1].replace(/[^0-9]/g, "") : "";
     const forceDigits = valueParts.length > 1;
 
-    initialValue = integerPart + (decimalPart !== "" ? radixPoint + decimalPart : decimalPart);
+    initialValue =
+      integerPart +
+      (decimalPart !== "" ? radixPoint + decimalPart : decimalPart);
 
     let digits = 0;
     if (radixPoint !== "") {
@@ -661,8 +734,9 @@ export const numericAlias: AliasDefinition = {
         initialValue = initialValue.replace(escapeRegex(radixPoint), ".");
         if (!isNaN(parseFloat(initialValue))) {
           initialValue = (
-            (numOpts.roundingFN ?? Math.round)(parseFloat(initialValue) * digitsFactor) /
-            digitsFactor
+            (numOpts.roundingFN ?? Math.round)(
+              parseFloat(initialValue) * digitsFactor,
+            ) / digitsFactor
           ).toFixed(digits);
         }
         initialValue = initialValue.toString().replace(".", radixPoint);
@@ -670,15 +744,28 @@ export const numericAlias: AliasDefinition = {
     }
 
     if (opts.digits === 0 && initialValue.indexOf(radixPoint) !== -1) {
-      initialValue = initialValue.substring(0, initialValue.indexOf(radixPoint));
+      initialValue = initialValue.substring(
+        0,
+        initialValue.indexOf(radixPoint),
+      );
     }
 
     if (initialValue !== "" && (numOpts.min != null || numOpts.max != null)) {
       const numberValue = initialValue.toString().replace(radixPoint, ".");
-      if (numOpts.min != null && parseFloat(numberValue) < (numOpts.min as number)) {
-        initialValue = (numOpts.min as number).toString().replace(".", radixPoint);
-      } else if (numOpts.max != null && parseFloat(numberValue) > (numOpts.max as number)) {
-        initialValue = (numOpts.max as number).toString().replace(".", radixPoint);
+      if (
+        numOpts.min != null &&
+        parseFloat(numberValue) < (numOpts.min as number)
+      ) {
+        initialValue = (numOpts.min as number)
+          .toString()
+          .replace(".", radixPoint);
+      } else if (
+        numOpts.max != null &&
+        parseFloat(numberValue) > (numOpts.max as number)
+      ) {
+        initialValue = (numOpts.max as number)
+          .toString()
+          .replace(".", radixPoint);
       }
     }
 
@@ -686,9 +773,12 @@ export const numericAlias: AliasDefinition = {
       initialValue = "-" + initialValue;
     }
 
-    return alignDigits(initialValue.toString().split(""), digits, numOpts, forceDigits).join(
-      "",
-    );
+    return alignDigits(
+      initialValue.toString().split(""),
+      digits,
+      numOpts,
+      forceDigits,
+    ).join("");
   },
 } as AliasDefinition;
 

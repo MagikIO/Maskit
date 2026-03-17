@@ -43,7 +43,11 @@ export function getPlaceholder(
   test = test || getTest(pos, opts, maskset, definitions).match;
 
   if (test.placeholder !== undefined || returnPL === true) {
-    if (test.placeholder !== "" && test.static === true && test.generated !== true) {
+    if (
+      test.placeholder !== "" &&
+      test.static === true &&
+      test.generated !== true
+    ) {
       const lvp = getLastValidPosition(maskset);
       const nextPos = seekNext(pos, opts, maskset, definitions);
       return (returnPL ? pos <= nextPos : pos < nextPos)
@@ -76,9 +80,7 @@ export function getPlaceholder(
             (tests[i].match.static === true ||
               prevTest === undefined ||
               (tests[i].match.fn !== null &&
-                tests[i].match.fn!.test(
-                  prevTest.match.def,
-                ) !== false))
+                tests[i].match.fn!.test(prevTest.match.def) !== false))
           ) {
             staticAlternations.push(tests[i]);
             if (tests[i].match.static === true) prevTest = tests[i];
@@ -152,7 +154,14 @@ export function getMaskTemplate(
             : getPlaceholder(pos, opts, maskset, definitions, test),
       );
     } else {
-      testPos = getTestTemplate(pos, opts, maskset, definitions, ndxIntlzr, pos - 1);
+      testPos = getTestTemplate(
+        pos,
+        opts,
+        maskset,
+        definitions,
+        ndxIntlzr,
+        pos - 1,
+      );
       test = testPos.match;
       ndxIntlzr = testPos.locator.slice();
       const jitMasking =
@@ -180,13 +189,7 @@ export function getMaskTemplate(
         maskTemplate.push(
           includeMode === false
             ? test.nativeDef
-            : getPlaceholder(
-                pos,
-                opts,
-                maskset,
-                definitions,
-                test,
-              ),
+            : getPlaceholder(pos, opts, maskset, definitions, test),
         );
       } else {
         jitRenderStatic = undefined;
@@ -232,18 +235,12 @@ export function getTestTemplate(
   );
 }
 
-function determineOptionalityLevel(
-  pos: number,
-  tests: TestResult[],
-): number {
+function determineOptionalityLevel(pos: number, tests: TestResult[]): number {
   let optionalityLevel = 0;
   let differentOptionalLevels = false;
   tests.forEach((test) => {
     if (test.match.optionality) {
-      if (
-        optionalityLevel !== 0 &&
-        optionalityLevel !== test.match.optionality
-      )
+      if (optionalityLevel !== 0 && optionalityLevel !== test.match.optionality)
         differentOptionalLevels = true;
       if (
         optionalityLevel === 0 ||
@@ -270,15 +267,10 @@ export function determineTestTemplate(
   pos = pos > 0 ? pos - 1 : 0;
 
   const longestLocator = Math.max(
-    ...tests.map((tst) =>
-      tst.locator === undefined ? 0 : tst.locator.length,
-    ),
+    ...tests.map((tst) => (tst.locator === undefined ? 0 : tst.locator.length)),
   );
   const prevTest = getTestFromResults(pos, tests);
-  const prevLocator = getLocator(
-    prevTest || tests[0],
-    longestLocator,
-  );
+  const prevLocator = getLocator(prevTest || tests[0], longestLocator);
 
   let lenghtOffset = 0;
   let tstLocator: string;
@@ -475,8 +467,7 @@ export function getTests(
                   distance = mlocDistance;
                   bestMatch = lmnt;
                   newAlternateMloc = Object.entries(lmnt.mloc).find(
-                    (entry) =>
-                      entry[1].toString() === mlocMatch.toString(),
+                    (entry) => entry[1].toString() === mlocMatch.toString(),
                   )?.[0];
                 }
                 return true;
@@ -496,11 +487,7 @@ export function getTests(
             bestMatch.locator
           ).slice();
 
-          if (
-            slocator[slocator.length - 1]
-              .toString()
-              .indexOf(":") !== -1
-          ) {
+          if (slocator[slocator.length - 1].toString().indexOf(":") !== -1) {
             slocator.pop();
           }
 
@@ -552,9 +539,7 @@ export function getTests(
                     targetMatch.mloc[ndx + offset] = altMatch.mloc[ndx];
                     break;
                   }
-                } while (
-                  targetMatch.mloc[ndx + offset++] !== undefined
-                );
+                } while (targetMatch.mloc[ndx + offset++] !== undefined);
               }
             }
             targetMatch.locator = mergeLocators(testPos, [
@@ -636,8 +621,7 @@ export function getTests(
         const malternateMatches: TestResult[] = [];
         const currentMatches = matches.slice();
         const loopNdxCnt = loopNdx.length;
-        const altIndex =
-          ndxInit.length > 0 ? ndxInit.shift()! : -1;
+        const altIndex = ndxInit.length > 0 ? ndxInit.shift()! : -1;
         let maltMatches: TestResult[];
 
         if (altIndex === -1 || typeof altIndex === "string") {
@@ -660,19 +644,10 @@ export function getTests(
 
           if (maskset.excludes[pos] !== undefined) {
             const altIndexArrClone = altIndexArr.slice();
-            for (
-              let i = 0, exl = maskset.excludes[pos].length;
-              i < exl;
-              i++
-            ) {
-              const excludeSet = maskset.excludes[pos][i]
-                .toString()
-                .split(":");
+            for (let i = 0, exl = maskset.excludes[pos].length; i < exl; i++) {
+              const excludeSet = maskset.excludes[pos][i].toString().split(":");
               if (loopNdx.length == parseInt(excludeSet[1])) {
-                altIndexArr.splice(
-                  altIndexArr.indexOf(excludeSet[0]),
-                  1,
-                );
+                altIndexArr.splice(altIndexArr.indexOf(excludeSet[0]), 1);
               }
             }
             if (altIndexArr.length === 0) {
@@ -693,11 +668,8 @@ export function getTests(
             matches = [];
             ndxInit =
               typeof altIndex === "string"
-                ? resolveNdxInitializer(
-                    testPos,
-                    amndx,
-                    loopNdxCnt,
-                  ) || ndxInitClone.slice()
+                ? resolveNdxInitializer(testPos, amndx, loopNdxCnt) ||
+                  ndxInitClone.slice()
                 : ndxInitClone.slice();
 
             const tokenMatch = alternateToken.matches[amndx];
@@ -723,11 +695,7 @@ export function getTests(
               let dropMatch = false;
               altMatch.alternation = altMatch.alternation || loopNdxCnt;
               setMergeLocators(altMatch);
-              for (
-                let ndx2 = 0;
-                ndx2 < malternateMatches.length;
-                ndx2++
-              ) {
+              for (let ndx2 = 0; ndx2 < malternateMatches.length; ndx2++) {
                 const altMatch2 = malternateMatches[ndx2];
                 if (
                   typeof altIndex !== "string" ||
@@ -736,9 +704,7 @@ export function getTests(
                       altMatch.locator[altMatch.alternation].toString(),
                     ) !== -1)
                 ) {
-                  if (
-                    altMatch.match.nativeDef === altMatch2.match.nativeDef
-                  ) {
+                  if (altMatch.match.nativeDef === altMatch2.match.nativeDef) {
                     dropMatch = true;
                     setMergeLocators(altMatch2, altMatch);
                     break;
@@ -755,9 +721,7 @@ export function getTests(
                   } else if (isSubsetOf(altMatch2, altMatch, opts)) {
                     setMergeLocators(altMatch2, altMatch);
                     break;
-                  } else if (
-                    staticCanMatchDefinition(altMatch, altMatch2)
-                  ) {
+                  } else if (staticCanMatchDefinition(altMatch, altMatch2)) {
                     if (setMergeLocators(altMatch, altMatch2)) {
                       dropMatch = true;
                       malternateMatches.splice(
@@ -805,18 +769,16 @@ export function getTests(
         const qt = match as MaskToken;
         let breakloop = false;
         for (
-          let qndx = ndxInit.length > 0
-            ? (ndxInit.shift() as number)
-            : 0;
+          let qndx = ndxInit.length > 0 ? (ndxInit.shift() as number) : 0;
           qndx <
             (isNaN(qt.quantifier.max as number)
               ? qndx + 1
-              : (qt.quantifier.max as number)) &&
-          testPos <= pos;
+              : (qt.quantifier.max as number)) && testPos <= pos;
           qndx++
         ) {
           const tokenGroup = maskToken.matches[
-            maskToken.matches.indexOf(qt as unknown as TestMatch | MaskToken) - 1
+            maskToken.matches.indexOf(qt as unknown as TestMatch | MaskToken) -
+              1
           ] as MaskToken;
           match = handleMatch(
             tokenGroup,
@@ -853,10 +815,7 @@ export function getTests(
                 breakloop = true;
                 match = false as unknown as MaskToken;
               }
-              if (
-                !breakloop &&
-                latestMatch.jit
-              ) {
+              if (!breakloop && latestMatch.jit) {
                 maskset.jitOffset[pos] =
                   tokenGroup.matches.length -
                   tokenGroup.matches.indexOf(
@@ -891,9 +850,7 @@ export function getTests(
           quantifierRecurse === undefined
         ) {
           const allDefs = { ...definitions, ...opts.definitions };
-          if (
-            allDefs[(match as TestMatch).nativeDef]?.optional
-          ) {
+          if (allDefs[(match as TestMatch).nativeDef]?.optional) {
             insertStop = true;
             testPos = pos;
           } else {
@@ -913,7 +870,9 @@ export function getTests(
           matchToken.isQuantifier &&
           quantifierRecurse !==
             (maskToken.matches[
-              maskToken.matches.indexOf(matchToken as unknown as TestMatch | MaskToken) - 1
+              maskToken.matches.indexOf(
+                matchToken as unknown as TestMatch | MaskToken,
+              ) - 1
             ] as MaskToken)
         ) {
           return handleQuantifier();
@@ -933,9 +892,7 @@ export function getTests(
     }
 
     for (
-      let tndx = ndxInit.length > 0
-        ? (ndxInit.shift() as number)
-        : 0;
+      let tndx = ndxInit.length > 0 ? (ndxInit.shift() as number) : 0;
       tndx < maskToken.matches.length;
       tndx++
     ) {
@@ -1006,8 +963,8 @@ export function getTests(
       let test: TestResult[] | TestResult | undefined;
       while (
         (test =
-          maskset.validPositions[previousPos] ||
-          maskset.tests[previousPos]) === undefined &&
+          maskset.validPositions[previousPos] || maskset.tests[previousPos]) ===
+          undefined &&
         previousPos > -1
       ) {
         previousPos--;
@@ -1021,10 +978,7 @@ export function getTests(
         testPos = previousPos;
       }
     }
-    if (
-      maskset.tests[pos] &&
-      maskset.tests[pos][0].cd === cacheDependency
-    ) {
+    if (maskset.tests[pos] && maskset.tests[pos][0].cd === cacheDependency) {
       return maskset.tests[pos];
     }
     for (
@@ -1224,8 +1178,7 @@ export function getBuffer(
       getLastValidPosition(maskset),
       true,
     );
-    if (maskset._buffer === undefined)
-      maskset._buffer = maskset.buffer.slice();
+    if (maskset._buffer === undefined) maskset._buffer = maskset.buffer.slice();
   }
   return maskset.buffer;
 }
@@ -1237,8 +1190,7 @@ export function getBufferTemplate(
 ): string[] {
   if (maskset._buffer === undefined) {
     maskset._buffer = getMaskTemplate(opts, maskset, definitions, false, 1);
-    if (maskset.buffer === undefined)
-      maskset.buffer = maskset._buffer.slice();
+    if (maskset.buffer === undefined) maskset.buffer = maskset._buffer.slice();
   }
   return maskset._buffer;
 }

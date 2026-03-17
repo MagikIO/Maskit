@@ -40,7 +40,11 @@ function determineNewCaretPosition(
         const radixPos = buffer.indexOf(opts.radixPoint);
         if (radixPos !== -1) {
           for (let vp = 0, vpl = vps.length; vp < vpl; vp++) {
-            if (vps[vp] && radixPos < vp && vps[vp].input !== getPlaceholder(vp, opts, maskset, defs)) {
+            if (
+              vps[vp] &&
+              radixPos < vp &&
+              vps[vp].input !== getPlaceholder(vp, opts, maskset, defs)
+            ) {
               return false;
             }
           }
@@ -74,7 +78,9 @@ function determineNewCaretPosition(
       case "radixFocus":
         if (state.clicked > 1 && maskset.validPositions.length === 0) break;
         if (doRadixFocus(selectedCaret.begin)) {
-          const radixPos = getBuffer(opts, maskset, defs).join("").indexOf(opts.radixPoint);
+          const radixPos = getBuffer(opts, maskset, defs)
+            .join("")
+            .indexOf(opts.radixPoint);
           const newEnd = opts.numericInput
             ? seekNext(radixPos, opts, maskset, defs)
             : radixPos;
@@ -83,9 +89,15 @@ function determineNewCaretPosition(
       // falls through to lvp
       default: {
         const clickPosition = selectedCaret.begin;
-        const lvclickPosition = getLastValidPosition(maskset, clickPosition, true);
+        const lvclickPosition = getLastValidPosition(
+          maskset,
+          clickPosition,
+          true,
+        );
         const lastPosition = seekNext(
-          lvclickPosition === -1 && !isMask(0, opts, maskset, defs) ? -1 : lvclickPosition,
+          lvclickPosition === -1 && !isMask(0, opts, maskset, defs)
+            ? -1
+            : lvclickPosition,
           opts,
           maskset,
           defs,
@@ -121,18 +133,31 @@ export function onKeyDown(
   const kdResult = opts.onKeyDown(e, getBuffer(opts, maskset, defs), pos, opts);
   if (kdResult !== undefined) return;
 
-  if (c === "Backspace" || c === "Delete" || (e.ctrlKey && c === "x" && !("oncut" in input))) {
+  if (
+    c === "Backspace" ||
+    c === "Delete" ||
+    (e.ctrlKey && c === "x" && !("oncut" in input))
+  ) {
     e.preventDefault();
-    engine.processDelete(
-      c === "Backspace" ? "backspace" : "delete",
-      pos,
-    );
+    engine.processDelete(c === "Backspace" ? "backspace" : "delete", pos);
     resetMaskSet(maskset, true);
     const buffer = getBuffer(opts, maskset, defs);
-    writeBuffer(input, state, buffer, maskset.p, e, valueGet(input, state, true) !== buffer.join(""));
+    writeBuffer(
+      input,
+      state,
+      buffer,
+      maskset.p,
+      e,
+      valueGet(input, state, true) !== buffer.join(""),
+    );
   } else if (c === "End" || c === "PageDown") {
     e.preventDefault();
-    const caretPos = seekNext(getLastValidPosition(maskset), opts, maskset, defs);
+    const caretPos = seekNext(
+      getLastValidPosition(maskset),
+      opts,
+      maskset,
+      defs,
+    );
     setCaret(input, e.shiftKey ? pos.begin : caretPos, caretPos, state);
   } else if ((c === "Home" && !e.shiftKey) || c === "PageUp") {
     e.preventDefault();
@@ -197,7 +222,10 @@ export function onKeyPress(
     // Handle Enter for change event
     if (c === "Enter" && state.undoValue !== valueGet(input, state, true)) {
       state.undoValue = valueGet(input, state, true);
-      setTimeout(() => input.dispatchEvent(new Event("change", { bubbles: true })), 0);
+      setTimeout(
+        () => input.dispatchEvent(new Event("change", { bubbles: true })),
+        0,
+      );
     }
     return;
   }
@@ -217,7 +245,9 @@ export function onKeyPress(
       typeof result === "object" && result.caret !== undefined
         ? result.caret
         : seekNext(
-            typeof result === "object" && result.pos !== undefined ? result.pos : pos.begin,
+            typeof result === "object" && result.pos !== undefined
+              ? result.pos
+              : pos.begin,
             opts,
             maskset,
             defs,
@@ -373,7 +403,9 @@ export function onCut(
   const clipData = state.isRTL
     ? buffer.slice(pos.end, pos.begin)
     : buffer.slice(pos.begin, pos.end);
-  const clipText = state.isRTL ? clipData.reverse().join("") : clipData.join("");
+  const clipText = state.isRTL
+    ? clipData.reverse().join("")
+    : clipData.join("");
 
   e.clipboardData?.setData("text/plain", clipText);
   e.preventDefault();
@@ -403,14 +435,25 @@ export function onFocus(
   if (opts.showMaskOnFocus) {
     const bufferStr = getBuffer(opts, maskset, defs).join("");
     if (nptValue !== bufferStr) {
-      const caretPos = seekNext(getLastValidPosition(maskset), opts, maskset, defs);
+      const caretPos = seekNext(
+        getLastValidPosition(maskset),
+        opts,
+        maskset,
+        defs,
+      );
       writeBuffer(input, state, getBuffer(opts, maskset, defs), caretPos);
     }
   }
 
   if (opts.positionCaretOnTab && !state.mouseEnter) {
     const complete = isCompleteCore(
-      { opts, maskset, definitions: defs, hasAlternator: false, isRTL: state.isRTL },
+      {
+        opts,
+        maskset,
+        definitions: defs,
+        hasAlternator: false,
+        isRTL: state.isRTL,
+      },
       getBuffer(opts, maskset, defs),
     );
     if (!complete || getLastValidPosition(maskset) === -1) {
@@ -438,7 +481,10 @@ export function onBlur(
 
   if (nptValue !== "") {
     if (opts.clearMaskOnLostFocus) {
-      if (getLastValidPosition(maskset) === -1 && nptValue === getBufferTemplate(opts, maskset, defs).join("")) {
+      if (
+        getLastValidPosition(maskset) === -1 &&
+        nptValue === getBufferTemplate(opts, maskset, defs).join("")
+      ) {
         buffer = [];
       } else {
         buffer = clearOptionalTail({
@@ -452,11 +498,21 @@ export function onBlur(
     }
 
     const complete = isCompleteCore(
-      { opts, maskset, definitions: defs, hasAlternator: false, isRTL: state.isRTL },
+      {
+        opts,
+        maskset,
+        definitions: defs,
+        hasAlternator: false,
+        isRTL: state.isRTL,
+      },
       buffer,
     );
     if (complete === false) {
-      setTimeout(() => input.dispatchEvent(new CustomEvent("incomplete", { bubbles: true })), 0);
+      setTimeout(
+        () =>
+          input.dispatchEvent(new CustomEvent("incomplete", { bubbles: true })),
+        0,
+      );
       if (opts.clearIncomplete) {
         resetMaskSet(maskset, false);
         buffer = opts.clearMaskOnLostFocus
@@ -544,13 +600,22 @@ export function onSubmit(
     input.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  if (getLastValidPosition(maskset) === -1 && valueGet(input, state) === getBufferTemplate(opts, maskset, defs).join("")) {
+  if (
+    getLastValidPosition(maskset) === -1 &&
+    valueGet(input, state) === getBufferTemplate(opts, maskset, defs).join("")
+  ) {
     valueSet(input, state, "");
   }
 
   if (opts.clearIncomplete) {
     const complete = isCompleteCore(
-      { opts, maskset, definitions: defs, hasAlternator: false, isRTL: state.isRTL },
+      {
+        opts,
+        maskset,
+        definitions: defs,
+        hasAlternator: false,
+        isRTL: state.isRTL,
+      },
       getBuffer(opts, maskset, defs),
     );
     if (complete === false) {

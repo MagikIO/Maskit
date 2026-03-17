@@ -47,7 +47,17 @@ export class InputMaskElement extends HTMLElement {
   static formAssociated = true;
 
   static get observedAttributes(): string[] {
-    return ["mask", "alias", "placeholder", "inputmode", "disabled", "readonly", "name", "value", "required"];
+    return [
+      "mask",
+      "alias",
+      "placeholder",
+      "inputmode",
+      "disabled",
+      "readonly",
+      "name",
+      "value",
+      "required",
+    ];
   }
 
   readonly #internals: ElementInternals;
@@ -92,7 +102,11 @@ export class InputMaskElement extends HTMLElement {
     this.#destroyMask();
   }
 
-  attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null,
+  ): void {
     if (oldValue === newValue) return;
 
     switch (name) {

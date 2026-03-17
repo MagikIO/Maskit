@@ -76,18 +76,13 @@ export function createMask(options: CreateMaskOptions): MaskEngine {
   const allDefinitions = { ...globalDefinitions, ...options.definitions };
   const opts: MaskOptions = { ...defaults, ...options };
   const cache =
-    options.cache === false ? undefined : options.cache ?? masksCache;
+    options.cache === false ? undefined : (options.cache ?? masksCache);
 
   if (opts.alias) {
     resolveAlias(opts.alias, options, opts, allAliases);
   }
 
-  const maskset = generateMaskSet(
-    opts,
-    allDefinitions,
-    allAliases,
-    cache,
-  );
+  const maskset = generateMaskSet(opts, allDefinitions, allAliases, cache);
   const isRTL = opts.isRTL || opts.numericInput || false;
 
   const ctx = {
@@ -99,10 +94,7 @@ export function createMask(options: CreateMaskOptions): MaskEngine {
   };
 
   return {
-    processInput(
-      char: string,
-      position?: number,
-    ): ValidationResult {
+    processInput(char: string, position?: number): ValidationResult {
       const pos =
         position !== undefined
           ? position
@@ -115,12 +107,7 @@ export function createMask(options: CreateMaskOptions): MaskEngine {
         const np =
           resultObj.caret !== undefined
             ? resultObj.caret
-            : seekNext(
-                resultObj.pos ?? pos,
-                opts,
-                maskset,
-                allDefinitions,
-              );
+            : seekNext(resultObj.pos ?? pos, opts, maskset, allDefinitions);
         maskset.p = np;
       }
       resetMaskSet(maskset, true); // clear buffer cache
@@ -208,7 +195,8 @@ export function isValidStatic(
     maskset: engine.getMaskSet(),
     definitions: { ...globalDefinitions, ...options.definitions },
     hasAlternator: maskHasAlternator(engine.getMaskSet().maskToken),
-    isRTL: engine.getOptions().isRTL || engine.getOptions().numericInput || false,
+    isRTL:
+      engine.getOptions().isRTL || engine.getOptions().numericInput || false,
   });
   const isRTL = engine.getOptions().isRTL || engine.getOptions().numericInput;
   const formatted = isRTL ? buffer.reverse().join("") : buffer.join("");

@@ -20,11 +20,14 @@ import { writeBuffer } from "./write-buffer.js";
  * Bound event handler registry per element — uses WeakMap.
  * Tracks all listeners so they can be cleanly removed on unmask.
  */
-const boundHandlers = new WeakMap<HTMLElement, Array<{
-  target: EventTarget;
-  event: string;
-  handler: EventListener;
-}>>();
+const boundHandlers = new WeakMap<
+  HTMLElement,
+  Array<{
+    target: EventTarget;
+    event: string;
+    handler: EventListener;
+  }>
+>();
 
 function addHandler(
   el: HTMLElement,
@@ -57,7 +60,10 @@ export function bindEvents(input: HTMLInputElement, state: MaskState): void {
   // Keyboard events
   if (opts.inputEventOnly !== true) {
     addHandler(input, input, "keydown", (e: Event) => {
-      if (isBlocked(e)) { e.preventDefault(); return; }
+      if (isBlocked(e)) {
+        e.preventDefault();
+        return;
+      }
       const ke = e as KeyboardEvent;
       onKeyDown(ke, input, state);
       // Process printable characters
@@ -76,18 +82,27 @@ export function bindEvents(input: HTMLInputElement, state: MaskState): void {
 
   // Input event — fallback for IME, mobile, and inputEventOnly mode
   addHandler(input, input, "input", (e: Event) => {
-    if (isBlocked(e)) { e.preventDefault(); return; }
+    if (isBlocked(e)) {
+      e.preventDefault();
+      return;
+    }
     onInput(e as InputEvent, input, state);
   });
 
   // Clipboard
   addHandler(input, input, "paste", (e: Event) => {
-    if (isBlocked(e)) { e.preventDefault(); return; }
+    if (isBlocked(e)) {
+      e.preventDefault();
+      return;
+    }
     onPaste(e as ClipboardEvent, input, state);
   });
 
   addHandler(input, input, "cut", (e: Event) => {
-    if (isBlocked(e)) { e.preventDefault(); return; }
+    if (isBlocked(e)) {
+      e.preventDefault();
+      return;
+    }
     onCut(e as ClipboardEvent, input, state);
   });
 

@@ -79,19 +79,29 @@ function getTimeZoneAbbreviated(this: Date): string {
   let tz = m[1];
   if (tz.includes(" ")) {
     tz = tz.replace("-", " ").toUpperCase();
-    tz = tz.split(" ").map((w) => w[0]).join("");
+    tz = tz
+      .split(" ")
+      .map((w) => w[0])
+      .join("");
   }
   return tz;
 }
 
 function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
   return {
-    d: ["[1-9]|[12][0-9]|3[01]", Date.prototype.setDate, "day", Date.prototype.getDate],
+    d: [
+      "[1-9]|[12][0-9]|3[01]",
+      Date.prototype.setDate,
+      "day",
+      Date.prototype.getDate,
+    ],
     dd: [
       "0[1-9]|[12][0-9]|3[01]",
       Date.prototype.setDate,
       "day",
-      function (this: Date) { return pad(Date.prototype.getDate.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getDate.call(this), 2);
+      },
     ],
     ddd: [""],
     dddd: [""],
@@ -103,7 +113,9 @@ function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
         return Date.prototype.setMonth.call(this, mval);
       },
       "month",
-      function (this: Date) { return Date.prototype.getMonth.call(this) + 1; },
+      function (this: Date) {
+        return Date.prototype.getMonth.call(this) + 1;
+      },
     ],
     MM: [
       "0[1-9]|1[012]",
@@ -113,29 +125,41 @@ function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
         return Date.prototype.setMonth.call(this, mval);
       },
       "month",
-      function (this: Date) { return pad(Date.prototype.getMonth.call(this) + 1, 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getMonth.call(this) + 1, 2);
+      },
     ],
     MMM: [
       i18n.monthNames.slice(0, 12).join("|"),
       function (this: Date, val: unknown) {
-        const idx = i18n.monthNames.slice(0, 12).findIndex(
-          (item) => String(val).toLowerCase() === item.toLowerCase(),
-        );
+        const idx = i18n.monthNames
+          .slice(0, 12)
+          .findIndex(
+            (item) => String(val).toLowerCase() === item.toLowerCase(),
+          );
         return idx !== -1 ? Date.prototype.setMonth.call(this, idx) : false;
       },
       "month",
-      function (this: Date) { return i18n.monthNames.slice(0, 12)[Date.prototype.getMonth.call(this)]; },
+      function (this: Date) {
+        return i18n.monthNames.slice(0, 12)[Date.prototype.getMonth.call(this)];
+      },
     ],
     MMMM: [
       i18n.monthNames.slice(12, 24).join("|"),
       function (this: Date, val: unknown) {
-        const idx = i18n.monthNames.slice(12, 24).findIndex(
-          (item) => String(val).toLowerCase() === item.toLowerCase(),
-        );
+        const idx = i18n.monthNames
+          .slice(12, 24)
+          .findIndex(
+            (item) => String(val).toLowerCase() === item.toLowerCase(),
+          );
         return idx !== -1 ? Date.prototype.setMonth.call(this, idx) : false;
       },
       "month",
-      function (this: Date) { return i18n.monthNames.slice(12, 24)[Date.prototype.getMonth.call(this)]; },
+      function (this: Date) {
+        return i18n.monthNames.slice(12, 24)[
+          Date.prototype.getMonth.call(this)
+        ];
+      },
     ],
     yy: [
       "[0-9]{2}",
@@ -144,22 +168,35 @@ function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
         Date.prototype.setFullYear.call(this, parseInt(`${centuryPart}${val}`));
       },
       "year",
-      function (this: Date) { return pad(Date.prototype.getFullYear.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getFullYear.call(this), 2);
+      },
       2,
     ],
     yyyy: [
       "[0-9]{4}",
-      function (this: Date, val: unknown) { Date.prototype.setFullYear.call(this, parseInt(String(val))); },
+      function (this: Date, val: unknown) {
+        Date.prototype.setFullYear.call(this, parseInt(String(val)));
+      },
       "year",
-      function (this: Date) { return pad(Date.prototype.getFullYear.call(this), 4); },
+      function (this: Date) {
+        return pad(Date.prototype.getFullYear.call(this), 4);
+      },
       4,
     ],
-    h: ["[1-9]|1[0-2]", Date.prototype.setHours, "hours", Date.prototype.getHours],
+    h: [
+      "[1-9]|1[0-2]",
+      Date.prototype.setHours,
+      "hours",
+      Date.prototype.getHours,
+    ],
     hh: [
       "0[1-9]|1[0-2]",
       Date.prototype.setHours,
       "hours",
-      function (this: Date) { return pad(Date.prototype.getHours.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getHours.call(this), 2);
+      },
     ],
     hx: [
       (x: string) => `[0-9]{${x}}`,
@@ -167,45 +204,73 @@ function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
       "hours",
       (_x: string) => Date.prototype.getHours,
     ],
-    H: ["1?[0-9]|2[0-3]", Date.prototype.setHours, "hours", Date.prototype.getHours],
+    H: [
+      "1?[0-9]|2[0-3]",
+      Date.prototype.setHours,
+      "hours",
+      Date.prototype.getHours,
+    ],
     HH: [
       "0[0-9]|1[0-9]|2[0-3]",
       Date.prototype.setHours,
       "hours",
-      function (this: Date) { return pad(Date.prototype.getHours.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getHours.call(this), 2);
+      },
     ],
     Hx: [
       (x: string) => `[0-9]{${x}}`,
       Date.prototype.setHours,
       "hours",
-      (x: string) => function (this: Date) { return pad(Date.prototype.getHours.call(this), parseInt(x)); },
+      (x: string) =>
+        function (this: Date) {
+          return pad(Date.prototype.getHours.call(this), parseInt(x));
+        },
     ],
-    m: ["[1-5]?[0-9]", Date.prototype.setMinutes, "minutes", Date.prototype.getMinutes],
+    m: [
+      "[1-5]?[0-9]",
+      Date.prototype.setMinutes,
+      "minutes",
+      Date.prototype.getMinutes,
+    ],
     mm: [
       "0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]",
       Date.prototype.setMinutes,
       "minutes",
-      function (this: Date) { return pad(Date.prototype.getMinutes.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getMinutes.call(this), 2);
+      },
     ],
-    s: ["[1-5]?[0-9]", Date.prototype.setSeconds, "seconds", Date.prototype.getSeconds],
+    s: [
+      "[1-5]?[0-9]",
+      Date.prototype.setSeconds,
+      "seconds",
+      Date.prototype.getSeconds,
+    ],
     ss: [
       "0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]",
       Date.prototype.setSeconds,
       "seconds",
-      function (this: Date) { return pad(Date.prototype.getSeconds.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getSeconds.call(this), 2);
+      },
     ],
     l: [
       "[0-9]{3}",
       Date.prototype.setMilliseconds,
       "milliseconds",
-      function (this: Date) { return pad(Date.prototype.getMilliseconds.call(this), 3); },
+      function (this: Date) {
+        return pad(Date.prototype.getMilliseconds.call(this), 3);
+      },
       3,
     ],
     L: [
       "[0-9]{2}",
       Date.prototype.setMilliseconds,
       "milliseconds",
-      function (this: Date) { return pad(Date.prototype.getMilliseconds.call(this), 2); },
+      function (this: Date) {
+        return pad(Date.prototype.getMilliseconds.call(this), 2);
+      },
       2,
     ],
     t: ["[ap]", setAMPM, "ampm", getAMPM, 1],
@@ -219,8 +284,13 @@ function buildFormatCodes(i18n: DateI18n): Record<string, FormatCodeEntry> {
 }
 
 const FORMAT_CODE_ALIAS: Record<string, string> = {
-  D: "d", DD: "dd", DDD: "ddd", DDDD: "dddd",
-  YY: "yy", YYYY: "yyyy", sss: "L",
+  D: "d",
+  DD: "dd",
+  DDD: "ddd",
+  DDDD: "dddd",
+  YY: "yy",
+  YYYY: "yyyy",
+  sss: "L",
 };
 
 const FORMAT_ALIAS: Record<string, string> = {
@@ -263,7 +333,9 @@ function getTokenizer(opts: DateOptions): RegExp {
     const tokens: string[] = [];
     const dyntokens: string[] = [];
     const formatCodes = buildFormatCodes(defaultI18n);
-    const allKeys = Object.keys(formatCodes).concat(Object.keys(FORMAT_CODE_ALIAS));
+    const allKeys = Object.keys(formatCodes).concat(
+      Object.keys(FORMAT_CODE_ALIAS),
+    );
     for (const k of allKeys) {
       if (/\.*x$/.test(k)) {
         const dt = k[0] + "\\d+";
@@ -273,7 +345,10 @@ function getTokenizer(opts: DateOptions): RegExp {
       }
     }
     const pattern =
-      "(" + (dyntokens.length > 0 ? dyntokens.join("|") + "|" : "") + tokens.join("+|") + "+)+?|.";
+      "(" +
+      (dyntokens.length > 0 ? dyntokens.join("|") + "|" : "") +
+      tokens.join("+|") +
+      "+)+?|.";
     opts.tokenizer = new RegExp(pattern, "g");
   }
   return opts.tokenizer;
@@ -287,7 +362,12 @@ function getTestPlaceholder(
   definitions: Record<string, MaskDefinition>,
 ): string {
   if (!maskset) return "";
-  const t = getTest(ndx, opts as MaskOptions, maskset, definitions) as TestResult;
+  const t = getTest(
+    ndx,
+    opts as MaskOptions,
+    maskset,
+    definitions,
+  ) as TestResult;
   const ph = t.match.placeholder;
   if (typeof ph === "function") return ph(opts as MaskOptions);
   return ph ?? "";
@@ -298,7 +378,11 @@ function getTokenMatchForDate(
   opts: DateOptions,
   maskset: MaskSet | undefined,
   formatCodes: Record<string, FormatCodeEntry>,
-): { targetMatchIndex: number; nextMatch: RegExpExecArray | null; targetMatch: RegExpExecArray | null } {
+): {
+  targetMatchIndex: number;
+  nextMatch: RegExpExecArray | null;
+  targetMatch: RegExpExecArray | null;
+} {
   const defs = (opts as MaskOptions).definitions ?? {};
   let calcPos = 0;
   let targetMatch: RegExpExecArray | null = null;
@@ -315,10 +399,14 @@ function getTokenMatchForDate(
       const targetSymbol = match[0][0];
       let ndx = calcPos;
       if (maskset) {
-        const placeholder = typeof opts.placeholder === "object" ? opts.placeholder as Record<string, string> : {};
+        const placeholder =
+          typeof opts.placeholder === "object"
+            ? (opts.placeholder as Record<string, string>)
+            : {};
         while (
-          (placeholder[`${match.index}'${getTestPlaceholder(opts, maskset, ndx, defs)}`] ||
-            getTestPlaceholder(opts, maskset, ndx, defs)) === targetSymbol
+          (placeholder[
+            `${match.index}'${getTestPlaceholder(opts, maskset, ndx, defs)}`
+          ] || getTestPlaceholder(opts, maskset, ndx, defs)) === targetSymbol
         ) {
           ndx++;
         }
@@ -331,7 +419,10 @@ function getTokenMatchForDate(
     if (calcPos >= pos + 1) {
       let masksetHint = "";
       if (maskset && maskset.tests[pos]) {
-        const ph = typeof opts.placeholder === "object" ? opts.placeholder as Record<string, string> : {};
+        const ph =
+          typeof opts.placeholder === "object"
+            ? (opts.placeholder as Record<string, string>)
+            : {};
         const testPh = String(maskset.tests[pos][0].match.placeholder ?? "");
         const filteredKeys = Object.keys(ph).filter((value) => {
           for (let i = match!.index - 1; i < calcPos; i++) {
@@ -350,7 +441,11 @@ function getTokenMatchForDate(
     }
   }
 
-  return { targetMatchIndex: calcPos - matchLength, nextMatch: match, targetMatch };
+  return {
+    targetMatchIndex: calcPos - matchLength,
+    nextMatch: match,
+    targetMatch,
+  };
 }
 
 // ---- Date parsing ----
@@ -368,17 +463,30 @@ function createDateParts(
 
   const parts: DateParts = {
     _date: new Date(1, 0, 1),
-    get date() { return this._date; },
-    day: "", rawday: "",
-    month: "", rawmonth: "",
-    year: "", rawyear: "",
-    hours: "", rawhours: "",
-    minutes: "", rawminutes: "",
-    seconds: "", rawseconds: "",
-    milliseconds: "", rawmilliseconds: "",
-    ampm: "", rawampm: "",
-    Z: "", rawZ: "",
-    reset() { this._date = new Date(1, 0, 1); },
+    get date() {
+      return this._date;
+    },
+    day: "",
+    rawday: "",
+    month: "",
+    rawmonth: "",
+    year: "",
+    rawyear: "",
+    hours: "",
+    rawhours: "",
+    minutes: "",
+    rawminutes: "",
+    seconds: "",
+    rawseconds: "",
+    milliseconds: "",
+    rawmilliseconds: "",
+    ampm: "",
+    rawampm: "",
+    Z: "",
+    rawZ: "",
+    reset() {
+      this._date = new Date(1, 0, 1);
+    },
     reInit() {
       this._date = new Date(1, 0, 1);
       init(mask, this);
@@ -400,18 +508,31 @@ function createDateParts(
         if (maskStr !== undefined) {
           if (dynMatches) {
             const li = tokenizer.lastIndex;
-            const tm = getTokenMatchForDate(m.index, opts, maskset, formatCodes);
+            const tm = getTokenMatchForDate(
+              m.index,
+              opts,
+              maskset,
+              formatCodes,
+            );
             tokenizer.lastIndex = li;
-            value = tm.nextMatch ? maskStr.slice(0, maskStr.indexOf(tm.nextMatch[0])) : maskStr;
+            value = tm.nextMatch
+              ? maskStr.slice(0, maskStr.indexOf(tm.nextMatch[0]))
+              : maskStr;
           } else {
             const sym = m[0][0];
             let ndx = m.index;
             if (maskset) {
-              const ph = typeof opts.placeholder === "object" ? opts.placeholder as Record<string, string> : {};
+              const ph =
+                typeof opts.placeholder === "object"
+                  ? (opts.placeholder as Record<string, string>)
+                  : {};
               while (
-                (ph[`${m.index}'${getTestPlaceholder(opts, maskset, ndx, defs)}`] ||
-                  getTestPlaceholder(opts, maskset, ndx, defs)) === sym
-              ) { ndx++; }
+                (ph[
+                  `${m.index}'${getTestPlaceholder(opts, maskset, ndx, defs)}`
+                ] || getTestPlaceholder(opts, maskset, ndx, defs)) === sym
+              ) {
+                ndx++;
+              }
             } else {
               ndx = m.index + (m[0].length || 1);
             }
@@ -448,9 +569,18 @@ function createDateParts(
           break;
         case "month":
           if (fcode === "MMM" || fcode === "MMMM") {
-            const slice = fcode === "MMM" ? i18n.monthNames.slice(0, 12) : i18n.monthNames.slice(12, 24);
-            dp[targetProp] = pad(slice.findIndex((item) => value.toLowerCase() === item.toLowerCase()) + 1, 2);
-            dp[targetProp] = dp[targetProp] === "00" ? "" : String(dp[targetProp]);
+            const slice =
+              fcode === "MMM"
+                ? i18n.monthNames.slice(0, 12)
+                : i18n.monthNames.slice(12, 24);
+            dp[targetProp] = pad(
+              slice.findIndex(
+                (item) => value.toLowerCase() === item.toLowerCase(),
+              ) + 1,
+              2,
+            );
+            dp[targetProp] =
+              dp[targetProp] === "00" ? "" : String(dp[targetProp]);
             dp["raw" + targetProp] = dp[targetProp] as string;
             break;
           }
@@ -466,17 +596,28 @@ function createDateParts(
         (targetProp === "day" && parseInt(datavalue) === 29) ||
         (targetProp === "month" && parseInt(datavalue) === 2)
       ) {
-        if (parseInt(dp.day) === 29 && parseInt(dp.month) === 2 && (!dp.year || dp.year === "")) {
+        if (
+          parseInt(dp.day) === 29 &&
+          parseInt(dp.month) === 2 &&
+          (!dp.year || dp.year === "")
+        ) {
           dp._date.setFullYear(2012, 1, 29);
         }
       }
-      if (targetProp === "day") { useDateObj = true; if (parseInt(datavalue) === 0) datavalue = "1"; }
+      if (targetProp === "day") {
+        useDateObj = true;
+        if (parseInt(datavalue) === 0) datavalue = "1";
+      }
       if (targetProp === "month") useDateObj = true;
       if (targetProp === "year") {
         useDateObj = true;
-        if (datavalue.length < (fc[4] ?? 0)) datavalue = pad(datavalue, fc[4], true);
+        if (datavalue.length < (fc[4] ?? 0))
+          datavalue = pad(datavalue, fc[4], true);
       }
-      if ((datavalue !== "" && !isNaN(Number(datavalue))) || targetProp === "ampm") {
+      if (
+        (datavalue !== "" && !isNaN(Number(datavalue))) ||
+        targetProp === "ampm"
+      ) {
         dateOperation.call(dp._date, datavalue);
       }
     }
@@ -512,16 +653,26 @@ export function parseDateFormat(
           const fcode = resolveFormatCode(match[0], formatCodes);
           if (fcode) {
             mask += "(" + fcode[0] + ")";
-            if (typeof opts.placeholder === "string" && opts.placeholder !== "") {
-              placeHolder[ndx] = opts.placeholder[match.index % opts.placeholder.length];
-              placeHolder[`${match.index}'${opts.placeholder[match.index % opts.placeholder.length]}`] = match[0].charAt(0);
+            if (
+              typeof opts.placeholder === "string" &&
+              opts.placeholder !== ""
+            ) {
+              placeHolder[ndx] =
+                opts.placeholder[match.index % opts.placeholder.length];
+              placeHolder[
+                `${match.index}'${opts.placeholder[match.index % opts.placeholder.length]}`
+              ] = match[0].charAt(0);
             } else {
               placeHolder[ndx] = match[0].charAt(0);
             }
           } else {
             switch (match[0]) {
-              case "[": mask += "("; break;
-              case "]": mask += ")?"; break;
+              case "[":
+                mask += "(";
+                break;
+              case "]":
+                mask += ")?";
+                break;
               default:
                 mask += escapeRegex(match[0]);
                 placeHolder[ndx] = match[0].charAt(0);
@@ -538,7 +689,10 @@ export function parseDateFormat(
             if (fcode[3]) {
               const getFn = fcode[3];
               mask += getFn.call(dateObjValue.date);
-            } else if (fcode[2] && dateObjValue["raw" + fcode[2]] !== undefined) {
+            } else if (
+              fcode[2] &&
+              dateObjValue["raw" + fcode[2]] !== undefined
+            ) {
               mask += dateObjValue["raw" + fcode[2]];
             } else {
               mask += match[0];
@@ -568,13 +722,20 @@ function analyseDateMask(
   i18n: DateI18n,
   maskset?: MaskSet,
 ): DateParts | undefined {
-  if (typeof mask === "string") return createDateParts(mask, format, opts, i18n, maskset);
-  if (mask && typeof mask === "object" && "date" in mask) return mask as DateParts;
+  if (typeof mask === "string")
+    return createDateParts(mask, format, opts, i18n, maskset);
+  if (mask && typeof mask === "object" && "date" in mask)
+    return mask as DateParts;
   return undefined;
 }
 
 function importDate(dateObj: Date, opts: DateOptions, i18n: DateI18n): string {
-  return parseDateFormat(opts.inputFormat!, { date: dateObj } as unknown as DateParts, opts, i18n);
+  return parseDateFormat(
+    opts.inputFormat!,
+    { date: dateObj } as unknown as DateParts,
+    opts,
+    i18n,
+  );
 }
 
 // ---- Validation helpers ----
@@ -591,10 +752,15 @@ function prefillYearFn(
     const cyp = cry.slice(0, entered.length);
     const cyNext = cry.slice(entered.length);
     if (entered.length === 2 && entered === cyp) {
-      const entryDate = new Date(currentYear, parseInt(dateParts.month) - 1, parseInt(dateParts.day));
+      const entryDate = new Date(
+        currentYear,
+        parseInt(dateParts.month) - 1,
+        parseInt(dateParts.day),
+      );
       if (
         parseInt(dateParts.day) === entryDate.getDate() &&
-        (!opts.max || (opts.max as DateParts).date.getTime() >= entryDate.getTime())
+        (!opts.max ||
+          (opts.max as DateParts).date.getTime() >= entryDate.getTime())
       ) {
         dateParts.date.setFullYear(currentYear);
         dateParts.year = cry;
@@ -623,14 +789,20 @@ export function isValidDate(
     (!isFinite(Number(dateParts.rawday)) &&
       new Date(
         dateParts.date.getFullYear(),
-        isFinite(Number(dateParts.rawmonth)) ? parseInt(dateParts.month) : dateParts.date.getMonth() + 1,
+        isFinite(Number(dateParts.rawmonth))
+          ? parseInt(dateParts.month)
+          : dateParts.date.getMonth() + 1,
         0,
       ).getDate() >= parseInt(dateParts.day)) ||
     (dateParts.day === "29" &&
-      (!isFinite(Number(dateParts.rawyear)) || dateParts.rawyear === undefined || dateParts.rawyear === "")) ||
+      (!isFinite(Number(dateParts.rawyear)) ||
+        dateParts.rawyear === undefined ||
+        dateParts.rawyear === "")) ||
     new Date(
       dateParts.date.getFullYear(),
-      isFinite(Number(dateParts.rawmonth)) ? parseInt(dateParts.month) : dateParts.date.getMonth() + 1,
+      isFinite(Number(dateParts.rawmonth))
+        ? parseInt(dateParts.month)
+        : dateParts.date.getMonth() + 1,
       0,
     ).getDate() >= parseInt(dateParts.day)
   ) {
@@ -638,18 +810,34 @@ export function isValidDate(
   }
 
   if (dateParts.day === "29" && maskset && formatCodes) {
-    const tm = getTokenMatchForDate(result.pos ?? 0, opts, maskset, formatCodes);
-    if (tm.targetMatch && ["yyyy", "YYYY"].includes(tm.targetMatch[0]) && (result.pos ?? 0) - tm.targetMatchIndex === 2) {
+    const tm = getTokenMatchForDate(
+      result.pos ?? 0,
+      opts,
+      maskset,
+      formatCodes,
+    );
+    if (
+      tm.targetMatch &&
+      ["yyyy", "YYYY"].includes(tm.targetMatch[0]) &&
+      (result.pos ?? 0) - tm.targetMatchIndex === 2
+    ) {
       result.remove = (result.pos ?? 0) + 1;
       return result;
     }
-  } else if (dateParts.date.getMonth() === 2 && dateParts.day === "30" && (result as Record<string, unknown>).c !== undefined) {
+  } else if (
+    dateParts.date.getMonth() === 2 &&
+    dateParts.day === "30" &&
+    (result as Record<string, unknown>).c !== undefined
+  ) {
     dateParts.day = "03";
     dateParts.date.setDate(3);
     dateParts.date.setMonth(1);
     result.insert = [
       { pos: result.pos ?? 0, c: "0" },
-      { pos: (result.pos ?? 0) + 1, c: (result as Record<string, unknown>).c as string },
+      {
+        pos: (result.pos ?? 0) + 1,
+        c: (result as Record<string, unknown>).c as string,
+      },
     ];
     return result;
   }
@@ -664,27 +852,45 @@ export function isDateInRange(
   if (!result) return result;
   if (opts.min) {
     const minParts = opts.min as DateParts;
-    if (!isNaN(minParts.date.getTime()) && minParts.date.getTime() > dateParts.date.getTime()) return false;
+    if (
+      !isNaN(minParts.date.getTime()) &&
+      minParts.date.getTime() > dateParts.date.getTime()
+    )
+      return false;
   }
   if (opts.max) {
     const maxParts = opts.max as DateParts;
-    if (!isNaN(maxParts.date.getTime()) && maxParts.date.getTime() < dateParts.date.getTime()) return false;
+    if (
+      !isNaN(maxParts.date.getTime()) &&
+      maxParts.date.getTime() < dateParts.date.getTime()
+    )
+      return false;
   }
   return result;
 }
 
 // ---- datetime alias ----
 
-export function createDatetimeAlias(i18n: DateI18n = defaultI18n): AliasDefinition {
+export function createDatetimeAlias(
+  i18n: DateI18n = defaultI18n,
+): AliasDefinition {
   const formatCodes = buildFormatCodes(i18n);
 
   const alias = {
     mask: ((opts: MaskOptions) => {
       const dateOpts = opts as unknown as DateOptions;
       opts.numericInput = false;
-      formatCodes.S = [i18n.ordinalSuffix.join("|"), undefined, "ordinal", () => ""];
+      formatCodes.S = [
+        i18n.ordinalSuffix.join("|"),
+        undefined,
+        "ordinal",
+        () => "",
+      ];
 
-      dateOpts.inputFormat = FORMAT_ALIAS[dateOpts.inputFormat ?? ""] ?? dateOpts.inputFormat ?? "isoDateTime";
+      dateOpts.inputFormat =
+        FORMAT_ALIAS[dateOpts.inputFormat ?? ""] ??
+        dateOpts.inputFormat ??
+        "isoDateTime";
       if (typeof opts.repeat === "number" && opts.repeat > 0) {
         let fmt = "";
         for (let i = 0; i < opts.repeat; i++) fmt += dateOpts.inputFormat;
@@ -692,11 +898,36 @@ export function createDatetimeAlias(i18n: DateI18n = defaultI18n): AliasDefiniti
         opts.repeat = 0;
       }
 
-      dateOpts.displayFormat = FORMAT_ALIAS[dateOpts.displayFormat ?? ""] ?? dateOpts.displayFormat ?? dateOpts.inputFormat;
-      dateOpts.outputFormat = FORMAT_ALIAS[dateOpts.outputFormat ?? ""] ?? dateOpts.outputFormat ?? dateOpts.inputFormat;
-      opts.regex = parseDateFormat(dateOpts.inputFormat!, undefined, dateOpts, i18n);
-      dateOpts.min = dateOpts.min ? analyseDateMask(dateOpts.min as string, dateOpts.inputFormat!, dateOpts, i18n) : null;
-      dateOpts.max = dateOpts.max ? analyseDateMask(dateOpts.max as string, dateOpts.inputFormat!, dateOpts, i18n) : null;
+      dateOpts.displayFormat =
+        FORMAT_ALIAS[dateOpts.displayFormat ?? ""] ??
+        dateOpts.displayFormat ??
+        dateOpts.inputFormat;
+      dateOpts.outputFormat =
+        FORMAT_ALIAS[dateOpts.outputFormat ?? ""] ??
+        dateOpts.outputFormat ??
+        dateOpts.inputFormat;
+      opts.regex = parseDateFormat(
+        dateOpts.inputFormat!,
+        undefined,
+        dateOpts,
+        i18n,
+      );
+      dateOpts.min = dateOpts.min
+        ? analyseDateMask(
+            dateOpts.min as string,
+            dateOpts.inputFormat!,
+            dateOpts,
+            i18n,
+          )
+        : null;
+      dateOpts.max = dateOpts.max
+        ? analyseDateMask(
+            dateOpts.max as string,
+            dateOpts.inputFormat!,
+            dateOpts,
+            i18n,
+          )
+        : null;
       return null as unknown as string;
     }) as (opts: MaskOptions) => string,
     placeholder: "",
@@ -720,8 +951,16 @@ export function createDatetimeAlias(i18n: DateI18n = defaultI18n): AliasDefiniti
       const dateOpts = opts as unknown as DateOptions;
       if (isNaN(Number(c)) && buffer[pos] !== c) {
         const tm = getTokenMatchForDate(pos, dateOpts, maskset, formatCodes);
-        if (tm.nextMatch && tm.nextMatch[0] === c && tm.targetMatch && tm.targetMatch[0].length > 1) {
-          const validator = resolveFormatCode(tm.targetMatch[0], formatCodes)?.[0];
+        if (
+          tm.nextMatch &&
+          tm.nextMatch[0] === c &&
+          tm.targetMatch &&
+          tm.targetMatch[0].length > 1
+        ) {
+          const validator = resolveFormatCode(
+            tm.targetMatch[0],
+            formatCodes,
+          )?.[0];
           if (validator && new RegExp(validator).test("0" + buffer[pos - 1])) {
             buffer[pos] = buffer[pos - 1];
             buffer[pos - 1] = "0";
@@ -751,18 +990,49 @@ export function createDatetimeAlias(i18n: DateI18n = defaultI18n): AliasDefiniti
       let validator: string | undefined;
 
       if (currentResult === false) {
-        tokenMatch = getTokenMatchForDate(pos + 1, dateOpts, maskset, formatCodes);
-        if (tokenMatch.targetMatch && tokenMatch.targetMatchIndex === pos && tokenMatch.targetMatch[0].length > 1 && resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !== undefined) {
-          validator = resolveFormatCode(tokenMatch.targetMatch[0], formatCodes)![0];
+        tokenMatch = getTokenMatchForDate(
+          pos + 1,
+          dateOpts,
+          maskset,
+          formatCodes,
+        );
+        if (
+          tokenMatch.targetMatch &&
+          tokenMatch.targetMatchIndex === pos &&
+          tokenMatch.targetMatch[0].length > 1 &&
+          resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !==
+            undefined
+        ) {
+          validator = resolveFormatCode(
+            tokenMatch.targetMatch[0],
+            formatCodes,
+          )![0];
         } else {
-          tokenMatch = getTokenMatchForDate(pos + 2, dateOpts, maskset, formatCodes);
-          if (tokenMatch.targetMatch && tokenMatch.targetMatchIndex === pos + 1 && tokenMatch.targetMatch[0].length > 1 && resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !== undefined) {
-            validator = resolveFormatCode(tokenMatch.targetMatch[0], formatCodes)![0];
+          tokenMatch = getTokenMatchForDate(
+            pos + 2,
+            dateOpts,
+            maskset,
+            formatCodes,
+          );
+          if (
+            tokenMatch.targetMatch &&
+            tokenMatch.targetMatchIndex === pos + 1 &&
+            tokenMatch.targetMatch[0].length > 1 &&
+            resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !==
+              undefined
+          ) {
+            validator = resolveFormatCode(
+              tokenMatch.targetMatch[0],
+              formatCodes,
+            )![0];
           }
         }
         if (validator !== undefined) {
           pos = tokenMatch.targetMatchIndex;
-          if (maskset.validPositions[pos + 1] !== undefined && new RegExp(validator).test(c + "0")) {
+          if (
+            maskset.validPositions[pos + 1] !== undefined &&
+            new RegExp(validator).test(c + "0")
+          ) {
             buffer[pos] = c;
             buffer[pos + 1] = "0";
             currentResult = { pos: pos + 2, caret: pos + 1 };
@@ -777,43 +1047,101 @@ export function createDatetimeAlias(i18n: DateI18n = defaultI18n): AliasDefiniti
 
       // Full validate target
       tokenMatch = getTokenMatchForDate(pos, dateOpts, maskset, formatCodes);
-      if (tokenMatch.targetMatch && tokenMatch.targetMatch[0] && resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !== undefined) {
-        const fcode = resolveFormatCode(tokenMatch.targetMatch[0], formatCodes)!;
+      if (
+        tokenMatch.targetMatch &&
+        tokenMatch.targetMatch[0] &&
+        resolveFormatCode(tokenMatch.targetMatch[0], formatCodes) !== undefined
+      ) {
+        const fcode = resolveFormatCode(
+          tokenMatch.targetMatch[0],
+          formatCodes,
+        )!;
         validator = fcode[0] as string;
-        const part = buffer.slice(tokenMatch.targetMatchIndex, tokenMatch.targetMatchIndex + tokenMatch.targetMatch[0].length);
-        if (validator && !new RegExp(validator).test(part.join("")) && tokenMatch.targetMatch[0].length === 2 && maskset.validPositions[tokenMatch.targetMatchIndex] && maskset.validPositions[tokenMatch.targetMatchIndex + 1]) {
+        const part = buffer.slice(
+          tokenMatch.targetMatchIndex,
+          tokenMatch.targetMatchIndex + tokenMatch.targetMatch[0].length,
+        );
+        if (
+          validator &&
+          !new RegExp(validator).test(part.join("")) &&
+          tokenMatch.targetMatch[0].length === 2 &&
+          maskset.validPositions[tokenMatch.targetMatchIndex] &&
+          maskset.validPositions[tokenMatch.targetMatchIndex + 1]
+        ) {
           maskset.validPositions[tokenMatch.targetMatchIndex + 1].input = "0";
         }
       }
 
       let result: boolean | ValidationResult = currentResult;
-      const dateParts = analyseDateMask(buffer.join(""), dateOpts.inputFormat!, dateOpts, i18n, maskset);
+      const dateParts = analyseDateMask(
+        buffer.join(""),
+        dateOpts.inputFormat!,
+        dateOpts,
+        i18n,
+        maskset,
+      );
 
       if (result && dateParts && !isNaN(dateParts.date.getTime())) {
-        if (dateOpts.prefillYear) result = prefillYearFn(dateParts, result as CommandObject, dateOpts);
+        if (dateOpts.prefillYear)
+          result = prefillYearFn(dateParts, result as CommandObject, dateOpts);
         result = isValidDate(dateParts, result, dateOpts, maskset, formatCodes);
         result = isDateInRange(dateParts, result, dateOpts);
       }
 
-      if (pos !== undefined && result && typeof result === "object" && (result as CommandObject).pos !== pos) {
+      if (
+        pos !== undefined &&
+        result &&
+        typeof result === "object" &&
+        (result as CommandObject).pos !== pos
+      ) {
         return {
-          buffer: parseDateFormat(dateOpts.inputFormat!, dateParts!, dateOpts, i18n).split(""),
-          refreshFromBuffer: { start: pos, end: (result as CommandObject).pos! },
-          pos: (result as CommandObject).caret !== undefined ? (result as CommandObject).caret : (result as CommandObject).pos,
+          buffer: parseDateFormat(
+            dateOpts.inputFormat!,
+            dateParts!,
+            dateOpts,
+            i18n,
+          ).split(""),
+          refreshFromBuffer: {
+            start: pos,
+            end: (result as CommandObject).pos!,
+          },
+          pos:
+            (result as CommandObject).caret !== undefined
+              ? (result as CommandObject).caret
+              : (result as CommandObject).pos,
         };
       }
       return result;
     },
-    onUnMask(maskedValue: string, unmaskedValue: string, opts: MaskOptions): string {
+    onUnMask(
+      maskedValue: string,
+      unmaskedValue: string,
+      opts: MaskOptions,
+    ): string {
       const dateOpts = opts as unknown as DateOptions;
       return unmaskedValue
-        ? parseDateFormat(dateOpts.outputFormat ?? dateOpts.inputFormat!, analyseDateMask(maskedValue, dateOpts.inputFormat!, dateOpts, i18n)!, dateOpts, i18n)
+        ? parseDateFormat(
+            dateOpts.outputFormat ?? dateOpts.inputFormat!,
+            analyseDateMask(
+              maskedValue,
+              dateOpts.inputFormat!,
+              dateOpts,
+              i18n,
+            )!,
+            dateOpts,
+            i18n,
+          )
         : unmaskedValue;
     },
-    casing: ((elem: string, test: { nativeDef: string; def: string; static: boolean }, pos: number) => {
+    casing: ((
+      elem: string,
+      test: { nativeDef: string; def: string; static: boolean },
+      pos: number,
+    ) => {
       if (test.nativeDef.indexOf("[ap]") === 0) return elem.toLowerCase();
       if (test.nativeDef.indexOf("[AP]") === 0) return elem.toUpperCase();
-      if (test.static && test.def === test.def.toUpperCase()) return elem.toUpperCase();
+      if (test.static && test.def === test.def.toUpperCase())
+        return elem.toUpperCase();
       if (pos === 0) return elem.toUpperCase();
       return elem.toLowerCase();
     }) as unknown as MaskOptions["casing"],

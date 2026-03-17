@@ -8,8 +8,7 @@ export const upperAlphaDefinition: MaskDefinition = {
 
 /** Uppercase alphanumeric */
 export const upperAlphanumericDefinition: MaskDefinition = {
-  validator:
-    "[0-9A-Za-z\u0410-\u044F\u0401\u0451\u00C0-\u00FF\u00B5]",
+  validator: "[0-9A-Za-z\u0410-\u044F\u0401\u0451\u00C0-\u00FF\u00B5]",
   casing: "upper",
 };
 

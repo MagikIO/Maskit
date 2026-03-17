@@ -56,12 +56,7 @@ function applyCasing(
     }
     default:
       if (typeof ctx.opts.casing === "function") {
-        return ctx.opts.casing(
-          elem,
-          test,
-          pos,
-          ctx.maskset.validPositions,
-        );
+        return ctx.opts.casing(elem, test, pos, ctx.maskset.validPositions);
       }
       return elem;
   }
@@ -93,7 +88,10 @@ export function checkAlternationMatch(
   return isMatch;
 }
 
-export function isComplete(ctx: EngineContext, buffer: string[]): boolean | undefined {
+export function isComplete(
+  ctx: EngineContext,
+  buffer: string[],
+): boolean | undefined {
   const { opts, maskset, definitions } = ctx;
 
   if (typeof opts.isComplete === "function")
@@ -123,8 +121,7 @@ export function isComplete(ctx: EngineContext, buffer: string[]): boolean | unde
             test.optionalQuantifier === undefined)) ||
         (test.static === true &&
           test.def != "" &&
-          buffer[i] !==
-            getPlaceholder(i, opts, maskset, definitions, test))
+          buffer[i] !== getPlaceholder(i, opts, maskset, definitions, test))
       ) {
         complete = false;
         break;
@@ -161,12 +158,18 @@ function determineLastRequiredPosition(
     true,
   );
   let bl = buffer.length;
-  let ndxIntlzr =
-    lvTest !== undefined ? lvTest.locator.slice() : undefined;
+  let ndxIntlzr = lvTest !== undefined ? lvTest.locator.slice() : undefined;
   let testPos: TestResult;
 
   for (let pos = lvp + 1; pos < buffer.length; pos++) {
-    testPos = getTestTemplate(pos, opts, maskset, definitions, ndxIntlzr, pos - 1);
+    testPos = getTestTemplate(
+      pos,
+      opts,
+      maskset,
+      definitions,
+      ndxIntlzr,
+      pos - 1,
+    );
     ndxIntlzr = testPos.locator.slice();
     positions[pos] = deepClone(testPos);
   }
@@ -181,22 +184,19 @@ function determineLastRequiredPosition(
     if (
       testPos &&
       (testPos.match.optionality ||
-        (testPos.match.optionalQuantifier &&
-          testPos.match.newBlockMarker) ||
+        (testPos.match.optionalQuantifier && testPos.match.newBlockMarker) ||
         (lvTestAlt &&
-          ((lvTestAlt !==
-            positions[pos].locator[lvTest!.alternation!] &&
+          ((lvTestAlt !== positions[pos].locator[lvTest!.alternation!] &&
             testPos.match.static !== true) ||
             (testPos.match.static === true &&
               testPos.locator[lvTest!.alternation!] &&
               checkAlternationMatch(
-                testPos.locator[lvTest!.alternation!]
-                  .toString()
-                  .split(","),
+                testPos.locator[lvTest!.alternation!].toString().split(","),
                 lvTestAlt.toString().split(","),
                 opts,
               ) &&
-              getTests(pos, opts, maskset, definitions)[0].match.def !== "")))) &&
+              getTests(pos, opts, maskset, definitions)[0].match.def !==
+                "")))) &&
       buffer[pos] ===
         getPlaceholder(pos, opts, maskset, definitions, testPos.match)
     ) {
@@ -218,10 +218,7 @@ function determineLastRequiredPosition(
     : bl;
 }
 
-function isSelection(
-  pos: CaretPosition | number,
-  ctx: EngineContext,
-): boolean {
+function isSelection(pos: CaretPosition | number, ctx: EngineContext): boolean {
   if (typeof pos === "number") return false;
   const insertModeOffset = ctx.opts.insertMode ? 0 : 1;
   return ctx.isRTL
@@ -241,9 +238,7 @@ function positionCanMatchDefinition(
     if (
       tests[tndx].match &&
       ((tests[tndx].match.nativeDef ===
-        testDefinition.match[
-          opts.shiftPositions ? "def" : "nativeDef"
-        ] &&
+        testDefinition.match[opts.shiftPositions ? "def" : "nativeDef"] &&
         (!opts.shiftPositions || !testDefinition.match.static)) ||
         tests[tndx].match.nativeDef === testDefinition.match.nativeDef ||
         (opts.regex &&
@@ -294,8 +289,7 @@ export function revalidateMask(
   if (
     fromIsValid === undefined &&
     (normalizedBegin !== normalizedEnd ||
-      (opts.insertMode &&
-        maskset.validPositions[validatedPos] !== undefined) ||
+      (opts.insertMode && maskset.validPositions[validatedPos] !== undefined) ||
       validTest === undefined ||
       validTest.match.optionalQuantifier ||
       validTest.match.optionality)
@@ -334,11 +328,7 @@ export function revalidateMask(
       end = normalizedEnd + maskset.jitOffset[normalizedEnd] + 1;
     }
 
-    for (
-      let i = validTest ? normalizedEnd : normalizedEnd - 1;
-      i <= lvp;
-      i++
-    ) {
+    for (let i = validTest ? normalizedEnd : normalizedEnd - 1; i <= lvp; i++) {
       const t = positionsClone[i];
       if (
         t !== undefined &&
@@ -350,9 +340,7 @@ export function revalidateMask(
               end: normalizedEnd,
             })))
       ) {
-        while (
-          getTest(posMatch, opts, maskset, definitions).match.def !== ""
-        ) {
+        while (getTest(posMatch, opts, maskset, definitions).match.def !== "") {
           const canMatch = positionCanMatchDefinition(posMatch, t, ctx);
           if (canMatch !== false || t.match.def === "+") {
             if (t.match.def === "+")
@@ -379,16 +367,12 @@ export function revalidateMask(
               offset++;
             break;
           }
-          if (
-            posMatch > (maskset.maskLength ?? Infinity)
-          ) {
+          if (posMatch > (maskset.maskLength ?? Infinity)) {
             break;
           }
           posMatch++;
         }
-        if (
-          getTest(posMatch, opts, maskset, definitions).match.def == ""
-        ) {
+        if (getTest(posMatch, opts, maskset, definitions).match.def == "") {
           valid = false;
         }
         posMatch = j;
@@ -402,8 +386,7 @@ export function revalidateMask(
     }
   } else if (
     validTest &&
-    getTest(validatedPos, opts, maskset, definitions).cd ===
-      validTest.cd
+    getTest(validatedPos, opts, maskset, definitions).cd === validTest.cd
   ) {
     maskset.validPositions[validatedPos] = deepClone(
       validTest,
@@ -470,12 +453,13 @@ export function isValid(
         if (!Array.isArray(commandObj.remove))
           commandObj.remove = [commandObj.remove];
         (commandObj.remove as { pos: number }[])
-          .sort((a, b) =>
-            ctx.isRTL ? a.pos - b.pos : b.pos - a.pos,
-          )
+          .sort((a, b) => (ctx.isRTL ? a.pos - b.pos : b.pos - a.pos))
           .forEach((lmnt) => {
             revalidateMask(
-              { begin: typeof lmnt === "number" ? lmnt : lmnt.pos, end: (typeof lmnt === "number" ? lmnt : lmnt.pos) + 1 },
+              {
+                begin: typeof lmnt === "number" ? lmnt : lmnt.pos,
+                end: (typeof lmnt === "number" ? lmnt : lmnt.pos) + 1,
+              },
               ctx,
             );
           });
@@ -485,9 +469,7 @@ export function isValid(
         if (!Array.isArray(commandObj.insert))
           commandObj.insert = [commandObj.insert];
         commandObj.insert
-          .sort((a, b) =>
-            ctx.isRTL ? b.pos - a.pos : a.pos - b.pos,
-          )
+          .sort((a, b) => (ctx.isRTL ? b.pos - a.pos : a.pos - b.pos))
           .forEach((lmnt) => {
             if (lmnt.c !== "") {
               isValid(
@@ -495,9 +477,7 @@ export function isValid(
                 lmnt.c,
                 ctx,
                 lmnt.strict !== undefined ? lmnt.strict : true,
-                lmnt.fromIsValid !== undefined
-                  ? lmnt.fromIsValid
-                  : fromIsValid,
+                lmnt.fromIsValid !== undefined ? lmnt.fromIsValid : fromIsValid,
               );
             }
           });
@@ -508,7 +488,9 @@ export function isValid(
         const refresh = commandObj.refreshFromBuffer;
         refreshFromBuffer(
           ctx,
-          refresh === true ? refresh : (refresh as { start: number; end: number }).start,
+          refresh === true
+            ? refresh
+            : (refresh as { start: number; end: number }).start,
           typeof refresh === "object" ? refresh.end : undefined,
           commandObj.buffer,
         );
@@ -562,7 +544,10 @@ export function isValid(
               : false;
       }
       if (rslt !== false) {
-        let elem = (rslt as CommandObject).c !== undefined ? (rslt as CommandObject).c! : c;
+        let elem =
+          (rslt as CommandObject).c !== undefined
+            ? (rslt as CommandObject).c!
+            : c;
         let validatedPos = position;
         elem =
           elem === opts.skipOptionalPartCharacter && test.static === true
@@ -596,9 +581,7 @@ export function isValid(
 
         if (
           revalidateMask(
-            typeof pos === "number"
-              ? pos
-              : (pos as CaretPosition),
+            typeof pos === "number" ? pos : (pos as CaretPosition),
             ctx,
             {
               ...tst,
@@ -631,7 +614,7 @@ export function isValid(
       i <
       (ctx.isRTL
         ? (pos as CaretPosition).begin
-        : (pos as CaretPosition).end ?? maskPos + 1);
+        : ((pos as CaretPosition).end ?? maskPos + 1));
       i++
     ) {
       if (maskset.excludes[i] !== undefined) {
@@ -650,7 +633,10 @@ export function isValid(
       getBuffer(opts, maskset, definitions),
       maskPos,
       c,
-      isSelection(typeof pos === "number" ? { begin: pos, end: pos } : pos, ctx),
+      isSelection(
+        typeof pos === "number" ? { begin: pos, end: pos } : pos,
+        ctx,
+      ),
       opts,
       maskset,
       typeof pos === "number" ? { begin: pos, end: pos } : pos,
@@ -698,12 +684,14 @@ export function isValid(
             true,
           );
           if (result !== false) {
-            if (fromAlternate !== true) (result as CommandObject).caret = maskPos;
+            if (fromAlternate !== true)
+              (result as CommandObject).caret = maskPos;
             skip = true;
           }
         }
         if (typeof pos !== "number" && pos.end > maskPos) {
-          maskset.validPositions[maskPos] = undefined as unknown as ValidPosition;
+          maskset.validPositions[maskPos] =
+            undefined as unknown as ValidPosition;
         }
         if (
           !skip &&
@@ -712,7 +700,9 @@ export function isValid(
             opts,
             maskset,
             definitions,
-            opts.keepStatic !== null && opts.keepStatic !== false && maskPos === 0
+            opts.keepStatic !== null &&
+              opts.keepStatic !== false &&
+              maskPos === 0
               ? true
               : undefined,
           )
@@ -733,8 +723,13 @@ export function isValid(
             result = _isValid(nPos, c, strict);
             if (result !== false) {
               result =
-                trackbackPositions(maskPos, (result as CommandObject).pos !== undefined ? (result as CommandObject).pos! : nPos, ctx) ||
-                result;
+                trackbackPositions(
+                  maskPos,
+                  (result as CommandObject).pos !== undefined
+                    ? (result as CommandObject).pos!
+                    : nPos,
+                  ctx,
+                ) || result;
               maskPos = nPos;
               break;
             }
@@ -759,14 +754,15 @@ export function isValid(
             strict,
             fromIsValid,
             undefined,
-            typeof pos === "number"
-              ? { begin: pos, end: pos }
-              : pos,
+            typeof pos === "number" ? { begin: pos, end: pos } : pos,
           );
         }
       } else if (result === true) {
         if (
-          isSelection(typeof pos === "number" ? { begin: pos, end: pos } : pos, ctx) &&
+          isSelection(
+            typeof pos === "number" ? { begin: pos, end: pos } : pos,
+            ctx,
+          ) &&
           maskset.tests[maskPos] &&
           maskset.tests[maskPos].length > 1 &&
           opts.keepStatic
@@ -804,7 +800,8 @@ export function isValid(
         !!fromAlternate,
       );
       if (postResult !== undefined) {
-        result = postResult === true ? result : (postResult as ValidationResult);
+        result =
+          postResult === true ? result : (postResult as ValidationResult);
       }
     }
   }
@@ -874,7 +871,8 @@ function trackbackPositions(
           if (fillOnly !== true) {
             const cvpInput = maskset.validPositions[newPos]?.input;
             if (cvpInput !== undefined) {
-              maskset.validPositions[newPos] = undefined as unknown as ValidPosition;
+              maskset.validPositions[newPos] =
+                undefined as unknown as ValidPosition;
               return isValid(newPos, cvpInput, ctx, true, true);
             }
           }
@@ -907,10 +905,7 @@ export function alternate(
   let altPos: TestResult | undefined;
   let prevAltPos: TestResult | undefined;
   let decisionPos: number;
-  let lAltPos =
-    rAltPos !== undefined
-      ? rAltPos
-      : getLastValidPosition(maskset);
+  let lAltPos = rAltPos !== undefined ? rAltPos : getLastValidPosition(maskset);
   let begin: number | undefined;
   let end: number | undefined;
 
@@ -962,11 +957,15 @@ export function alternate(
     let resultPos = -1;
     for (
       let i = decisionPos;
-      decisionPos <
-      getLastValidPosition(maskset, undefined, true) + 1;
+      decisionPos < getLastValidPosition(maskset, undefined, true) + 1;
       i++
     ) {
-      if (resultPos === -1 && typeof maskPos === "number" && maskPos <= i && c !== undefined) {
+      if (
+        resultPos === -1 &&
+        typeof maskPos === "number" &&
+        maskPos <= i &&
+        c !== undefined
+      ) {
         validInputs.push(c);
         resultPos = validInputs.length - 1;
       }
@@ -1006,9 +1005,7 @@ export function alternate(
         if (
           !(isValidRslt = isValid(nextPos, input, ctx, false, true) as boolean)
         ) {
-          if (
-            isComplete(ctx, getBuffer(opts, maskset, definitions))
-          ) {
+          if (isComplete(ctx, getBuffer(opts, maskset, definitions))) {
             isValidRslt = returnRslt as boolean;
           }
           break;
@@ -1051,8 +1048,7 @@ export function alternate(
             );
             for (
               let i = decisionPos;
-              i <
-              getLastValidPosition(maskset, undefined, true) + 1;
+              i < getLastValidPosition(maskset, undefined, true) + 1;
               i++
             )
               maskset.validPositions.splice(decisionPos);
@@ -1183,7 +1179,10 @@ function refreshFromBuffer(
   let p = start as number;
   for (let i = start as number; i < (end ?? buffer.length); i++) {
     const valResult = isValid(p, bffr[i].toString(), ctx, true, true);
-    if (valResult !== false && (valResult as CommandObject).forwardPosition !== undefined) {
+    if (
+      valResult !== false &&
+      (valResult as CommandObject).forwardPosition !== undefined
+    ) {
       p = (valResult as CommandObject).forwardPosition!;
     }
   }
@@ -1251,12 +1250,7 @@ function processKeypress(
     const np =
       resultObj.caret !== undefined
         ? resultObj.caret
-        : seekNext(
-            resultObj.pos,
-            opts,
-            maskset,
-            definitions,
-          );
+        : seekNext(resultObj.pos, opts, maskset, definitions);
     resultObj.forwardPosition = np;
     return resultObj as ValidationResult;
   }
@@ -1297,9 +1291,7 @@ export function unmaskedvalue(ctx: EngineContext): string {
   return unmasked;
 }
 
-export function clearOptionalTail(
-  ctx: EngineContext,
-): string[] {
+export function clearOptionalTail(ctx: EngineContext): string[] {
   const { opts, maskset, definitions } = ctx;
   const buffer: string[] = [];
   const template = getMaskTemplate(

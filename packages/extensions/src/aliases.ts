@@ -1,5 +1,14 @@
-import type { AliasDefinition, MaskOptions, MaskSet, ValidationResult } from "@maskit/core";
-import { getMaskTemplate, getLastValidPosition, defaultDefinitions } from "@maskit/core";
+import type {
+  AliasDefinition,
+  MaskOptions,
+  MaskSet,
+  ValidationResult,
+} from "@maskit/core";
+import {
+  getMaskTemplate,
+  getLastValidPosition,
+  defaultDefinitions,
+} from "@maskit/core";
 
 const ipValidatorRegex = /25[0-5]|2[0-4][0-9]|[01][0-9][0-9]/;
 
@@ -26,7 +35,11 @@ function ipValidator(
     parseInt(chrs) > 255 &&
     ipValidatorRegex.test("00" + chrs.charAt(2))
   ) {
-    const buffer = [...(maskset.buffer?.slice(0, pos) ?? []), ".", chrs.charAt(2)];
+    const buffer = [
+      ...(maskset.buffer?.slice(0, pos) ?? []),
+      ".",
+      chrs.charAt(2),
+    ];
     if ((buffer.join("").match(/\./g) ?? []).length < 4) {
       return {
         refreshFromBuffer: true,
@@ -67,7 +80,9 @@ export const urlAlias: AliasDefinition = {
 
 /** Email alias */
 export const emailAlias: AliasDefinition = {
-  mask: ((opts: MaskOptions & { separator?: string | null; quantifier?: number }) => {
+  mask: ((
+    opts: MaskOptions & { separator?: string | null; quantifier?: number },
+  ) => {
     const separator = opts.separator ?? null;
     const quantifier = opts.quantifier ?? 5;
     const emailMask =

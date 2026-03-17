@@ -18,7 +18,12 @@ export interface MaskOptions {
   groupmarker: [string, string];
   alternatormarker: string;
   escapeChar: string;
-  mask: string | string[] | MaskInput[] | ((opts: MaskOptions) => string) | null;
+  mask:
+    | string
+    | string[]
+    | MaskInput[]
+    | ((opts: MaskOptions) => string)
+    | null;
   regex: string | null;
   oncomplete: () => void;
   onincomplete: () => void;
@@ -201,20 +206,20 @@ export interface CommandObject {
   c?: string;
   caret?: number;
   remove?: number | number[] | { pos: number }[];
-  insert?: { pos: number; c: string; strict?: boolean; fromIsValid?: boolean }[];
-  refreshFromBuffer?:
-    | boolean
-    | { start: number; end: number };
+  insert?: {
+    pos: number;
+    c: string;
+    strict?: boolean;
+    fromIsValid?: boolean;
+  }[];
+  refreshFromBuffer?: boolean | { start: number; end: number };
   buffer?: string[];
   rewritePosition?: number;
   forwardPosition?: number;
 }
 
 /** Result from validation */
-export type ValidationResult =
-  | false
-  | true
-  | CommandObject;
+export type ValidationResult = false | true | CommandObject;
 
 /** Result from write operations */
 export interface WriteResult {

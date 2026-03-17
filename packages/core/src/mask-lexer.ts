@@ -290,7 +290,7 @@ export function analyseMask(
           fn: maskdef.validator
             ? typeof maskdef.validator === "string"
               ? new RegExp(maskdef.validator, flag)
-              : { test: maskdef.validator } as unknown as RegExp
+              : ({ test: maskdef.validator } as unknown as RegExp)
             : /./,
           static: maskdef.static || false,
           optionality: maskdef.optional || false,
@@ -470,9 +470,8 @@ export function analyseMask(
   }
 
   while (
-    (match = regexMask
-      ? regexTokenizer.exec(mask)
-      : tokenizer.exec(mask)) !== null
+    (match = regexMask ? regexTokenizer.exec(mask) : tokenizer.exec(mask)) !==
+    null
   ) {
     m = match[0];
 
@@ -581,9 +580,7 @@ export function analyseMask(
         if (openenings.length > 0) {
           currentOpeningToken = openenings[openenings.length - 1];
           const subToken =
-            currentOpeningToken.matches[
-              currentOpeningToken.matches.length - 1
-            ];
+            currentOpeningToken.matches[currentOpeningToken.matches.length - 1];
           if (
             currentOpeningToken.openGroup &&
             (subToken === undefined ||
@@ -598,7 +595,11 @@ export function analyseMask(
         } else {
           lastMatch = groupQuantifier(currentToken.matches);
         }
-        if (lastMatch && "isAlternator" in lastMatch && lastMatch.isAlternator) {
+        if (
+          lastMatch &&
+          "isAlternator" in lastMatch &&
+          lastMatch.isAlternator
+        ) {
           openenings.push(lastMatch as MaskToken);
         } else {
           if (

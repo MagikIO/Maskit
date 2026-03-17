@@ -11,7 +11,11 @@ import {
 import type { CreateMaskOptions } from "@maskit/core";
 import type { MaskController, MaskState } from "./types.js";
 import { getState, setState, removeState, hasState } from "./state.js";
-import { patchValueProperty, unpatchValueProperty, applyInputValue } from "./value.js";
+import {
+  patchValueProperty,
+  unpatchValueProperty,
+  applyInputValue,
+} from "./value.js";
 import { bindEvents, unbindEvents } from "./event-binding.js";
 import { writeBuffer, handleNativePlaceholder } from "./write-buffer.js";
 import { setCaret, valueGet } from "./caret.js";
@@ -96,7 +100,11 @@ export function mask(
   const root = element.getRootNode() as Document | ShadowRoot;
   const rawValue = valueGet(element, state, true);
 
-  if (rawValue !== "" || !opts.clearMaskOnLostFocus || root.activeElement === element) {
+  if (
+    rawValue !== "" ||
+    !opts.clearMaskOnLostFocus ||
+    root.activeElement === element
+  ) {
     applyInputValue(element, state, rawValue);
     let buffer = getBuffer(opts, maskset, defs).slice();
 

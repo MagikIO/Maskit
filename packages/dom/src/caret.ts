@@ -72,9 +72,7 @@ export function valueGet(
   state: MaskState,
   overruleRTL?: boolean,
 ): string {
-  const raw = state.__valueGet
-    ? state.__valueGet.call(input)
-    : input.value;
+  const raw = state.__valueGet ? state.__valueGet.call(input) : input.value;
   if (state.isRTL && overruleRTL !== true) {
     return raw.split("").reverse().join("");
   }
