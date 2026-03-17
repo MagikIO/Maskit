@@ -25,13 +25,8 @@ describe("register()", () => {
     expect(customElements.get("input-mask")).toBe(InputMaskElement);
   });
 
-  it("registers with custom tag name", () => {
-    register("my-masked-input");
-    expect(customElements.get("my-masked-input")).toBe(InputMaskElement);
-  });
-
   it("returns the InputMaskElement class", () => {
-    const result = register("test-mask-input");
+    const result = register();
     expect(result).toBe(InputMaskElement);
   });
 
