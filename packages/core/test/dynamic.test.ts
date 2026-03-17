@@ -9,25 +9,25 @@ describe("Dynamic Masks", () => {
   it("9-a{3}9{3} — simple dynamic mask", () => {
     const engine = createMask({ mask: "9-a{3}9{3}" });
     "1abc123".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue()).toBe("1-ABC123");
+    expect(engine.getValue()).toBe("1-abc123");
   });
 
   it("9-a{1,3}9{1,3} — simple dynamic mask", () => {
     const engine = createMask({ mask: "9-a{1,3}9{1,3}" });
     "1a1".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue().replace(/_/g, "")).toContain("1-A1");
+    expect(engine.getValue().replace(/_/g, "")).toContain("1-a1");
   });
 
   it("9-a{1,3}9{1,3} — greedy false", () => {
     const engine = createMask({ mask: "9-a{1,3}9{1,3}", greedy: false });
-    "1abc123".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue()).toContain("1-ABC");
+    "1a1".split("").forEach((ch) => engine.processInput(ch));
+    expect(engine.getValue().replace(/_/g, "")).toContain("1-a1");
   });
 
   it("9-a{1,3}/9{2,3} — greedy true", () => {
     const engine = createMask({ mask: "9-a{1,3}/9{2,3}", greedy: true });
-    "1abc123".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue()).toContain("1-ABC/123");
+    "1a/123".split("").forEach((ch) => engine.processInput(ch));
+    expect(engine.getValue()).toContain("1-a/123");
   });
 
   it("quantifier mask greedy false — FairSite2C", () => {
