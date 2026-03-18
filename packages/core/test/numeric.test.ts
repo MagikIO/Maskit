@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { defineAlias } from "@magik_io/maskit-core";
 import {
+  defineAlias,
   numericAlias,
   currencyAlias,
   decimalAlias,

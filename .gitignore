@@ -5,3 +5,4 @@ dist/
 coverage/
 .env
 .vscode
+inputmask_legacy_implementation

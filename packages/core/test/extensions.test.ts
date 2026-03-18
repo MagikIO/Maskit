@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { createMask, defineAlias, defineDefinition } from "@magik_io/maskit-core";
 import {
+  createMask,
+  defineAlias,
+  defineDefinition,
   extensionAliases,
   extensionDefinitions,
   ipAlias,

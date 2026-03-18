@@ -10,8 +10,7 @@
  * pipeline is fully wired.
  */
 import { describe, it, expect, beforeAll } from "vitest";
-import { createMask, format, isValid, defineAlias, type CreateMaskOptions } from "@magik_io/maskit-core";
-import { dateAliases } from "../src/index.js";
+import { createMask, format, isValid, defineAlias, dateAliases, type CreateMaskOptions } from "../src/index.js";
 
 beforeAll(() => {
   for (const [name, alias] of Object.entries(dateAliases)) {

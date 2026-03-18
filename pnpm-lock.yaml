@@ -32,25 +32,7 @@ importers:
 
   packages/core: {}
 
-  packages/date:
-    dependencies:
-      '@magik_io/maskit-core':
-        specifier: workspace:*
-        version: link:../core
-
   packages/dom:
-    dependencies:
-      '@magik_io/maskit-core':
-        specifier: workspace:*
-        version: link:../core
-
-  packages/extensions:
-    dependencies:
-      '@magik_io/maskit-core':
-        specifier: workspace:*
-        version: link:../core
-
-  packages/numeric:
     dependencies:
       '@magik_io/maskit-core':
         specifier: workspace:*

@@ -9,8 +9,7 @@
  * This affects processInput, setValue, format, and isValid for numeric aliases.
  */
 import { describe, it, expect, beforeAll } from "vitest";
-import { createMask, format, isValid, defineAlias, type CreateMaskOptions } from "@magik_io/maskit-core";
-import { numericAliases } from "../src/index.js";
+import { createMask, format, isValid, defineAlias, numericAliases, type CreateMaskOptions } from "../src/index.js";
 
 // Helper — numeric extension options (prefix, groupSize, etc.) are not in
 // the base MaskOptions type. Cast through unknown to satisfy TS.

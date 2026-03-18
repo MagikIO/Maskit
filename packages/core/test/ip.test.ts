@@ -3,11 +3,7 @@
  * Tests IP alias behavior via the headless core engine.
  */
 import { describe, it, expect, beforeAll } from "vitest";
-import { createMask, defineAlias, defineDefinition } from "@magik_io/maskit-core";
-import {
-  extensionAliases,
-  extensionDefinitions,
-} from "../src/index.js";
+import { createMask, defineAlias, defineDefinition, extensionAliases, extensionDefinitions } from "../src/index.js";
 
 beforeAll(() => {
   for (const [name, def] of Object.entries(extensionDefinitions)) {

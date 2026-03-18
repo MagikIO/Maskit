@@ -6,8 +6,9 @@ import type {
   MaskOptions,
   MaskSet,
   ValidationResult,
-} from "@magik_io/maskit-core";
-import { escapeRegex, seekNext } from "@magik_io/maskit-core";
+} from "./types.js";
+import { escapeRegex } from "./escape-regex.js";
+import { seekNext } from "./test-resolver.js";
 
 /** Extended options for numeric aliases */
 export interface NumericOptions extends Partial<MaskOptions> {
@@ -173,39 +174,6 @@ function parseMinMaxOptions(opts: NumericOptions): void {
   }
   opts.parseMinMaxOptions = "done";
 }
-
-// function checkForLeadingZeroes(
-//   buffer: string[],
-//   opts: NumericOptions,
-// ): RegExpExecArray | false {
-//   const numberMatches = new RegExp(
-//     "(^" +
-//       (opts.negationSymbol?.front !== ""
-//         ? `${escapeRegex(opts.negationSymbol?.front ?? "")}?`
-//         : "") +
-//       escapeRegex(opts.prefix ?? "") +
-//       ")(.*)(" +
-//       escapeRegex(opts.suffix ?? "") +
-//       (opts.negationSymbol?.back !== ""
-//         ? `${escapeRegex(opts.negationSymbol?.back ?? "")}?`
-//         : "") +
-//       "$)",
-//   ).exec(buffer.slice().reverse().join(""));
-
-//   const number = numberMatches ? numberMatches[2] : "";
-//   let leadingzeroes: RegExpExecArray | null = null;
-//   if (number) {
-//     const intPart = number.split((opts.radixPoint ?? ".").charAt(0))[0];
-//     leadingzeroes = new RegExp(`^[0${opts.groupSeparator ?? ""}]*`).exec(
-//       intPart,
-//     );
-//   }
-//   return leadingzeroes &&
-//     (leadingzeroes[0].length > 1 ||
-//       (leadingzeroes[0].length > 0 && leadingzeroes[0].length < number.length))
-//     ? leadingzeroes
-//     : false;
-// }
 
 function handleRadixDance(
   pos: number,

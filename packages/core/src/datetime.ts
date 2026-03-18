@@ -7,8 +7,9 @@ import type {
   MaskSet,
   TestResult,
   ValidationResult,
-} from "@magik_io/maskit-core";
-import { escapeRegex, getTest } from "@magik_io/maskit-core";
+} from "./types.js";
+import { escapeRegex } from "./escape-regex.js";
+import { getTest } from "./test-resolver.js";
 import type { DateI18n } from "./i18n.js";
 import { defaultI18n } from "./i18n.js";
 
