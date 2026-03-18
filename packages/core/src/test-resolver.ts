@@ -6,6 +6,7 @@ import type {
   MaskToken,
   TestMatch,
   TestResult,
+  ValidatorFn,
   ValidPosition,
 } from "./types.js";
 
@@ -80,7 +81,9 @@ export function getPlaceholder(
             (tests[i].match.static === true ||
               prevTest === undefined ||
               (tests[i].match.fn !== null &&
-                tests[i].match.fn!.test(prevTest.match.def) !== false))
+                (tests[i].match.fn instanceof RegExp
+                  ? (tests[i].match.fn as RegExp).test(prevTest.match.def) !== false
+                  : (tests[i].match.fn as ValidatorFn)(prevTest.match.def, maskset, pos, false, opts) !== false)))
           ) {
             staticAlternations.push(tests[i]);
             if (tests[i].match.static === true) prevTest = tests[i];
@@ -368,10 +371,10 @@ export function isSubsetOf(
     source.match.static !== true &&
     target.match.static !== true
   ) {
-    if (target.match.fn!.source === ".") return true;
+    if ((target.match.fn as RegExp).source === ".") return true;
     return (
-      expand(target.match.fn!.source.replace(/[[\]/]/g, "")).indexOf(
-        expand(source.match.fn!.source.replace(/[[\]/]/g, "")),
+      expand((target.match.fn as RegExp).source.replace(/[[\]/]/g, "")).indexOf(
+        expand((source.match.fn as RegExp).source.replace(/[[\]/]/g, "")),
       ) !== -1
     );
   }
@@ -506,7 +509,9 @@ export function getTests(
       ): boolean {
         return source.match.static === true && target.match.static !== true
           ? target.match.fn !== null &&
-              target.match.fn.test(source.match.def) !== false
+              (target.match.fn instanceof RegExp
+                ? target.match.fn.test(source.match.def) !== false
+                : target.match.fn(source.match.def, maskset, 0, false, opts) !== false)
           : false;
       }
 
@@ -1117,7 +1122,7 @@ export function isMask(
   if (test.def === "") test = getTest(pos, opts, maskset, definitions).match;
 
   if (test.static !== true) {
-    return test.fn!;
+    return test.fn instanceof RegExp ? test.fn : true;
   }
   if (
     fuzzy === true &&

@@ -2,11 +2,11 @@
  * Ported from Inputmask/qunit/tests_numeric.js
  * Tests numeric/currency/decimal/integer/percentage alias behavior.
  *
- * NOTE: These tests are ported regression anchors. Currently skipped because
- * the numeric alias uses function-based validators (decimalValidator) which
- * are passed as `validator: fn as unknown as string` and the core engine's
- * mask-lexer converts them to RegExp. Once the validator pipeline supports
- * function validators natively, these tests should be unskipped.
+ * STATUS: Function-based validators and token reversal are now fixed in core.
+ * Remaining skipped tests fail because the headless engine's RTL numericInput
+ * mode doesn't yet emulate DOM-level right-to-left caret/buffer insertion
+ * (processInput inserts left-to-right instead of shifting digits rightward).
+ * This affects processInput, setValue, format, and isValid for numeric aliases.
  */
 import { describe, it, expect, beforeAll } from "vitest";
 import { createMask, format, isValid, defineAlias, type CreateMaskOptions } from "@maskit/core";
@@ -48,7 +48,7 @@ describe("Numeric alias — ported from QUnit", () => {
     expect(isValid("100", { alias: "integer" })).toBe(true);
   });
 
-  it.skip("integer — isValid '100.00' is false", () => {
+  it("integer — isValid '100.00' is false", () => {
     expect(isValid("100.00", { alias: "integer" })).toBe(false);
   });
 
@@ -127,6 +127,19 @@ describe("Numeric alias — ported from QUnit", () => {
     const engine = createMask({ alias: "indianns" });
     "1234567.89".split("").forEach((ch) => engine.processInput(ch));
     expect(engine.getValue()).toContain("12,34,567");
+  });
+});
+
+describe("JIT Masking — ported from QUnit (tests_jitmasking.js)", () => {
+  it.skip("(.999){*} jitMasking true numericInput true — type 123456 → 123.456", () => {
+    const engine = createMask(numOpts({
+      mask: "(.999){*}",
+      jitMasking: true,
+      numericInput: true,
+      groupSeparator: ".",
+    }));
+    "123456".split("").forEach((ch) => engine.processInput(ch));
+    expect(engine.getValue()).toBe("123.456");
   });
 });
 

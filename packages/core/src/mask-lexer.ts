@@ -289,7 +289,7 @@ export function analyseMask(
           fn: maskdef.validator
             ? typeof maskdef.validator === "string"
               ? new RegExp(maskdef.validator, flag)
-              : ({ test: maskdef.validator } as unknown as RegExp)
+              : maskdef.validator
             : /./,
           static: maskdef.static || false,
           optionality: maskdef.optional || false,
@@ -391,10 +391,9 @@ export function analyseMask(
     for (const key in maskToken.matches) {
       if (Object.hasOwn(maskToken.matches, key)) {
         const intMatch = parseInt(key);
-        const item = maskToken.matches[intMatch];
         if (
-          "isQuantifier" in item &&
-          (item as MaskToken).isQuantifier &&
+          "isQuantifier" in maskToken.matches[intMatch] &&
+          (maskToken.matches[intMatch] as MaskToken).isQuantifier &&
           maskToken.matches[intMatch + 1] &&
           "isGroup" in maskToken.matches[intMatch + 1] &&
           (maskToken.matches[intMatch + 1] as MaskToken).isGroup
@@ -403,6 +402,8 @@ export function analyseMask(
           maskToken.matches.splice(intMatch, 1);
           maskToken.matches.splice(intMatch + 1, 0, qt);
         }
+        // Re-read after potential swap
+        const item = maskToken.matches[intMatch];
         if ("matches" in item && (item as MaskToken).matches !== undefined) {
           maskToken.matches[intMatch] = reverseTokens(item as MaskToken);
         } else {

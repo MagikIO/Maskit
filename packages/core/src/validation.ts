@@ -23,6 +23,7 @@ import type {
   TestMatch,
   TestResult,
   ValidationResult,
+  ValidatorFn,
   ValidPosition,
 } from "./types.js";
 
@@ -242,7 +243,9 @@ function positionCanMatchDefinition(
         (opts.regex &&
           !tests[tndx].match.static &&
           tests[tndx].match.fn !== null &&
-          tests[tndx].match.fn!.test(testDefinition.input)))
+          (tests[tndx].match.fn instanceof RegExp
+            ? (tests[tndx].match.fn as RegExp).test(testDefinition.input)
+            : (tests[tndx].match.fn as ValidatorFn)(testDefinition.input, maskset, pos, false, opts) !== false)))
     ) {
       valid = true;
       break;
@@ -520,12 +523,22 @@ export function isValid(
       ) {
         rslt = false;
       } else {
-        rslt =
-          test.fn != null
-            ? test.fn.test(c) !== false
-              ? { c, pos: position }
-              : false
-            : (c === test.def || c === opts.skipOptionalPartCharacter) &&
+        if (test.fn != null) {
+          let fnResult: boolean | CommandObject;
+          if (test.fn instanceof RegExp) {
+            fnResult = test.fn.test(c);
+          } else {
+            fnResult = test.fn(c, maskset, position, strict, opts);
+          }
+          if (fnResult !== false) {
+            rslt =
+              typeof fnResult === "object" ? { c, pos: position, ...fnResult } : { c, pos: position };
+          } else {
+            rslt = false;
+          }
+        } else {
+          rslt =
+            (c === test.def || c === opts.skipOptionalPartCharacter) &&
                 test.def !== ""
               ? {
                   c:
@@ -540,6 +553,7 @@ export function isValid(
                   pos: position,
                 }
               : false;
+        }
       }
       if (rslt !== false) {
         let elem =

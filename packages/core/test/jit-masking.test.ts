@@ -1,20 +1,14 @@
 /**
  * Ported from Inputmask/qunit/tests_jitmasking.js
  * Tests JIT (just-in-time) masking behavior.
+ *
+ * NOTE: The original QUnit test for (.999){*} with numericInput relies on
+ * the numeric alias pipeline (preValidation, custom definitions, etc.)
+ * which lives in @maskit/numeric. That test has been moved to
+ * packages/numeric/test/numeric-ported.test.ts.
  */
-import { describe, it, expect } from "vitest";
-import { createMask } from "../src/index.js";
+import { describe, it } from "vitest";
 
 describe("JIT Masking", () => {
-  it("(.999){*} jitMasking true numericInput true — type 123456 (depends on numeric pipeline)", () => {
-    const engine = createMask({
-      mask: "(.999){*}",
-      jitMasking: true,
-      numericInput: true,
-      groupSeparator: ".",
-    });
-    "123456".split("").forEach((ch) => engine.processInput(ch));
-    expect(engine.getValue()).toContain("123");
-    expect(engine.getValue()).toContain("456");
-  });
+  it.todo("add core-only JIT masking tests that don't depend on numeric pipeline");
 });

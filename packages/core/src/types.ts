@@ -1,6 +1,19 @@
+/**
+ * Function-based validator receiving full mask context.
+ * Return `true`/`false` for simple accept/reject, or a `CommandObject`
+ * to trigger inserts, removes, buffer refreshes, etc.
+ */
+export type ValidatorFn = (
+  chrs: string,
+  maskset: MaskSet,
+  pos: number,
+  strict: boolean,
+  opts: MaskOptions,
+) => boolean | CommandObject;
+
 /** A mask definition entry (e.g. `9` → digit, `a` → letter) */
 export interface MaskDefinition {
-  validator: string | ((ch: string) => boolean);
+  validator: string | ValidatorFn;
   definitionSymbol?: string;
   static?: boolean;
   optional?: boolean;
@@ -154,7 +167,7 @@ export interface MaskToken {
 
 /** A single test match definition */
 export interface TestMatch {
-  fn: RegExp | null;
+  fn: RegExp | ValidatorFn | null;
   static: boolean;
   optionality: number | false;
   defOptionality?: number | false;

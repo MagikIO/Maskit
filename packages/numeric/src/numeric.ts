@@ -174,38 +174,38 @@ function parseMinMaxOptions(opts: NumericOptions): void {
   opts.parseMinMaxOptions = "done";
 }
 
-function checkForLeadingZeroes(
-  buffer: string[],
-  opts: NumericOptions,
-): RegExpExecArray | false {
-  const numberMatches = new RegExp(
-    "(^" +
-      (opts.negationSymbol?.front !== ""
-        ? `${escapeRegex(opts.negationSymbol?.front ?? "")}?`
-        : "") +
-      escapeRegex(opts.prefix ?? "") +
-      ")(.*)(" +
-      escapeRegex(opts.suffix ?? "") +
-      (opts.negationSymbol?.back !== ""
-        ? `${escapeRegex(opts.negationSymbol?.back ?? "")}?`
-        : "") +
-      "$)",
-  ).exec(buffer.slice().reverse().join(""));
+// function checkForLeadingZeroes(
+//   buffer: string[],
+//   opts: NumericOptions,
+// ): RegExpExecArray | false {
+//   const numberMatches = new RegExp(
+//     "(^" +
+//       (opts.negationSymbol?.front !== ""
+//         ? `${escapeRegex(opts.negationSymbol?.front ?? "")}?`
+//         : "") +
+//       escapeRegex(opts.prefix ?? "") +
+//       ")(.*)(" +
+//       escapeRegex(opts.suffix ?? "") +
+//       (opts.negationSymbol?.back !== ""
+//         ? `${escapeRegex(opts.negationSymbol?.back ?? "")}?`
+//         : "") +
+//       "$)",
+//   ).exec(buffer.slice().reverse().join(""));
 
-  const number = numberMatches ? numberMatches[2] : "";
-  let leadingzeroes: RegExpExecArray | null = null;
-  if (number) {
-    const intPart = number.split((opts.radixPoint ?? ".").charAt(0))[0];
-    leadingzeroes = new RegExp(`^[0${opts.groupSeparator ?? ""}]*`).exec(
-      intPart,
-    );
-  }
-  return leadingzeroes &&
-    (leadingzeroes[0].length > 1 ||
-      (leadingzeroes[0].length > 0 && leadingzeroes[0].length < number.length))
-    ? leadingzeroes
-    : false;
-}
+//   const number = numberMatches ? numberMatches[2] : "";
+//   let leadingzeroes: RegExpExecArray | null = null;
+//   if (number) {
+//     const intPart = number.split((opts.radixPoint ?? ".").charAt(0))[0];
+//     leadingzeroes = new RegExp(`^[0${opts.groupSeparator ?? ""}]*`).exec(
+//       intPart,
+//     );
+//   }
+//   return leadingzeroes &&
+//     (leadingzeroes[0].length > 1 ||
+//       (leadingzeroes[0].length > 0 && leadingzeroes[0].length < number.length))
+//     ? leadingzeroes
+//     : false;
+// }
 
 function handleRadixDance(
   pos: number,
@@ -430,9 +430,9 @@ export const numericAlias: AliasDefinition = {
   stripLeadingZeroes: true,
   substituteRadixPoint: true,
   definitions: {
-    0: { validator: decimalValidator as unknown as string },
+    0: { validator: decimalValidator },
     1: {
-      validator: decimalValidator as unknown as string,
+      validator: decimalValidator,
       definitionSymbol: "9",
     },
     9: {
@@ -440,31 +440,31 @@ export const numericAlias: AliasDefinition = {
       definitionSymbol: "*",
     },
     "+": {
-      validator: ((
+      validator: (
         chrs: string,
         _maskset: MaskSet,
         _pos: number,
         _strict: boolean,
         opts: NumericOptions,
       ) => {
-        return (
+        return !!(
           opts.allowMinus &&
           (chrs === "-" || chrs === opts.negationSymbol?.front)
         );
-      }) as unknown as string,
+      },
     },
     "-": {
-      validator: ((
+      validator: (
         chrs: string,
         _maskset: MaskSet,
         _pos: number,
         _strict: boolean,
         opts: NumericOptions,
       ) => {
-        return opts.allowMinus && chrs === opts.negationSymbol?.back;
-      }) as unknown as string,
+        return !!(opts.allowMinus && chrs === opts.negationSymbol?.back);
+      },
     },
-  },
+  } as Record<string, MaskDefinition>,
   preValidation: (
     buffer: string[],
     pos: number,

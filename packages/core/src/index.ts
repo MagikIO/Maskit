@@ -50,6 +50,7 @@ export type {
   TestMatch,
   TestResult,
   ValidationResult,
+  ValidatorFn,
   ValidPosition,
   WriteResult,
 } from "./types.js";
