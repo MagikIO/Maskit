@@ -5,9 +5,9 @@ SolidJS bindings for Maskit. Provides a `use:maskit` directive and a `<MaskedInp
 ## Installation
 
 ```bash
-npm install @maskit/solid @maskit/core @maskit/dom
+npm install @maskit/solid @magik_io/maskit-core @magik_io/maskit-dom
 # or
-pnpm add @maskit/solid @maskit/core @maskit/dom
+pnpm add @maskit/solid @magik_io/maskit-core @magik_io/maskit-dom
 ```
 
 **Peer dependency:** `solid-js >= 1.8.0`
@@ -101,11 +101,11 @@ function App() {
 
 ### Accessing the Controller
 
-Both the directive and component provide access to the `MaskController` from `@maskit/dom`:
+Both the directive and component provide access to the `MaskController` from `@magik_io/maskit-dom`:
 
 ```tsx
 import { MaskedInput } from "@maskit/solid";
-import type { MaskController } from "@maskit/dom";
+import type { MaskController } from "@magik_io/maskit-dom";
 
 function App() {
   let controller: MaskController | undefined;

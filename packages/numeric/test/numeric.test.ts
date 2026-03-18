@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { defineAlias } from "@maskit/core";
+import { defineAlias } from "@magik_io/maskit-core";
 import {
   numericAlias,
   currencyAlias,

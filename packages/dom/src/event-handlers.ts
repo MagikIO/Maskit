@@ -1,4 +1,4 @@
-import type { CaretPosition, MaskOptions } from "@maskit/core";
+import type { CaretPosition, MaskOptions } from "@magik_io/maskit-core";
 import {
   clearOptionalTail,
   getBuffer,
@@ -11,7 +11,7 @@ import {
   resetMaskSet,
   seekNext,
   seekPrevious,
-} from "@maskit/core";
+} from "@magik_io/maskit-core";
 import { getCaret, setCaret, valueGet, valueSet } from "./caret.js";
 import type { MaskState } from "./types.js";
 import { applyInputValue } from "./value.js";

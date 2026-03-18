@@ -5,9 +5,9 @@ Numeric input mask aliases for Maskit. Provides pre-configured aliases for numbe
 ## Installation
 
 ```bash
-npm install @maskit/numeric @maskit/core
+npm install @maskit/numeric @magik_io/maskit-core
 # or
-pnpm add @maskit/numeric @maskit/core
+pnpm add @maskit/numeric @magik_io/maskit-core
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ pnpm add @maskit/numeric @maskit/core
 
 ```ts
 import { registerNumeric } from "@maskit/numeric";
-import { createMask, format } from "@maskit/core";
+import { createMask, format } from "@magik_io/maskit-core";
 
 // Register all numeric aliases globally
 registerNumeric();
@@ -143,7 +143,7 @@ Indian Numbering System. Extends `numeric` with custom grouping (e.g., `12,34,56
 
 ### `registerNumeric()`
 
-Registers all numeric aliases (`numeric`, `currency`, `decimal`, `integer`, `percentage`, `indianns`) into the global `@maskit/core` registry.
+Registers all numeric aliases (`numeric`, `currency`, `decimal`, `integer`, `percentage`, `indianns`) into the global `@magik_io/maskit-core` registry.
 
 ### `genMask(opts)`
 

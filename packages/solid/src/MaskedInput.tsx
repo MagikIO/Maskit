@@ -1,5 +1,5 @@
-import type { MaskController } from "@maskit/dom";
-import { mask } from "@maskit/dom";
+import type { MaskController } from "@magik_io/maskit-dom";
+import { mask } from "@magik_io/maskit-dom";
 import { createEffect, onCleanup, splitProps } from "solid-js";
 import type { MaskedInputProps } from "./types.js";
 

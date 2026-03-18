@@ -113,7 +113,7 @@ defineAlias("datetime-es", spanishDatetime);
 
 ### `registerDate()`
 
-Registers the `datetime` alias into the global `@maskit/core` registry. Call once at app startup.
+Registers the `datetime` alias into the global `@magik_io/maskit-core` registry. Call once at app startup.
 
 ### `createDatetimeAlias(i18n?)`
 

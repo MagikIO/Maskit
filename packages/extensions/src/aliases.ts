@@ -3,12 +3,12 @@ import type {
   MaskOptions,
   MaskSet,
   ValidationResult,
-} from "@maskit/core";
+} from "@magik_io/maskit-core";
 import {
   defaultDefinitions,
   getLastValidPosition,
   getMaskTemplate,
-} from "@maskit/core";
+} from "@magik_io/maskit-core";
 
 const ipValidatorRegex = /25[0-5]|2[0-4][0-9]|[01][0-9][0-9]/;
 

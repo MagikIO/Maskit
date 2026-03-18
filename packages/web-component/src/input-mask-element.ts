@@ -1,6 +1,6 @@
-import type { CreateMaskOptions } from "@maskit/core";
-import type { MaskController } from "@maskit/dom";
-import { mask } from "@maskit/dom";
+import type { CreateMaskOptions } from "@magik_io/maskit-core";
+import type { MaskController } from "@magik_io/maskit-dom";
+import { mask } from "@magik_io/maskit-dom";
 
 /** Attributes that can be set declaratively on <input-mask> */
 export interface InputMaskElementAttributes {
@@ -35,7 +35,7 @@ const STYLE = /* css */ `
 /**
  * `<input-mask>` custom element.
  *
- * Wraps an `<input>` in an open shadow DOM and applies a mask via `@maskit/dom`.
+ * Wraps an `<input>` in an open shadow DOM and applies a mask via `@magik_io/maskit-dom`.
  * Participates in native forms via `ElementInternals`.
  *
  * @example

@@ -1,4 +1,4 @@
-import type { MaskDefinition } from "@maskit/core";
+import type { MaskDefinition } from "@magik_io/maskit-core";
 
 /** Uppercase alpha (including Cyrillic and Latin extended) */
 export const upperAlphaDefinition: MaskDefinition = {

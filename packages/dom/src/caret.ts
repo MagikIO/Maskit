@@ -1,4 +1,4 @@
-import type { CaretPosition } from "@maskit/core";
+import type { CaretPosition } from "@magik_io/maskit-core";
 import type { MaskState } from "./types.js";
 
 /**

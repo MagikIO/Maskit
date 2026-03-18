@@ -1,4 +1,4 @@
-import type { CreateMaskOptions } from "@maskit/core";
+import type { CreateMaskOptions } from "@magik_io/maskit-core";
 import { mask } from "./mask.js";
 
 /**

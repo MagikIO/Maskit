@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-describe("@maskit/core", () => {
+describe("@magik_io/maskit-core", () => {
   it("placeholder", () => {
     expect(true).toBe(true);
   });

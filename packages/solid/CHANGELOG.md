@@ -9,5 +9,5 @@
 ### Patch Changes
 
 - Updated dependencies [3403ec0]
-  - @maskit/core@1.0.0
-  - @maskit/dom@1.0.0
+  - @magik_io/maskit-core@1.0.0
+  - @magik_io/maskit-dom@1.0.0

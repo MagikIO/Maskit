@@ -1,4 +1,4 @@
-# @maskit/core
+# @magik_io/maskit-core
 
 ## 1.0.0
 

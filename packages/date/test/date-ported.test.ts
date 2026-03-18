@@ -10,7 +10,7 @@
  * pipeline is fully wired.
  */
 import { describe, it, expect, beforeAll } from "vitest";
-import { createMask, format, isValid, defineAlias, type CreateMaskOptions } from "@maskit/core";
+import { createMask, format, isValid, defineAlias, type CreateMaskOptions } from "@magik_io/maskit-core";
 import { dateAliases } from "../src/index.js";
 
 beforeAll(() => {

@@ -1,6 +1,6 @@
-# @maskit/dom
+# @magik_io/maskit-dom
 
-DOM integration layer for Maskit. Binds the headless `@maskit/core` engine to `<input>` elements with full keyboard, clipboard, caret, and form event handling.
+DOM integration layer for Maskit. Binds the headless `@magik_io/maskit-core` engine to `<input>` elements with full keyboard, clipboard, caret, and form event handling.
 
 ## Installation
 
@@ -61,7 +61,7 @@ unmask(input); // unbinds events, restores value property, removes state
 ```
 
 ```ts
-import { autoInit } from "@maskit/dom";
+import { autoInit } from "@magik_io/maskit-dom";
 
 // Scan document for [data-maskit] elements
 autoInit();

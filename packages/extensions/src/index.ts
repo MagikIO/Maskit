@@ -19,13 +19,13 @@ export {
 } from "./definitions.js";
 
 // Registration helper
-import { defineAlias, defineDefinition } from "@maskit/core";
+import { defineAlias, defineDefinition } from "@magik_io/maskit-core";
 import { extensionAliases } from "./aliases.js";
 import { extensionDefinitions } from "./definitions.js";
 
 /**
  * Register all extension definitions and aliases into the global
- * @maskit/core registry. Call once at app startup.
+ * @magik_io/maskit-core registry. Call once at app startup.
  */
 export function registerExtensions(): void {
   for (const [name, def] of Object.entries(extensionDefinitions)) {

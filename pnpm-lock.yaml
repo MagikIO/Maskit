@@ -34,34 +34,34 @@ importers:
 
   packages/date:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
 
   packages/dom:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
 
   packages/extensions:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
 
   packages/numeric:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
 
   packages/solid:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
-      '@maskit/dom':
+      '@magik_io/maskit-dom':
         specifier: workspace:*
         version: link:../dom
       solid-js:
@@ -77,10 +77,10 @@ importers:
 
   packages/web-component:
     dependencies:
-      '@maskit/core':
+      '@magik_io/maskit-core':
         specifier: workspace:*
         version: link:../core
-      '@maskit/dom':
+      '@magik_io/maskit-dom':
         specifier: workspace:*
         version: link:../dom
 

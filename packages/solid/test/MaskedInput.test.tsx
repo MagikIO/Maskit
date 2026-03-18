@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import { createSignal } from "solid-js";
 import { render, cleanup } from "@solidjs/testing-library";
 import { MaskedInput } from "../src/MaskedInput.jsx";
-import type { MaskController } from "@maskit/dom";
+import type { MaskController } from "@magik_io/maskit-dom";
 
 describe("MaskedInput component", () => {
   afterEach(() => {

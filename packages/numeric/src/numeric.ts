@@ -6,8 +6,8 @@ import type {
   MaskOptions,
   MaskSet,
   ValidationResult,
-} from "@maskit/core";
-import { escapeRegex, seekNext } from "@maskit/core";
+} from "@magik_io/maskit-core";
+import { escapeRegex, seekNext } from "@magik_io/maskit-core";
 
 /** Extended options for numeric aliases */
 export interface NumericOptions extends Partial<MaskOptions> {

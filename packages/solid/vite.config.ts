@@ -12,8 +12,8 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "@maskit/core",
-        "@maskit/dom",
+        "@magik_io/maskit-core",
+        "@magik_io/maskit-dom",
         "solid-js",
         "solid-js/web",
         "solid-js/store",

@@ -5,9 +5,9 @@ A form-associated `<input-mask>` custom element for Maskit. Provides input maski
 ## Installation
 
 ```bash
-npm install @maskit/web-component @maskit/core @maskit/dom
+npm install @maskit/web-component @magik_io/maskit-core @magik_io/maskit-dom
 # or
-pnpm add @maskit/web-component @maskit/core @maskit/dom
+pnpm add @maskit/web-component @magik_io/maskit-core @magik_io/maskit-dom
 ```
 
 ## Usage

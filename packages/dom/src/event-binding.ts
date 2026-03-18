@@ -1,4 +1,4 @@
-import { getBuffer } from "@maskit/core";
+import { getBuffer } from "@magik_io/maskit-core";
 import {
   onBlur,
   onClick,

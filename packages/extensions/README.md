@@ -5,9 +5,9 @@ Pre-built mask aliases and extra definitions for common input formats: IP addres
 ## Installation
 
 ```bash
-npm install @maskit/extensions @maskit/core
+npm install @maskit/extensions @magik_io/maskit-core
 # or
-pnpm add @maskit/extensions @maskit/core
+pnpm add @maskit/extensions @magik_io/maskit-core
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ pnpm add @maskit/extensions @maskit/core
 
 ```ts
 import { registerExtensions } from "@maskit/extensions";
-import { createMask, format } from "@maskit/core";
+import { createMask, format } from "@magik_io/maskit-core";
 
 // Register all extension aliases and definitions globally
 registerExtensions();
@@ -131,7 +131,7 @@ These definitions are registered globally when calling `registerExtensions()`:
 
 ```ts
 import { registerExtensions } from "@maskit/extensions";
-import { createMask } from "@maskit/core";
+import { createMask } from "@magik_io/maskit-core";
 
 registerExtensions();
 
@@ -146,7 +146,7 @@ const code = createMask({ mask: "AA-9999" });
 
 ### `registerExtensions()`
 
-Registers all extension aliases (`ip`, `email`, `mac`, `vin`, `ssn`, `url`, `cssunit`) and definitions (`A`, `&`, `#`) into the global `@maskit/core` registry. Call once at app startup.
+Registers all extension aliases (`ip`, `email`, `mac`, `vin`, `ssn`, `url`, `cssunit`) and definitions (`A`, `&`, `#`) into the global `@magik_io/maskit-core` registry. Call once at app startup.
 
 ### Individual Exports
 

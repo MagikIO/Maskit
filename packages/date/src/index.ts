@@ -15,11 +15,11 @@ export type { DateI18n } from "./i18n.js";
 export { defaultI18n } from "./i18n.js";
 
 // Registration helper
-import { defineAlias } from "@maskit/core";
+import { defineAlias } from "@magik_io/maskit-core";
 import { dateAliases } from "./datetime.js";
 
 /**
- * Register all date aliases into the global @maskit/core registry.
+ * Register all date aliases into the global @magik_io/maskit-core registry.
  * Call once at app startup.
  */
 export function registerDate(): void {

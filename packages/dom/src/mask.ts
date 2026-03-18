@@ -1,4 +1,4 @@
-import type { CreateMaskOptions } from "@maskit/core";
+import type { CreateMaskOptions } from "@magik_io/maskit-core";
 import {
   clearOptionalTail,
   createMask,
@@ -8,7 +8,7 @@ import {
   isCompleteCore,
   resetMaskSet,
   seekNext,
-} from "@maskit/core";
+} from "@magik_io/maskit-core";
 import { setCaret, valueGet } from "./caret.js";
 import { bindEvents, unbindEvents } from "./event-binding.js";
 import { getState, hasState, removeState, setState } from "./state.js";

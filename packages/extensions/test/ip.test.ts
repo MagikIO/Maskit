@@ -3,7 +3,7 @@
  * Tests IP alias behavior via the headless core engine.
  */
 import { describe, it, expect, beforeAll } from "vitest";
-import { createMask, defineAlias, defineDefinition } from "@maskit/core";
+import { createMask, defineAlias, defineDefinition } from "@magik_io/maskit-core";
 import {
   extensionAliases,
   extensionDefinitions,

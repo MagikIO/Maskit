@@ -9,7 +9,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ["@maskit/core"],
+      external: ["@magik_io/maskit-core"],
     },
   },
 });

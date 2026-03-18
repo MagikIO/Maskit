@@ -33,7 +33,7 @@ isValid("12/25/2025", { mask: "99/99/9999" });
 ### Stateful Engine
 
 ```ts
-import { createMask } from "@maskit/core";
+import { createMask } from "@magik_io/maskit-core";
 
 const engine = createMask({ mask: "99-99-99" });
 
@@ -126,7 +126,7 @@ createMask({ regex: "[0-9]{1,3}(\\.[0-9]{1,3}){3}" });
 ## Custom Definitions
 
 ```ts
-import { createMask, defineDefinition } from "@maskit/core";
+import { createMask, defineDefinition } from "@magik_io/maskit-core";
 
 // Register globally (available to all future createMask calls)
 defineDefinition("H", {

@@ -1,4 +1,4 @@
-import type { CaretPosition, MaskEngine, MaskOptions } from "@maskit/core";
+import type { CaretPosition, MaskEngine, MaskOptions } from "@magik_io/maskit-core";
 
 /** State stored per masked element via WeakMap */
 export interface MaskState {

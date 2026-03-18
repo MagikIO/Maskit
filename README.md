@@ -19,20 +19,20 @@ Maskit provides a **headless core engine** for parsing, validating, and formatti
 
 | Package | Description | Depends On |
 |---------|-------------|------------|
-| [`@maskit/core`](packages/core/) | Headless mask engine, parser, validator | — |
-| [`@maskit/dom`](packages/dom/) | DOM integration (event binding, caret, value patching) | `@maskit/core` |
-| [`@maskit/date`](packages/date/) | Date/time mask aliases | `@maskit/core` |
-| [`@maskit/numeric`](packages/numeric/) | Numeric, currency, percentage, integer aliases | `@maskit/core` |
-| [`@maskit/extensions`](packages/extensions/) | IP, email, MAC, VIN, SSN, URL, CSS unit aliases | `@maskit/core` |
-| [`@maskit/solid`](packages/solid/) | SolidJS directive and `<MaskedInput>` component | `@maskit/core`, `@maskit/dom` |
-| [`@maskit/web-component`](packages/web-component/) | `<input-mask>` custom element (form-associated) | `@maskit/core`, `@maskit/dom` |
+| [`@magik_io/maskit-core`](packages/core/) | Headless mask engine, parser, validator | — |
+| [`@magik_io/maskit-dom`](packages/dom/) | DOM integration (event binding, caret, value patching) | `@magik_io/maskit-core` |
+| [`@maskit/date`](packages/date/) | Date/time mask aliases | `@magik_io/maskit-core` |
+| [`@maskit/numeric`](packages/numeric/) | Numeric, currency, percentage, integer aliases | `@magik_io/maskit-core` |
+| [`@maskit/extensions`](packages/extensions/) | IP, email, MAC, VIN, SSN, URL, CSS unit aliases | `@magik_io/maskit-core` |
+| [`@maskit/solid`](packages/solid/) | SolidJS directive and `<MaskedInput>` component | `@magik_io/maskit-core`, `@magik_io/maskit-dom` |
+| [`@maskit/web-component`](packages/web-component/) | `<input-mask>` custom element (form-associated) | `@magik_io/maskit-core`, `@magik_io/maskit-dom` |
 
 ## Quick Start
 
 ### Headless (Node.js / any runtime)
 
 ```ts
-import { createMask, format, unformat, isValid } from "@maskit/core";
+import { createMask, format, unformat, isValid } from "@magik_io/maskit-core";
 
 // One-shot formatting
 format("1234567890", { mask: "(999) 999-9999" });
@@ -64,7 +64,7 @@ engine.isComplete();     // → true
 ### DOM (Vanilla JavaScript)
 
 ```ts
-import { mask, unmask } from "@maskit/dom";
+import { mask, unmask } from "@magik_io/maskit-dom";
 
 const input = document.querySelector("#phone");
 const controller = mask(input, { mask: "(999) 999-9999" });
@@ -86,7 +86,7 @@ controller.destroy();
 <input data-maskit="(999) 999-9999" data-maskit-placeholder="_" />
 
 <script type="module">
-  import { autoInit } from "@maskit/dom";
+  import { autoInit } from "@magik_io/maskit-dom";
   autoInit();
 </script>
 ```
@@ -166,7 +166,7 @@ Aliases are pre-configured mask option sets. Register them explicitly, then refe
 
 ```ts
 import { registerDate } from "@maskit/date";
-import { createMask } from "@maskit/core";
+import { createMask } from "@magik_io/maskit-core";
 
 registerDate(); // registers "datetime" alias
 
@@ -184,7 +184,7 @@ const engine = createMask({
 
 ```ts
 import { registerNumeric } from "@maskit/numeric";
-import { createMask } from "@maskit/core";
+import { createMask } from "@magik_io/maskit-core";
 
 registerNumeric(); // registers numeric, currency, decimal, integer, percentage, indianns
 
@@ -208,7 +208,7 @@ const percentage = createMask({ alias: "percentage" });
 
 ```ts
 import { registerExtensions } from "@maskit/extensions";
-import { createMask } from "@maskit/core";
+import { createMask } from "@magik_io/maskit-core";
 
 registerExtensions(); // registers ip, email, mac, vin, ssn, url, cssunit + A, &, # defs
 
@@ -281,7 +281,7 @@ Key options available via `createMask()` and `mask()`:
 ## Custom Definitions
 
 ```ts
-import { createMask, defineDefinition } from "@maskit/core";
+import { createMask, defineDefinition } from "@magik_io/maskit-core";
 
 // Register globally
 defineDefinition("H", {
@@ -313,7 +313,7 @@ const engine = createMask({
 ## Custom Aliases
 
 ```ts
-import { defineAlias } from "@maskit/core";
+import { defineAlias } from "@magik_io/maskit-core";
 
 defineAlias("phone-us", {
   mask: "(999) 999-9999",
@@ -328,13 +328,13 @@ const engine = createMask({ alias: "phone-us" });
 ## Architecture
 
 ```
-@maskit/core                  Headless engine (no DOM)
+@magik_io/maskit-core                  Headless engine (no DOM)
   ├── mask-lexer              Mask string → token AST
   ├── test-resolver           Position → test match resolver
   ├── validation              Character validation engine
   └── engine                  Public API (createMask, format, etc.)
 
-@maskit/dom                   DOM integration layer
+@magik_io/maskit-dom                   DOM integration layer
   ├── state                   WeakMap-based per-element state
   ├── caret                   Caret position management
   ├── value                   input.value get/set interception
@@ -351,7 +351,7 @@ const engine = createMask({ alias: "phone-us" });
 
 ### Key Design Decisions
 
-- **Headless-first**: `@maskit/core` has zero DOM dependency — it can run in any JS runtime
+- **Headless-first**: `@magik_io/maskit-core` has zero DOM dependency — it can run in any JS runtime
 - **WeakMap state**: DOM package stores all per-element state in `WeakMap`s — no property mutation on elements
 - **Value interception**: `Object.defineProperty` on the input instance intercepts `.value` get/set for transparent masking
 - **Unicode validators**: Built-in definitions use Unicode property escapes (`\p{N}`, `\p{L}`) for international input
