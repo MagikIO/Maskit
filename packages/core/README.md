@@ -1,13 +1,13 @@
-# @maskit/core
+# @magik_io/maskit-core
 
 The headless mask engine — zero DOM dependency. Parses mask patterns, validates input character-by-character, and manages masked/unmasked values.
 
 ## Installation
 
 ```bash
-npm install @maskit/core
+npm install @magik_io/maskit-core
 # or
-pnpm add @maskit/core
+pnpm add @magik_io/maskit-core
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ pnpm add @maskit/core
 ### Static Helpers
 
 ```ts
-import { format, unformat, isValid } from "@maskit/core";
+import { format, unformat, isValid } from "@magik_io/maskit-core";
 
 // Format a raw value through a mask
 format("1234567890", { mask: "(999) 999-9999" });
@@ -158,7 +158,7 @@ const engine = createMask({
 ## Custom Aliases
 
 ```ts
-import { defineAlias, createMask } from "@maskit/core";
+import { defineAlias, createMask } from "@magik_io/maskit-core";
 
 defineAlias("zip", {
   mask: "99999[-9999]",
@@ -206,7 +206,7 @@ import {
   seekPrevious,
   getLastValidPosition,
   resetMaskSet,
-} from "@maskit/core";
+} from "@magik_io/maskit-core";
 ```
 
 ## License

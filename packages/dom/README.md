@@ -5,9 +5,9 @@ DOM integration layer for Maskit. Binds the headless `@maskit/core` engine to `<
 ## Installation
 
 ```bash
-npm install @maskit/dom @maskit/core
+npm install @magik_io/maskit-dom @magik_io/maskit-core
 # or
-pnpm add @maskit/dom @maskit/core
+pnpm add @magik_io/maskit-dom @magik_io/maskit-core
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ pnpm add @maskit/dom @maskit/core
 ### `mask()` — Apply a Mask to an Input
 
 ```ts
-import { mask } from "@maskit/dom";
+import { mask } from "@magik_io/maskit-dom";
 
 const input = document.querySelector<HTMLInputElement>("#phone");
 const controller = mask(input, { mask: "(999) 999-9999" });
@@ -47,7 +47,7 @@ controller.destroy();
 ### `unmask()` — Remove a Mask
 
 ```ts
-import { unmask } from "@maskit/dom";
+import { unmask } from "@magik_io/maskit-dom";
 
 unmask(input); // unbinds events, restores value property, removes state
 ```
@@ -82,7 +82,7 @@ autoInit(document.querySelector("#form-container"));
 
 ### Value Interception
 
-When a mask is applied, `@maskit/dom` intercepts the input's `.value` property via `Object.defineProperty` on the element instance:
+When a mask is applied, `@magik_io/maskit-dom` intercepts the input's `.value` property via `Object.defineProperty` on the element instance:
 
 - **Getter**: Returns the unmasked value if `autoUnmask` is enabled, or the masked value otherwise. Returns `""` for nullable empty masks.
 - **Setter**: Pipes the new value through the mask engine before writing to the DOM.
@@ -111,7 +111,7 @@ The DOM package handles these events automatically:
 All per-element state is stored in `WeakMap`s — no properties are added to DOM elements:
 
 ```ts
-import { getState, hasState } from "@maskit/dom";
+import { getState, hasState } from "@magik_io/maskit-dom";
 
 if (hasState(input)) {
   const state = getState(input);
@@ -121,7 +121,7 @@ if (hasState(input)) {
 
 ## DOM-Specific Options
 
-These options are relevant when using `@maskit/dom` (they have no effect in headless mode):
+These options are relevant when using `@magik_io/maskit-dom` (they have no effect in headless mode):
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -139,7 +139,7 @@ These options are relevant when using `@maskit/dom` (they have no effect in head
 ## Caret Utilities
 
 ```ts
-import { getCaret, setCaret } from "@maskit/dom";
+import { getCaret, setCaret } from "@magik_io/maskit-dom";
 
 const { begin, end } = getCaret(input);
 setCaret(input, 5); // move caret to position 5

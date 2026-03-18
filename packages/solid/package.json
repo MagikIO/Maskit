@@ -1,5 +1,5 @@
 {
-  "name": "@maskit/solid",
+  "name": "@magik_io/maskit-solid",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@maskit/core": "workspace:*",
-    "@maskit/dom": "workspace:*"
+    "@magik_io/maskit-core": "workspace:*",
+    "@magik_io/maskit-dom": "workspace:*"
   },
   "peerDependencies": {
     "solid-js": ">=1.8.0"

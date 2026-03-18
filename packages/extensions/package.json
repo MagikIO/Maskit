@@ -1,5 +1,5 @@
 {
-  "name": "@maskit/extensions",
+  "name": "@magik_io/maskit-extensions",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@maskit/core": "workspace:*"
+    "@magik_io/maskit-core": "workspace:*"
   },
   "sideEffects": false
 }

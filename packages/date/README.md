@@ -5,9 +5,9 @@ Date and time mask aliases for Maskit. Provides a `datetime` alias with format-t
 ## Installation
 
 ```bash
-npm install @maskit/date @maskit/core
+npm install @magik_io/maskit-date @magik_io/maskit-core
 # or
-pnpm add @maskit/date @maskit/core
+pnpm add @magik_io/maskit-date @magik_io/maskit-core
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ pnpm add @maskit/date @maskit/core
 ### Register and Use
 
 ```ts
-import { registerDate } from "@maskit/date";
-import { createMask, format } from "@maskit/core";
+import { registerDate } from "@magik_io/maskit-date";
+import { createMask, format } from "@magik_io/maskit-core";
 
 // Register the "datetime" alias globally
 registerDate();
@@ -46,8 +46,8 @@ const engine = createMask({
 ### Custom i18n
 
 ```ts
-import { createDatetimeAlias } from "@maskit/date";
-import { defineAlias } from "@maskit/core";
+import { createDatetimeAlias } from "@magik_io/maskit-date";
+import { defineAlias } from "@magik_io/maskit-core";
 
 const spanishDatetime = createDatetimeAlias({
   dayNames: [
