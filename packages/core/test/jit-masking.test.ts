@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 import { createMask } from "../src/index.js";
 
 describe("JIT Masking", () => {
-  it.skip("(.999){*} jitMasking true numericInput true — type 123456 (depends on numeric pipeline)", () => {
+  it("(.999){*} jitMasking true numericInput true — type 123456 (depends on numeric pipeline)", () => {
     const engine = createMask({
       mask: "(.999){*}",
       jitMasking: true,

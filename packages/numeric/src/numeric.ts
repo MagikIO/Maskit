@@ -81,7 +81,7 @@ export function alignDigits(
       radixPosition = buffer.length - 1;
     }
     for (let i = 1; i <= digits; i++) {
-      if (!Number.isFinite(buffer[radixPosition + i] as unknown as number)) {
+      if (!Number.isFinite(Number(buffer[radixPosition + i]))) {
         buffer[radixPosition + i] = "0";
       }
     }
